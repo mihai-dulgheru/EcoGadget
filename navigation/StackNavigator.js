@@ -1,6 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { HomeScreen, InfoScreen, RecyclingLocationsScreen } from '../screens';
+import {
+  HomeScreen,
+  InfoScreen,
+  RecyclingCenterDetailsScreen,
+  RecyclingLocationsScreen,
+} from '../screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +31,13 @@ export default function StackNavigator() {
         component={RecyclingLocationsScreen}
         options={{
           title: 'Locații de Reciclare',
+        }}
+      />
+      <Stack.Screen
+        name="RecyclingCenterDetails"
+        component={RecyclingCenterDetailsScreen}
+        options={{
+          title: 'Detalii Centru de Reciclare',
         }}
       />
     </Stack.Navigator>

@@ -20,17 +20,17 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'comma-dangle': ['off'],
     'func-names': ['off'],
+    'global-require': ['off'],
     'import/no-extraneous-dependencies': ['off'],
-    'no-console': [
-      'warn',
-      {
-        allow: ['warn', 'error'],
-      },
-    ],
+    'import/prefer-default-export': ['off'],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-use-before-define': ['off'],
     'object-curly-newline': ['off'],
+    'operator-linebreak': ['error', 'after'],
     'react/jsx-filename-extension': ['off'],
+    'react/prop-types': ['off'],
     'react/react-in-jsx-scope': ['off'],
     'react/style-prop-object': ['off'],
   },

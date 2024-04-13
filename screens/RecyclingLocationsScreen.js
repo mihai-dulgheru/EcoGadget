@@ -1,3 +1,4 @@
+import * as Location from 'expo-location';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -5,19 +6,28 @@ import {
   Image,
   StyleSheet,
   Text,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import RecyclingService from '../services/RecyclingService';
 import colors from '../styles/colors';
 
-export default function RecyclingLocationsScreen() {
+export default function RecyclingLocationsScreen({ navigation }) {
   const [locations, setLocations] = useState([]);
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const data = await RecyclingService.getRecyclingLocations();
+        const permissionResponse =
+          await Location.requestForegroundPermissionsAsync();
+        if (permissionResponse?.status !== 'granted') {
+          throw new Error('Permission to access location was denied');
+        }
+        const location = await Location.getCurrentPositionAsync({});
+        const data = await RecyclingService.getRecyclingLocations(
+          location.coords
+        );
         setLocations(data);
         setStatus('success');
       } catch (error) {
@@ -29,17 +39,45 @@ export default function RecyclingLocationsScreen() {
     fetchLocations();
   }, []);
 
-  const renderLocation = ({ item }) => (
-    <View style={styles.locationContainer}>
-      <Image source={{ uri: item.image }} style={styles.locationImage} />
-      <View style={styles.locationInfo}>
-        <Text style={styles.locationName}>{item.name}</Text>
-        <Text style={styles.locationAddress}>{item.address}</Text>
-        <Text style={styles.locationSchedule}>{item.schedule}</Text>
-        <Text style={styles.locationDistance}>{item.distance}</Text>
-      </View>
-    </View>
-  );
+  const renderLocation = ({ item }) => {
+    const daysOfWeek = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ];
+    const currentDay = daysOfWeek[new Date().getDay()];
+
+    const todaySchedule = item.schedule[currentDay.toLowerCase()] || 'Closed';
+
+    return (
+      <TouchableWithoutFeedback
+        onPress={(e) => {
+          e.preventDefault();
+          navigation.navigate('RecyclingCenterDetails', {
+            center: item,
+          });
+        }}
+      >
+        <View style={styles.locationContainer}>
+          <Image
+            defaultSource={require('../assets/images/placeholder.jpg')}
+            source={{ uri: item.image }}
+            style={styles.locationImage}
+          />
+          <View style={styles.locationInfo}>
+            <Text style={styles.locationName}>{item.name}</Text>
+            <Text style={styles.locationAddress}>{item.address}</Text>
+            <Text style={styles.locationSchedule}>{todaySchedule}</Text>
+            <Text style={styles.locationDistance}>{item.distance}</Text>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  };
 
   if (status === 'loading') {
     return (
