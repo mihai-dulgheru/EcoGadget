@@ -1,6 +1,4 @@
-import React from 'react';
 import {
-  Button,
   Linking,
   Platform,
   SafeAreaView,
@@ -11,6 +9,7 @@ import {
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { ContactForm } from '../components';
+import { Button } from '../components/UI';
 
 function RecyclingCenterDetailsScreen({ route }) {
   const { center } = route.params;
@@ -65,7 +64,7 @@ function RecyclingCenterDetailsScreen({ route }) {
             description={center.address}
           />
         </MapView>
-        <Button title="Get Directions" onPress={openInMaps} />
+        <Button onPress={openInMaps}>Get Directions</Button>
         <Text style={styles.title}>{center.name}</Text>
         <Text style={styles.description}>{center.description}</Text>
         <Text style={styles.info}>
@@ -80,7 +79,7 @@ function RecyclingCenterDetailsScreen({ route }) {
             </Text>
           ))}
         </View>
-        <Button title="Call Center" onPress={openDialScreen} />
+        <Button onPress={openDialScreen}>Call Center</Button>
         <Text style={styles.info}>Contact Form</Text>
         <View style={styles.form}>
           <ContactForm centerId={center.id} />

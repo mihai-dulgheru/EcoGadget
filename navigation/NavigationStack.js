@@ -1,5 +1,4 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
 import {
   HomeScreen,
   InfoScreen,
@@ -9,7 +8,7 @@ import {
 
 const Stack = createNativeStackNavigator();
 
-export default function StackNavigator() {
+export default function NavigationStack() {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen

@@ -1,28 +1,18 @@
-// const BASE_URL = 'https://yourapiendpoint.com';
+import axios from 'axios';
 
 const sendContactMessage = async (data) => {
   try {
-    // const response = await fetch(`${BASE_URL}/messages`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // });
-
-    // if (!response.ok) {
-    //   const errorData = await response.json();
-    //   throw new Error(errorData.message || 'Network response was not ok.');
-    // }
-
-    // return await response.json();
-    return await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(data);
-      }, 1000);
-    });
+    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    const response = await axios.post(`${apiUrl}/messages`, data);
+    return response.data;
   } catch (error) {
-    throw new Error(`Failed to send message: ${error.message}`);
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
   }
 };
 

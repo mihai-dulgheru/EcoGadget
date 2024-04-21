@@ -1,1 +1,3 @@
-export default {};
+const Fonts = {};
+
+export default Fonts;

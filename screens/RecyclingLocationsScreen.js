@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import RecyclingService from '../services/RecyclingService';
-import colors from '../styles/colors';
+import Colors from '../styles/colors';
 
 export default function RecyclingLocationsScreen({ navigation }) {
   const [locations, setLocations] = useState([]);
@@ -55,8 +55,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
 
     return (
       <TouchableWithoutFeedback
-        onPress={(e) => {
-          e.preventDefault();
+        onPress={() => {
           navigation.navigate('RecyclingCenterDetails', {
             center: item,
           });
@@ -82,7 +81,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
   if (status === 'loading') {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
   }
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   error: {
-    color: colors.accent,
+    color: Colors.accent,
   },
   listContainer: {
     flexGrow: 1,

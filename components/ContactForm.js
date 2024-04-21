@@ -1,7 +1,7 @@
-import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import ContactService from '../services/ContactService';
+import { Button } from './UI';
 
 function ContactForm({ centerId }) {
   const {
@@ -103,7 +103,7 @@ function ContactForm({ centerId }) {
         )}
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Send Message" onPress={handleSubmit(onSubmit)} />
+        <Button onPress={handleSubmit(onSubmit)}>Send Message</Button>
       </View>
     </View>
   );
