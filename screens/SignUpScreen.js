@@ -9,23 +9,23 @@ function SignUpScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const auth = useContext(AuthContext);
 
-  async function signupHandler({ email, password }) {
+  async function handleSignUp({ email, password }) {
     setIsAuthenticating(true);
     try {
       const token = await signUp(email, password);
       await auth.authenticate(token);
     } catch (error) {
-      Alert.alert('Authentication failed', error.message);
+      Alert.alert('Înregistrare eșuată', error.message);
       setIsAuthenticating(false);
     }
   }
 
   if (isAuthenticating) {
-    return <LoadingOverlay message="Creating user..." />;
+    return <LoadingOverlay message="Creare cont în curs..." />;
   }
 
   return (
-    <AuthContent onAuthenticate={(credentials) => signupHandler(credentials)} />
+    <AuthContent onAuthenticate={(credentials) => handleSignUp(credentials)} />
   );
 }
 

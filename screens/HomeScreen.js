@@ -10,7 +10,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>HomeScreen</Text>
+      <Text style={styles.text}>Bine ai venit!</Text>
       <Button onPress={() => navigation.navigate('RecyclingLocations')}>
         Vezi Locațiile de Reciclare
       </Button>

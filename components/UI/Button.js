@@ -4,8 +4,8 @@ import Colors from '../../styles/colors';
 function Button({ children, onPress }) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
+      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
     >
       <View>
         <Text style={styles.buttonText}>{children}</Text>

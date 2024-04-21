@@ -9,25 +9,25 @@ function SignInScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const auth = useContext(AuthContext);
 
-  async function loginHandler({ email, password }) {
+  async function handleSignIn({ email, password }) {
     setIsAuthenticating(true);
     try {
       const token = await signInWithPassword(email, password);
       await auth.authenticate(token);
     } catch (error) {
-      Alert.alert('Authentication failed!', error.message);
+      Alert.alert('Autentificare eșuată!', error.message);
       setIsAuthenticating(false);
     }
   }
 
   if (isAuthenticating) {
-    return <LoadingOverlay message="Logging you in..." />;
+    return <LoadingOverlay message="Autentificare în curs..." />;
   }
 
   return (
     <AuthContent
       isLogin
-      onAuthenticate={(credentials) => loginHandler(credentials)}
+      onAuthenticate={(credentials) => handleSignIn(credentials)}
     />
   );
 }

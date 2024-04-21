@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Input } from '../UI';
 
 function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
-  const scrollToInput = (ref) => {
+  const scrollToFocusedInput = (ref) => {
     ref.current.measure((_fx, _fy, _width, _height, _px, py) => {
       scrollViewRef.current.scrollTo({ x: 0, y: py, animated: true });
     });
@@ -19,33 +19,26 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
 
-  const {
-    email: isEmailInvalid,
-    confirmEmail: isConfirmEmailInvalid,
-    password: isPasswordInvalid,
-    confirmPassword: isConfirmPasswordInvalid,
-  } = credentialsInvalid;
-
-  function updateInputValueHandler(inputType, enteredValue) {
-    switch (inputType) {
+  function handleInputValueUpdate(inputField, updatedValue) {
+    switch (inputField) {
       case 'email':
-        setEnteredEmail(enteredValue);
+        setEnteredEmail(updatedValue);
         break;
       case 'confirmEmail':
-        setEnteredConfirmEmail(enteredValue);
+        setEnteredConfirmEmail(updatedValue);
         break;
       case 'password':
-        setEnteredPassword(enteredValue);
+        setEnteredPassword(updatedValue);
         break;
       case 'confirmPassword':
-        setEnteredConfirmPassword(enteredValue);
+        setEnteredConfirmPassword(updatedValue);
         break;
       default:
         break;
     }
   }
 
-  function submitHandler() {
+  function handleFormSubmit() {
     onSubmit({
       email: enteredEmail,
       confirmEmail: enteredConfirmEmail,
@@ -59,10 +52,10 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
       <View>
         <Input
           blurOnSubmit={false}
-          isInvalid={isEmailInvalid}
+          isInvalid={credentialsInvalid.email}
           keyboardType="email-address"
-          label="Email Address"
-          onFocus={() => scrollToInput(inputEmailRef)}
+          label="Adresă Email"
+          onFocus={() => scrollToFocusedInput(inputEmailRef)}
           onSubmitEditing={() => {
             if (!isLogin) {
               inputConfirmEmailRef.current.focus();
@@ -70,8 +63,8 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
               inputPasswordRef.current.focus();
             }
           }}
-          onUpdateValue={(value) => updateInputValueHandler('email', value)}
-          placeholder="Email Address"
+          onUpdateValue={(value) => handleInputValueUpdate('email', value)}
+          placeholder="Adresă Email"
           ref={inputEmailRef}
           returnKeyType="next"
           value={enteredEmail}
@@ -79,15 +72,15 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
         {!isLogin && (
           <Input
             blurOnSubmit={false}
-            isInvalid={isConfirmEmailInvalid}
+            isInvalid={credentialsInvalid.confirmEmail}
             keyboardType="email-address"
-            label="Confirm Email Address"
-            onFocus={() => scrollToInput(inputConfirmEmailRef)}
+            label="Confirmă Email"
+            onFocus={() => scrollToFocusedInput(inputConfirmEmailRef)}
             onSubmitEditing={() => inputPasswordRef.current.focus()}
             onUpdateValue={(value) => {
-              updateInputValueHandler('confirmEmail', value);
+              handleInputValueUpdate('confirmEmail', value);
             }}
-            placeholder="Confirm Email Address"
+            placeholder="Confirmă Email"
             ref={inputConfirmEmailRef}
             returnKeyType="next"
             value={enteredConfirmEmail}
@@ -95,18 +88,18 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
         )}
         <Input
           blurOnSubmit={!!isLogin}
-          isInvalid={isPasswordInvalid}
-          label="Password"
-          onFocus={() => scrollToInput(inputPasswordRef)}
+          isInvalid={credentialsInvalid.password}
+          label="Parolă"
+          onFocus={() => scrollToFocusedInput(inputPasswordRef)}
           onSubmitEditing={() => {
             if (!isLogin) {
               inputConfirmPasswordRef.current.focus();
             } else {
-              submitHandler();
+              handleFormSubmit();
             }
           }}
-          onUpdateValue={(value) => updateInputValueHandler('password', value)}
-          placeholder="Password"
+          onUpdateValue={(value) => handleInputValueUpdate('password', value)}
+          placeholder="Parolă"
           ref={inputPasswordRef}
           returnKeyType={isLogin ? 'done' : 'next'}
           secure
@@ -114,14 +107,14 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
         />
         {!isLogin && (
           <Input
-            isInvalid={isConfirmPasswordInvalid}
-            label="Confirm Password"
-            onFocus={() => scrollToInput(inputConfirmPasswordRef)}
-            onSubmitEditing={() => submitHandler()}
+            isInvalid={credentialsInvalid.confirmPassword}
+            label="Confirmă Parola"
+            onFocus={() => scrollToFocusedInput(inputConfirmPasswordRef)}
+            onSubmitEditing={() => handleFormSubmit()}
             onUpdateValue={(value) => {
-              updateInputValueHandler('confirmPassword', value);
+              handleInputValueUpdate('confirmPassword', value);
             }}
-            placeholder="Confirm Password"
+            placeholder="Confirmă Parola"
             ref={inputConfirmPasswordRef}
             returnKeyType="done"
             secure
@@ -129,8 +122,8 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
           />
         )}
         <View style={styles.buttons}>
-          <Button onPress={() => submitHandler()}>
-            {isLogin ? 'Log In' : 'Sign Up'}
+          <Button onPress={() => handleFormSubmit()}>
+            {isLogin ? 'Autentificare' : 'Înregistrare'}
           </Button>
         </View>
       </View>
@@ -141,6 +134,9 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
 export default AuthForm;
 
 const styles = StyleSheet.create({
+  form: {
+    padding: 20,
+  },
   buttons: {
     marginTop: 12,
   },

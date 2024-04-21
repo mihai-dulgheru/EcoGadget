@@ -7,7 +7,6 @@ const Stack = createNativeStackNavigator();
 
 export default function AuthenticationStack() {
   const auth = useContext(AuthContext);
-  const animationTypeForReplace = !auth.isSignedIn ? 'pop' : 'push';
 
   return (
     <Stack.Navigator>
@@ -15,16 +14,16 @@ export default function AuthenticationStack() {
         name="SignIn"
         component={SignInScreen}
         options={{
-          title: 'Sign in',
-          animationTypeForReplace,
+          title: 'Autentificare',
+          animationTypeForReplace: !auth.isSignedIn ? 'pop' : 'push',
         }}
       />
       <Stack.Screen
         name="SignUp"
         component={SignUpScreen}
         options={{
-          title: 'Sign up',
-          animationTypeForReplace,
+          title: 'Înregistrare',
+          animationTypeForReplace: !auth.isSignedIn ? 'pop' : 'push',
         }}
       />
     </Stack.Navigator>
