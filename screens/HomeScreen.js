@@ -5,7 +5,7 @@ import { Button } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
 
 export default function HomeScreen() {
-  const authContext = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const navigation = useNavigation();
 
   return (
@@ -14,7 +14,7 @@ export default function HomeScreen() {
       <Button onPress={() => navigation.navigate('RecyclingLocations')}>
         Vezi Locațiile de Reciclare
       </Button>
-      <Button onPress={authContext.signOut}>Deconectare</Button>
+      <Button onPress={auth.signOut}>Deconectare</Button>
     </View>
   );
 }

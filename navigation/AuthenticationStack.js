@@ -6,8 +6,8 @@ import { AuthContext } from '../store/AuthContext';
 const Stack = createNativeStackNavigator();
 
 export default function AuthenticationStack() {
-  const authContext = useContext(AuthContext);
-  const animationTypeForReplace = !authContext.isAuthenticated ? 'pop' : 'push';
+  const auth = useContext(AuthContext);
+  const animationTypeForReplace = !auth.isSignedIn ? 'pop' : 'push';
 
   return (
     <Stack.Navigator>

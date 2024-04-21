@@ -3,7 +3,7 @@ import AsyncStorage from '../utils/AsyncStorage';
 
 export const AuthContext = createContext({
   token: null,
-  isAuthenticated: false,
+  isSignedIn: false,
   authenticate: async () => {},
   signOut: async () => {},
 });
@@ -24,7 +24,7 @@ function AuthContextProvider({ children }) {
   const currentUser = useMemo(
     () => ({
       token: accessToken,
-      isAuthenticated: !!accessToken,
+      isSignedIn: !!accessToken,
       authenticate,
       signOut,
     }),

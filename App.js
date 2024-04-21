@@ -8,12 +8,12 @@ import AuthContextProvider, { AuthContext } from './store/AuthContext';
 import AsyncStorage from './utils/AsyncStorage';
 
 function Navigation() {
-  const authContext = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      {!authContext.isAuthenticated && <AuthenticationStack />}
-      {authContext.isAuthenticated && <NavigationStack />}
+      {!auth.isSignedIn && <AuthenticationStack />}
+      {auth.isSignedIn && <NavigationStack />}
     </NavigationContainer>
   );
 }
@@ -22,14 +22,14 @@ SplashScreen.preventAutoHideAsync();
 
 function Root() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const authContext = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
     async function prepare() {
       try {
         const token = await AsyncStorage.getItem('token');
         if (token) {
-          await authContext.authenticate(token);
+          await auth.authenticate(token);
         }
       } catch (e) {
         console.warn(e);

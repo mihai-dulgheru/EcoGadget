@@ -7,13 +7,13 @@ import { signInWithPassword } from '../utils/Auth';
 
 function SignInScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const authContext = useContext(AuthContext);
+  const auth = useContext(AuthContext);
 
   async function loginHandler({ email, password }) {
     setIsAuthenticating(true);
     try {
       const token = await signInWithPassword(email, password);
-      await authContext.authenticate(token);
+      await auth.authenticate(token);
     } catch (error) {
       Alert.alert('Authentication failed!', error.message);
       setIsAuthenticating(false);
