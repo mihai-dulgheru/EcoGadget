@@ -2,13 +2,7 @@ import { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from '../UI';
 
-function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
-  const scrollToFocusedInput = (ref) => {
-    ref.current.measure((_fx, _fy, _width, _height, _px, py) => {
-      scrollViewRef.current.scrollTo({ x: 0, y: py, animated: true });
-    });
-  };
-
+function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
   const inputEmailRef = useRef(null);
   const inputConfirmEmailRef = useRef(null);
   const inputPasswordRef = useRef(null);
@@ -55,7 +49,7 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
           isInvalid={credentialsInvalid.email}
           keyboardType="email-address"
           label="Adresă Email"
-          onFocus={() => scrollToFocusedInput(inputEmailRef)}
+          onChangeText={(value) => handleInputValueUpdate('email', value)}
           onSubmitEditing={() => {
             if (!isLogin) {
               inputConfirmEmailRef.current.focus();
@@ -63,7 +57,6 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
               inputPasswordRef.current.focus();
             }
           }}
-          onUpdateValue={(value) => handleInputValueUpdate('email', value)}
           placeholder="Adresă Email"
           ref={inputEmailRef}
           returnKeyType="next"
@@ -75,11 +68,10 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
             isInvalid={credentialsInvalid.confirmEmail}
             keyboardType="email-address"
             label="Confirmă Email"
-            onFocus={() => scrollToFocusedInput(inputConfirmEmailRef)}
-            onSubmitEditing={() => inputPasswordRef.current.focus()}
-            onUpdateValue={(value) => {
+            onChangeText={(value) => {
               handleInputValueUpdate('confirmEmail', value);
             }}
+            onSubmitEditing={() => inputPasswordRef.current.focus()}
             placeholder="Confirmă Email"
             ref={inputConfirmEmailRef}
             returnKeyType="next"
@@ -90,7 +82,7 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
           blurOnSubmit={!!isLogin}
           isInvalid={credentialsInvalid.password}
           label="Parolă"
-          onFocus={() => scrollToFocusedInput(inputPasswordRef)}
+          onChangeText={(value) => handleInputValueUpdate('password', value)}
           onSubmitEditing={() => {
             if (!isLogin) {
               inputConfirmPasswordRef.current.focus();
@@ -98,7 +90,6 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
               handleFormSubmit();
             }
           }}
-          onUpdateValue={(value) => handleInputValueUpdate('password', value)}
           placeholder="Parolă"
           ref={inputPasswordRef}
           returnKeyType={isLogin ? 'done' : 'next'}
@@ -109,11 +100,10 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit, scrollViewRef }) {
           <Input
             isInvalid={credentialsInvalid.confirmPassword}
             label="Confirmă Parola"
-            onFocus={() => scrollToFocusedInput(inputConfirmPasswordRef)}
-            onSubmitEditing={() => handleFormSubmit()}
-            onUpdateValue={(value) => {
+            onChangeText={(value) => {
               handleInputValueUpdate('confirmPassword', value);
             }}
+            onSubmitEditing={() => handleFormSubmit()}
             placeholder="Confirmă Parola"
             ref={inputConfirmPasswordRef}
             returnKeyType="done"

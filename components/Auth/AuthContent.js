@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import Colors from '../../styles/colors';
 import { FlatButton } from '../UI';
@@ -53,20 +53,12 @@ function AuthContent({ isLogin, onAuthenticate }) {
     onAuthenticate({ email, password });
   }
 
-  const scrollViewRef = useRef(null);
-
   return (
-    <ScrollView
-      contentContainerStyle={styles.contentContainer}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="always"
-      ref={scrollViewRef}
-    >
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       <AuthForm
         credentialsInvalid={credentialsInvalid}
         isLogin={isLogin}
         onSubmit={(credentials) => submitHandler(credentials)}
-        scrollViewRef={scrollViewRef}
       />
       <View style={styles.buttons}>
         <FlatButton onPress={() => switchAuthModeHandler()}>
