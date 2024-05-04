@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Colors from '../../styles/colors';
+import theme from '../../styles/theme';
 
 function FlatButton({ children, onPress }) {
   return (
@@ -18,14 +18,14 @@ export default FlatButton;
 
 const styles = StyleSheet.create({
   button: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: theme.spacing['4'],
+    paddingVertical: theme.spacing['2'],
   },
   pressed: {
     opacity: 0.7,
   },
   buttonText: {
+    color: theme.colors.primary,
     textAlign: 'center',
-    color: Colors.primary,
   },
 });

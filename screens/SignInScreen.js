@@ -5,7 +5,7 @@ import { LoadingOverlay } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
 import { signInWithPassword } from '../utils/Auth';
 
-function SignInScreen() {
+export default function SignInScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const auth = useContext(AuthContext);
 
@@ -31,5 +31,3 @@ function SignInScreen() {
     />
   );
 }
-
-export default SignInScreen;

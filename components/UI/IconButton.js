@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet } from 'react-native';
+import theme from '../../styles/theme';
 
 function IconButton({ icon, color, size, onPress }) {
   return (
@@ -16,8 +17,8 @@ export default IconButton;
 
 const styles = StyleSheet.create({
   button: {
-    margin: 8,
-    borderRadius: 20,
+    borderRadius: theme.borderRadius['3xl'],
+    margin: theme.spacing['2'],
   },
   pressed: {
     opacity: 0.7,

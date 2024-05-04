@@ -3,7 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AuthenticationStack, NavigationStack } from './navigation';
+import { AuthenticationStack, TabNavigator } from './navigation';
 import AuthContextProvider, { AuthContext } from './store/AuthContext';
 import AsyncStorage from './utils/AsyncStorage';
 
@@ -13,7 +13,8 @@ function Navigation() {
   return (
     <NavigationContainer>
       {!auth.isSignedIn && <AuthenticationStack />}
-      {auth.isSignedIn && <NavigationStack />}
+      {/* {auth.isSignedIn && <NavigationStack />} */}
+      {auth.isSignedIn && <TabNavigator />}
     </NavigationContainer>
   );
 }

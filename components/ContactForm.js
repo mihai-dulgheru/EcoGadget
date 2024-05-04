@@ -1,6 +1,7 @@
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import ContactService from '../services/ContactService';
+import theme from '../styles/theme';
 import { Button } from './UI';
 
 function ContactForm({ centerId }) {
@@ -111,22 +112,22 @@ function ContactForm({ centerId }) {
 
 const styles = StyleSheet.create({
   formContainer: {
-    padding: 20,
-    gap: 10,
+    gap: theme.spacing['4'],
+    padding: theme.spacing['6'],
   },
   input: {
-    borderColor: 'gray',
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
+    borderColor: theme.colors.textPrimary,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: theme.borderWidth.default,
+    padding: theme.spacing['4'],
   },
   textArea: {
-    height: 100,
+    height: theme.spacing['24'],
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
   },
   errorText: {
-    color: 'red',
+    color: theme.colors.secondary,
   },
   buttonContainer: {
     alignItems: 'center',

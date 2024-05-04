@@ -10,8 +10,9 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import { ContactForm } from '../components';
 import { Button } from '../components/UI';
+import theme from '../styles/theme';
 
-function RecyclingCenterDetailsScreen({ route }) {
+export default function RecyclingCenterDetailsScreen({ route }) {
   const { center } = route.params;
 
   const openInMaps = () => {
@@ -82,7 +83,7 @@ function RecyclingCenterDetailsScreen({ route }) {
         <Button onPress={openDialScreen}>Call Center</Button>
         <Text style={styles.info}>Contact Form</Text>
         <View style={styles.form}>
-          <ContactForm centerId={center.id} />
+          <ContactForm centerId={center._id} />
         </View>
         <Text style={styles.info}>Other Information</Text>
         <Text style={styles.info}>
@@ -104,8 +105,8 @@ function RecyclingCenterDetailsScreen({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
   },
   scrollView: {
@@ -115,35 +116,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   map: {
+    height: theme.spacing['48'],
+    marginBottom: theme.spacing['6'],
     width: '100%',
-    height: 200,
-    marginBottom: 20,
   },
   title: {
-    fontSize: 24,
+    ...theme.fontSize['2xl'],
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: theme.spacing['6'],
   },
   description: {
-    fontSize: 16,
-    marginBottom: 20,
+    ...theme.fontSize.base,
+    marginBottom: theme.spacing['6'],
   },
   info: {
-    fontSize: 16,
-    marginBottom: 10,
+    ...theme.fontSize.base,
+    marginBottom: theme.spacing['4'],
   },
   scheduleContainer: {
-    alignSelf: 'stretch',
     alignItems: 'flex-start',
-    marginBottom: 20,
+    alignSelf: 'stretch',
+    marginBottom: theme.spacing['6'],
   },
   scheduleText: {
-    fontSize: 16,
-    marginBottom: 5,
+    ...theme.fontSize.base,
+    marginBottom: theme.spacing['2'],
   },
   form: {
     width: '100%',
   },
 });
-
-export default RecyclingCenterDetailsScreen;

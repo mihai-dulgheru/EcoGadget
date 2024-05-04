@@ -5,7 +5,7 @@ import { LoadingOverlay } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
 import { signUp } from '../utils/Auth';
 
-function SignUpScreen() {
+export default function SignUpScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const auth = useContext(AuthContext);
 
@@ -28,5 +28,3 @@ function SignUpScreen() {
     <AuthContent onAuthenticate={(credentials) => handleSignUp(credentials)} />
   );
 }
-
-export default SignUpScreen;

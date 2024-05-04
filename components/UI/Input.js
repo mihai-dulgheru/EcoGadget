@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { forwardRef, useState } from 'react';
 import {
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Colors from '../../styles/colors';
+import theme from '../../styles/theme';
 
 const Input = forwardRef(
   (
@@ -56,7 +56,7 @@ const Input = forwardRef(
               style={styles.icon}
             >
               <Ionicons
-                color={Colors.text}
+                color={theme.theme.colors.textPrimary}
                 name={secureTextEntry ? 'eye-off' : 'eye'}
                 size={24}
               />
@@ -72,41 +72,41 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginVertical: 8,
+    marginVertical: theme.spacing['2'],
   },
   label: {
-    marginBottom: 4,
+    marginBottom: theme.spacing['2'],
   },
   labelInvalid: {
-    color: Colors.accent,
+    color: theme.colors.secondary,
   },
   inputSection: {
-    backgroundColor: Colors.background,
+    backgroundColor: theme.colors.background,
     borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: theme.borderRadius.default,
+    borderWidth: theme.borderWidth.default,
     overflow: 'hidden',
   },
   input: {
+    ...theme.fontSize.base,
+    alignItems: 'center',
+    color: theme.colors.textPrimary,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
-    height: 40,
-    paddingHorizontal: 8,
-    fontSize: 16,
-    color: Colors.text,
+    height: theme.spacing['10'],
+    paddingHorizontal: theme.spacing['2'],
   },
   inputInvalid: {
-    borderColor: Colors.accent,
+    borderColor: theme.colors.secondary,
   },
   icon: {
-    display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
-    width: 40,
+    display: 'flex',
+    height: theme.spacing['10'],
+    justifyContent: 'center',
     position: 'absolute',
     right: 0,
     top: 0,
+    width: theme.spacing['10'],
   },
 });

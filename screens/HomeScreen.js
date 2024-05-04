@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
+import theme from '../styles/theme';
 
 export default function HomeScreen() {
   const auth = useContext(AuthContext);
@@ -21,13 +22,13 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
+    gap: theme.spacing['6'],
     justifyContent: 'center',
-    gap: 20,
   },
   text: {
-    fontSize: 20,
-    marginBottom: 20,
+    ...theme.fontSize.xl,
+    marginBottom: theme.spacing['6'],
   },
 });

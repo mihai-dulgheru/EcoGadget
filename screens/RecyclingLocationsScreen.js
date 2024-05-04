@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import RecyclingService from '../services/RecyclingService';
-import Colors from '../styles/colors';
+import theme from '../styles/theme';
 
 export default function RecyclingLocationsScreen({ navigation }) {
   const [locations, setLocations] = useState([]);
@@ -81,7 +81,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
   if (status === 'loading') {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color={Colors.primary} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
@@ -98,7 +98,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
     <FlatList
       data={locations}
       renderItem={renderLocation}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item._id.toString()}
       contentContainerStyle={styles.listContainer}
     />
   );
@@ -106,57 +106,57 @@ export default function RecyclingLocationsScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
   },
   error: {
-    color: Colors.accent,
+    color: theme.colors.secondary,
   },
   listContainer: {
     flexGrow: 1,
-    paddingTop: 20,
+    paddingTop: theme.spacing['6'],
   },
   locationContainer: {
-    flexDirection: 'row',
-    padding: 20,
-    marginHorizontal: 20,
-    marginBottom: 20,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.xl,
     elevation: 2,
-    shadowColor: '#000',
+    flexDirection: 'row',
+    marginBottom: theme.spacing['6'],
+    marginHorizontal: theme.spacing['6'],
+    padding: theme.spacing['6'],
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowRadius: 4,
   },
   locationImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 10,
-    marginRight: 20,
+    borderRadius: theme.borderRadius.xl,
+    height: theme.spacing['24'],
+    marginRight: theme.spacing['6'],
+    width: theme.spacing['24'],
   },
   locationInfo: {
     flex: 1,
     justifyContent: 'center',
   },
   locationName: {
-    fontSize: 18,
+    ...theme.fontSize.lg,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: theme.spacing['2'],
   },
   locationAddress: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
+    marginBottom: theme.spacing['2'],
   },
   locationSchedule: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
+    marginBottom: theme.spacing['2'],
   },
   locationDistance: {
-    fontSize: 14,
-    color: '#666',
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
   },
 });

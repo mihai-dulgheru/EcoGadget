@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
-import Colors from '../../styles/colors';
+import theme from '../../styles/theme';
 import { FlatButton } from '../UI';
 import AuthForm from './AuthForm';
 
@@ -73,18 +73,18 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   contentContainer: {
-    marginTop: 64,
-    marginHorizontal: 32,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.background,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.borderRadius.lg,
     elevation: 2,
+    marginHorizontal: theme.spacing['8'],
+    marginTop: theme.spacing['16'],
+    padding: theme.spacing['4'],
     shadowColor: 'black',
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.35,
+    shadowOffset: { height: 1, width: 1 },
+    shadowOpacity: 0.25,
     shadowRadius: 4,
   },
   buttons: {
-    marginTop: 8,
+    marginTop: theme.spacing['2'],
   },
 });

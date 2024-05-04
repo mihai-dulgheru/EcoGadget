@@ -1,4 +1,5 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import theme from '../../styles/theme';
 
 function LoadingOverlay({ message }) {
   return (
@@ -13,13 +14,13 @@ export default LoadingOverlay;
 
 const styles = StyleSheet.create({
   rootContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
+    padding: theme.spacing['8'],
   },
   message: {
-    fontSize: 16,
-    marginBottom: 12,
+    ...theme.fontSize.base,
+    marginBottom: theme.spacing['4'],
   },
 });

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import theme from '../../styles/theme';
 import { Button, Input } from '../UI';
 
 function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
@@ -125,9 +126,9 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   form: {
-    padding: 20,
+    padding: theme.spacing['6'],
   },
   buttons: {
-    marginTop: 12,
+    marginTop: theme.spacing['4'],
   },
 });
