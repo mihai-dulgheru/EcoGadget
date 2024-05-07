@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   RecyclingCenterDetailsScreen,
   RecyclingInfoDetailsScreen,
@@ -11,9 +12,9 @@ function getTabIcon(route) {
   return function ({ focused, color, size }) {
     let iconName;
 
-    if (route.name === 'RecyclingInfo') {
+    if (route.name === 'RecyclingInfoTab') {
       iconName = focused ? 'information-circle' : 'information-circle-outline';
-    } else if (route.name === 'RecyclingLocations') {
+    } else if (route.name === 'RecyclingLocationsTab') {
       iconName = focused ? 'map' : 'map-outline';
     } else if (route.name === 'ApplianceManagement') {
       iconName = focused ? 'build' : 'build-outline';
@@ -26,8 +27,41 @@ function getTabIcon(route) {
 }
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-// TODO: Add stack navigator for each tab
+function RecyclingInfoStackNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="RecyclingInfo"
+        component={RecyclingInfoScreen}
+        options={{ title: 'Reciclare' }}
+      />
+      <Stack.Screen
+        name="RecyclingInfoDetails"
+        component={RecyclingInfoDetailsScreen}
+        options={{ title: 'Detalii Reciclare' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function RecyclingLocationsStackNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="RecyclingLocations"
+        component={RecyclingLocationsScreen}
+        options={{ title: 'Locații Reciclare' }}
+      />
+      <Stack.Screen
+        name="RecyclingCenterDetails"
+        component={RecyclingCenterDetailsScreen}
+        options={{ title: 'Detalii Centru de Reciclare' }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function TabNavigator() {
   return (
@@ -39,30 +73,14 @@ export default function TabNavigator() {
       })}
     >
       <Tab.Screen
-        name="RecyclingInfo"
-        component={RecyclingInfoScreen}
-        options={{ title: 'Reciclare' }}
+        name="RecyclingInfoTab"
+        component={RecyclingInfoStackNavigator}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="RecyclingInfoDetails"
-        component={RecyclingInfoDetailsScreen}
-        options={{
-          title: 'Detalii Reciclare',
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="RecyclingLocations"
-        component={RecyclingLocationsScreen}
-        options={{ title: 'Locații Reciclare' }}
-      />
-      <Tab.Screen
-        name="RecyclingCenterDetails"
-        component={RecyclingCenterDetailsScreen}
-        options={{
-          title: 'Detalii Centru de Reciclare',
-          tabBarButton: () => null,
-        }}
+        name="RecyclingLocationsTab"
+        component={RecyclingLocationsStackNavigator}
+        options={{ headerShown: false }}
       />
       {/* <Tab.Screen
           name="ApplianceManagement"

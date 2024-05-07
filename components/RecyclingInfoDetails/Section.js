@@ -1,7 +1,6 @@
 import { ResizeMode, Video } from 'expo-av';
 import * as React from 'react';
 import { Image, Linking, StyleSheet, Text, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
 import theme from '../../styles/theme';
 import FAQList from './FAQList';
 import SocialLinks from './SocialLinks';
@@ -33,32 +32,6 @@ export default function Section({ section }) {
           resizeMode={ResizeMode.CONTAIN}
           isLooping
         />
-      )}
-      {section.map && (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: section.map.latitude,
-            longitude: section.map.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          rotateEnabled={false}
-          pitchEnabled={false}
-        >
-          <Marker
-            coordinate={{
-              latitude: section.map.latitude,
-              longitude: section.map.longitude,
-            }}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            rotateEnabled={false}
-            pitchEnabled={false}
-          />
-        </MapView>
       )}
       {section.links &&
         section.links.map((link) => (
@@ -100,11 +73,6 @@ const styles = StyleSheet.create({
   },
   video: {
     height: theme.spacing['48'],
-    width: '100%',
-  },
-  map: {
-    height: theme.spacing['48'],
-    marginBottom: theme.spacing['4'],
     width: '100%',
   },
   link: {

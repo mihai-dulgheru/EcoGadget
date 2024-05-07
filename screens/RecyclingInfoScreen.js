@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -62,6 +63,22 @@ export default function RecyclingInfoScreen({ navigation }) {
         />
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.subtitle}>{item.subtitle}</Text>
+        <View style={styles.row}>
+          <Ionicons
+            name="calendar-outline"
+            size={24}
+            color={theme.colors.textSecondary}
+          />
+          <Text>{item.date}</Text>
+        </View>
+        <View style={styles.row}>
+          <Ionicons
+            name="location-outline"
+            size={24}
+            color={theme.colors.textSecondary}
+          />
+          <Text>{item.location.name}</Text>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -105,5 +122,11 @@ const styles = StyleSheet.create({
   subtitle: {
     ...theme.fontSize.base,
     color: theme.colors.textSecondary,
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: theme.spacing['2'],
+    marginTop: theme.spacing['2'],
   },
 });
