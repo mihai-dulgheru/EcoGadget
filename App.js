@@ -13,7 +13,6 @@ function Navigation() {
   return (
     <NavigationContainer>
       {!auth.isSignedIn && <AuthenticationStack />}
-      {/* {auth.isSignedIn && <NavigationStack />} */}
       {auth.isSignedIn && <TabNavigator />}
     </NavigationContainer>
   );

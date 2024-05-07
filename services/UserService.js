@@ -1,8 +1,6 @@
-import { Axios } from '../utils/Axios';
-
-const sendContactMessage = async (data) => {
+const getAccountInfo = async (AxiosAuth) => {
   try {
-    const response = await Axios.post('/messages', data);
+    const response = await AxiosAuth.get('/accounts/lookup');
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -16,5 +14,5 @@ const sendContactMessage = async (data) => {
 };
 
 export default {
-  sendContactMessage,
+  getAccountInfo,
 };

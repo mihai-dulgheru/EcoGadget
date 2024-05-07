@@ -1,9 +1,8 @@
-import axios from 'axios';
+import { Axios } from '../utils/Axios';
 
 const getRecyclingInfo = async () => {
   try {
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const response = await axios.get(`${apiUrl}/recycling-info`);
+    const response = await Axios.get('/recycling-info');
     return response.data;
   } catch (error) {
     if (error.response) {

@@ -1,10 +1,8 @@
-import axios from 'axios';
+import { Axios } from './Axios';
 
 async function authenticate(mode, email, password) {
   try {
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const url = `${apiUrl}/accounts/${mode}`;
-    const response = await axios.post(url, { email, password });
+    const response = await Axios.post(`/accounts/${mode}`, { email, password });
     const { idToken } = response.data;
     return idToken;
   } catch (error) {

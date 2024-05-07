@@ -56,7 +56,7 @@ const Input = forwardRef(
               style={styles.icon}
             >
               <Ionicons
-                color={theme.theme.colors.textPrimary}
+                color={theme.colors.textPrimary}
                 name={secureTextEntry ? 'eye-off' : 'eye'}
                 size={24}
               />

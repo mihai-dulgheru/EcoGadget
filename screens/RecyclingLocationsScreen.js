@@ -89,7 +89,9 @@ export default function RecyclingLocationsScreen({ navigation }) {
   if (status === 'error') {
     return (
       <View style={styles.container}>
-        <Text style={styles.error}>Error fetching locations</Text>
+        <Text style={styles.error}>
+          A apărut o eroare la încărcarea locațiilor
+        </Text>
       </View>
     );
   }

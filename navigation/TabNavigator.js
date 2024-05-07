@@ -6,6 +6,7 @@ import {
   RecyclingInfoDetailsScreen,
   RecyclingInfoScreen,
   RecyclingLocationsScreen,
+  UserAccountScreen,
 } from '../screens';
 
 function getTabIcon(route) {
@@ -75,23 +76,25 @@ export default function TabNavigator() {
       <Tab.Screen
         name="RecyclingInfoTab"
         component={RecyclingInfoStackNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: 'Reciclare' }}
       />
       <Tab.Screen
         name="RecyclingLocationsTab"
         component={RecyclingLocationsStackNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: 'Locații Reciclare' }}
       />
-      {/* <Tab.Screen
-          name="ApplianceManagement"
-          component={ApplianceManagementScreen}
-          options={{ title: 'Gestionare Electrocasnice' }}
-        />
-        <Tab.Screen
-          name="UserAccount"
-          component={UserAccountScreen}
-          options={{ title: 'Cont Utilizator' }}
-        /> */}
+      {/*
+      <Tab.Screen
+        name="ApplianceManagement"
+        component={ApplianceManagementScreen}
+        options={{ title: 'Gestionare Electrocasnice' }}
+      />
+      */}
+      <Tab.Screen
+        name="UserAccount"
+        component={UserAccountScreen}
+        options={{ title: 'Cont Utilizator' }}
+      />
     </Tab.Navigator>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import RecyclingInfoService from '../services/RecyclingInfoService';
 import theme from '../styles/theme';
+import { formatDate } from '../utils/DateUtils';
 
 export default function RecyclingInfoScreen({ navigation }) {
   const [recyclingInfo, setRecyclingInfo] = useState([]);
@@ -42,7 +43,9 @@ export default function RecyclingInfoScreen({ navigation }) {
   if (status === 'error') {
     return (
       <View style={styles.container}>
-        <Text style={styles.error}>Error fetching locations</Text>
+        <Text style={styles.error}>
+          A apărut o eroare la încărcarea informațiilor de reciclare
+        </Text>
       </View>
     );
   }
@@ -69,7 +72,7 @@ export default function RecyclingInfoScreen({ navigation }) {
             size={24}
             color={theme.colors.textSecondary}
           />
-          <Text>{item.date}</Text>
+          <Text>{formatDate(item.date)}</Text>
         </View>
         <View style={styles.row}>
           <Ionicons

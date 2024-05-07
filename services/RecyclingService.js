@@ -1,10 +1,9 @@
-import axios from 'axios';
+import { Axios } from '../utils/Axios';
 import { calculateDistance } from '../utils/GeoUtils';
 
 const getRecyclingLocations = async (coords) => {
   try {
-    const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const response = await axios.get(`${apiUrl}/recycling-locations`);
+    const response = await Axios.get('/recycling-locations');
     const locations = response.data;
 
     return locations.data

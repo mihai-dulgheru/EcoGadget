@@ -6,3 +6,4 @@ export { default as RecyclingInfoScreen } from './RecyclingInfoScreen';
 export { default as RecyclingLocationsScreen } from './RecyclingLocationsScreen';
 export { default as SignInScreen } from './SignInScreen';
 export { default as SignUpScreen } from './SignUpScreen';
+export { default as UserAccountScreen } from './UserAccountScreen';
