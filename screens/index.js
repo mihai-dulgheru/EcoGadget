@@ -1,3 +1,5 @@
+export { default as ApplianceEditScreen } from './ApplianceEditScreen';
+export { default as ApplianceManagementScreen } from './ApplianceManagementScreen';
 export { default as HomeScreen } from './HomeScreen';
 export { default as InfoScreen } from './InfoScreen';
 export { default as RecyclingCenterDetailsScreen } from './RecyclingCenterDetailsScreen';

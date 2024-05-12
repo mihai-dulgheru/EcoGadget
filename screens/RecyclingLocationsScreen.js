@@ -1,5 +1,5 @@
 import * as Location from 'expo-location';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -121,22 +121,21 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     backgroundColor: theme.colors.background,
-    borderRadius: theme.borderRadius.xl,
+    borderRadius: theme.borderRadius.md,
     elevation: 2,
     flexDirection: 'row',
     marginBottom: theme.spacing['6'],
     marginHorizontal: theme.spacing['6'],
-    padding: theme.spacing['6'],
+    overflow: 'hidden',
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
   locationImage: {
-    borderRadius: theme.borderRadius.xl,
-    height: theme.spacing['24'],
+    height: 'full',
     marginRight: theme.spacing['6'],
-    width: theme.spacing['24'],
+    width: theme.spacing['28'],
   },
   locationInfo: {
     flex: 1,
@@ -150,15 +149,16 @@ const styles = StyleSheet.create({
   locationAddress: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
-    marginBottom: theme.spacing['2'],
+    marginBottom: theme.spacing['1'],
   },
   locationSchedule: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
-    marginBottom: theme.spacing['2'],
+    marginBottom: theme.spacing['1'],
   },
   locationDistance: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
+    marginBottom: theme.spacing['1'],
   },
 });

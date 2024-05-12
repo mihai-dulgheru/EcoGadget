@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React, { forwardRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -17,6 +17,8 @@ const Input = forwardRef(
       isInvalid,
       keyboardType = 'default',
       label,
+      multiline,
+      numberOfLines,
       onChangeText,
       onFocus,
       onSubmitEditing,
@@ -40,6 +42,8 @@ const Input = forwardRef(
             autoFocus={autoFocus}
             blurOnSubmit={blurOnSubmit}
             keyboardType={keyboardType}
+            multiline={multiline}
+            numberOfLines={numberOfLines}
             onChangeText={onChangeText}
             onFocus={onFocus}
             onSubmitEditing={onSubmitEditing}
@@ -47,7 +51,11 @@ const Input = forwardRef(
             ref={ref}
             returnKeyType={returnKeyType}
             secureTextEntry={secureTextEntry}
-            style={[styles.input, isInvalid && styles.inputInvalid]}
+            style={[
+              styles.input,
+              isInvalid && styles.inputInvalid,
+              (!multiline || numberOfLines === 1) && styles.singleline,
+            ]}
             value={value}
           />
           {secure && (
@@ -93,8 +101,14 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     display: 'flex',
     flexDirection: 'row',
+    padding: theme.spacing['2'],
+    textAlignVertical: 'top',
+  },
+  singleline: {
     height: theme.spacing['10'],
     paddingHorizontal: theme.spacing['2'],
+    paddingVertical: theme.spacing['0'],
+    textAlignVertical: 'center',
   },
   inputInvalid: {
     borderColor: theme.colors.secondary,

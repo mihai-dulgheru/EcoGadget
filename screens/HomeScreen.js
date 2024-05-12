@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
