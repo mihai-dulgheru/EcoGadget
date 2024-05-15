@@ -84,7 +84,7 @@ function ApplianceManagementStackNavigator() {
   );
 }
 
-export default function TabNavigator() {
+export default function MainNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

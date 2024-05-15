@@ -43,7 +43,7 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
   }
 
   return (
-    <View style={styles.form}>
+    <View style={styles.container}>
       <View>
         <Input
           blurOnSubmit={false}
@@ -112,7 +112,7 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
             value={enteredConfirmPassword}
           />
         )}
-        <View style={styles.buttons}>
+        <View style={styles.buttonContainer}>
           <Button onPress={() => handleFormSubmit()}>
             {isLogin ? 'Autentificare' : 'Înregistrare'}
           </Button>
@@ -125,10 +125,10 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
 export default AuthForm;
 
 const styles = StyleSheet.create({
-  form: {
-    padding: theme.spacing['6'],
+  container: {
+    gap: theme.spacing['4'],
   },
-  buttons: {
+  buttonContainer: {
     marginTop: theme.spacing['4'],
   },
 });

@@ -5,7 +5,7 @@ import { AuthContext } from '../store/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
-export default function AuthenticationStack() {
+export default function AuthNavigation() {
   const auth = useContext(AuthContext);
 
   return (
@@ -14,16 +14,16 @@ export default function AuthenticationStack() {
         name="SignIn"
         component={SignInScreen}
         options={{
-          title: 'Autentificare',
           animationTypeForReplace: !auth.isSignedIn ? 'pop' : 'push',
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="SignUp"
         component={SignUpScreen}
         options={{
-          title: 'Înregistrare',
           animationTypeForReplace: !auth.isSignedIn ? 'pop' : 'push',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

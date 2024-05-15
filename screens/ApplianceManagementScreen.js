@@ -79,8 +79,8 @@ export default function ApplianceManagementScreen({ navigation }) {
               </Text>
               <View style={styles.button}>
                 <FlatButton
-                  onPress={() => handleDelete(item._id)}
                   extraStyles={{ buttonText: styles.buttonText }}
+                  onPress={() => handleDelete(item._id)}
                 >
                   Șterge
                 </FlatButton>

@@ -54,14 +54,20 @@ function AuthContent({ isLogin, onAuthenticate }) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
       <AuthForm
         credentialsInvalid={credentialsInvalid}
         isLogin={isLogin}
         onSubmit={(credentials) => submitHandler(credentials)}
       />
-      <View style={styles.buttons}>
-        <FlatButton onPress={() => switchAuthModeHandler()}>
+      <View style={styles.buttonContainer}>
+        <FlatButton
+          extraStyles={{ buttonText: styles.buttonText }}
+          onPress={() => switchAuthModeHandler()}
+        >
           {isLogin ? 'Creează un cont nou' : 'Autentifică-te'}
         </FlatButton>
       </View>
@@ -72,19 +78,20 @@ function AuthContent({ isLogin, onAuthenticate }) {
 export default AuthContent;
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  container: {
     backgroundColor: theme.colors.backgroundPrimary,
-    borderRadius: theme.borderRadius.lg,
-    elevation: 2,
-    marginHorizontal: theme.spacing['8'],
-    marginTop: theme.spacing['16'],
-    padding: theme.spacing['4'],
-    shadowColor: 'black',
-    shadowOffset: { height: 1, width: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    flex: 1,
   },
-  buttons: {
-    marginTop: theme.spacing['2'],
+  contentContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: theme.spacing['4'],
+  },
+  buttonContainer: {
+    marginTop: theme.spacing['4'],
+  },
+  buttonText: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
   },
 });

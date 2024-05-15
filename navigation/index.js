@@ -1,2 +1,2 @@
-export { default as AuthenticationStack } from './AuthenticationStack';
-export { default as TabNavigator } from './TabNavigator';
+export { default as AuthNavigation } from './AuthNavigation';
+export { default as MainNavigator } from './MainNavigator';
