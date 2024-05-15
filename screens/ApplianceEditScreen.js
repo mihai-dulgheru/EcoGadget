@@ -1,10 +1,15 @@
 import { isEmpty } from 'lodash';
 import { useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Button, Error, Input, Loading } from '../components/UI';
+import { Button, Error, Input, Loading, Select } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
+import {
+  DisposalOptions,
+  DisposalOptionsTranslations,
+  EfficiencyRatings,
+} from '../utils/Enums';
 
 export default function ApplianceEditScreen({ navigation, route }) {
   const defaultAppliance = {
@@ -14,8 +19,8 @@ export default function ApplianceEditScreen({ navigation, route }) {
     energyUsage: 300,
     CO2Emissions: 150,
     expectedLifespan: 10,
-    disposalOptions: 'Reciclare',
-    efficiencyRating: 'A++',
+    disposalOptions: DisposalOptions.RECYCLABLE,
+    efficiencyRating: EfficiencyRatings.A_PLUS_PLUS,
     materialComposition: {
       metal: 60,
       plastic: 30,
@@ -34,8 +39,6 @@ export default function ApplianceEditScreen({ navigation, route }) {
     energyUsage: useRef(null),
     CO2Emissions: useRef(null),
     expectedLifespan: useRef(null),
-    disposalOptions: useRef(null),
-    efficiencyRating: useRef(null),
     metal: useRef(null),
     plastic: useRef(null),
     other: useRef(null),
@@ -201,7 +204,6 @@ export default function ApplianceEditScreen({ navigation, route }) {
           value={appliance.CO2Emissions?.toString()}
         />
         <Input
-          blurOnSubmit={false}
           errorText={errors.expectedLifespan}
           isInvalid={!!errors.expectedLifespan}
           keyboardType="numeric"
@@ -209,39 +211,35 @@ export default function ApplianceEditScreen({ navigation, route }) {
           onChangeText={(text) =>
             setAppliance({ ...appliance, expectedLifespan: text })
           }
-          onSubmitEditing={() => inputRefs.disposalOptions.current.focus()}
           placeholder="Introduceți durata de viață estimată"
           ref={inputRefs.expectedLifespan}
-          returnKeyType="next"
           value={appliance.expectedLifespan?.toString()}
         />
-        <Input
-          blurOnSubmit={false}
+        <Select
+          label="Opțiuni de eliminare"
+          selectedValue={appliance.disposalOptions}
+          onValueChange={(value) =>
+            setAppliance({ ...appliance, disposalOptions: value })
+          }
+          items={Object.keys(DisposalOptions).map((key) => ({
+            label: DisposalOptionsTranslations[key],
+            value: DisposalOptions[key],
+          }))}
           errorText={errors.disposalOptions}
           isInvalid={!!errors.disposalOptions}
-          label="Opțiuni de eliminare"
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, disposalOptions: text })
-          }
-          onSubmitEditing={() => inputRefs.efficiencyRating.current.focus()}
-          placeholder="Introduceți opțiunile de eliminare"
-          ref={inputRefs.disposalOptions}
-          returnKeyType="next"
-          value={appliance.disposalOptions}
         />
-        <Input
-          blurOnSubmit={false}
+        <Select
+          label="Rating de eficiență"
+          selectedValue={appliance.efficiencyRating}
+          onValueChange={(value) =>
+            setAppliance({ ...appliance, efficiencyRating: value })
+          }
+          items={Object.values(EfficiencyRatings).map((rating) => ({
+            label: rating,
+            value: rating,
+          }))}
           errorText={errors.efficiencyRating}
           isInvalid={!!errors.efficiencyRating}
-          label="Rating de eficiență"
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, efficiencyRating: text })
-          }
-          onSubmitEditing={() => inputRefs.metal.current.focus()}
-          placeholder="Introduceți ratingul de eficiență"
-          ref={inputRefs.efficiencyRating}
-          returnKeyType="next"
-          value={appliance.efficiencyRating}
         />
       </View>
       <View>

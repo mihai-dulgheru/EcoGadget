@@ -32,7 +32,7 @@ const Input = forwardRef(
     const [secureTextEntry, setSecureTextEntry] = useState(secure);
 
     return (
-      <View style={styles.inputContainer}>
+      <View style={styles.container}>
         <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
           {label}
         </Text>
@@ -78,18 +78,20 @@ const Input = forwardRef(
 export default Input;
 
 const styles = StyleSheet.create({
-  inputContainer: {
+  container: {
     marginVertical: theme.spacing['2'],
   },
   label: {
     marginBottom: theme.spacing['2'],
+    color: theme.colors.textPrimary,
+    ...theme.fontSize.sm,
   },
   labelInvalid: {
-    color: theme.colors.danger,
+    color: theme.colors.error,
   },
   inputSection: {
     backgroundColor: theme.colors.backgroundPrimary,
-    borderColor: theme.colors.textSecondary,
+    borderColor: theme.colors.border,
     borderRadius: theme.borderRadius.default,
     borderWidth: theme.borderWidth.default,
     overflow: 'hidden',
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   inputInvalid: {
-    borderColor: theme.colors.danger,
+    borderColor: theme.colors.error,
   },
   icon: {
     alignItems: 'center',

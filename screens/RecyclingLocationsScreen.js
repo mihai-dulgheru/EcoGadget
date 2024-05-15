@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   error: {
-    color: theme.colors.danger,
+    color: theme.colors.error,
   },
   listContainer: {
     backgroundColor: theme.colors.backgroundPrimary,

@@ -6,3 +6,4 @@ export { default as Input } from './Input';
 export { default as Loading } from './Loading';
 export { default as LoadingOverlay } from './LoadingOverlay';
 export { default as Pill } from './Pill';
+export { default as Select } from './Select';

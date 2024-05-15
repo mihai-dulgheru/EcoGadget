@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     gap: theme.spacing['4'],
   },
   input: {
-    borderColor: theme.colors.textPrimary,
+    borderColor: theme.colors.border,
     borderRadius: theme.borderRadius.md,
     borderWidth: theme.borderWidth.default,
     padding: theme.spacing['4'],
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   errorText: {
-    color: theme.colors.danger,
+    color: theme.colors.error,
   },
 });
 

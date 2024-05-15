@@ -20,7 +20,8 @@ const theme = {
   colors: {
     backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#F0F0F0',
-    danger: '#AE132B',
+    border: '#CFCFD4',
+    error: '#AE132B',
     primary: '#78DE00',
     secondary: '#E1F2CD',
     textPrimary: '#030303',

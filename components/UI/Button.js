@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   secondary: {
     backgroundColor: theme.colors.secondary,
   },
-  danger: {
-    backgroundColor: theme.colors.danger,
+  error: {
+    backgroundColor: theme.colors.error,
   },
 });

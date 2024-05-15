@@ -29,6 +29,9 @@ export default {
   web: {
     favicon: './assets/favicon.png',
   },
+  extra: {
+    supportsRTL: true,
+  },
   plugins: [
     [
       'expo-location',
@@ -37,5 +40,6 @@ export default {
           'Allow $(PRODUCT_NAME) to use your location.',
       },
     ],
+    'expo-localization',
   ],
 };

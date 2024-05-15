@@ -79,7 +79,7 @@ export default function UserAccountScreen() {
           <Text style={styles.value}>{accountInfo.phone}</Text>
         </View>
       </View>
-      <Button color="danger" onPress={handleLogout}>
+      <Button color="error" onPress={handleLogout}>
         Deconectare
       </Button>
     </View>

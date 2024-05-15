@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
-    borderWidth: theme.spacing.px,
+    borderWidth: theme.borderWidth.default,
     bottom: theme.spacing['4'],
     height: theme.spacing['14'],
     justifyContent: 'center',
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     ...theme.fontSize.sm,
-    color: theme.colors.danger,
+    color: theme.colors.error,
     textAlign: 'center',
   },
 });
