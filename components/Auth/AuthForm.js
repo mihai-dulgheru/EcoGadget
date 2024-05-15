@@ -49,7 +49,7 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
           blurOnSubmit={false}
           isInvalid={credentialsInvalid.email}
           keyboardType="email-address"
-          label="Adresă Email"
+          label="Adresă email"
           onChangeText={(value) => handleInputValueUpdate('email', value)}
           onSubmitEditing={() => {
             if (!isLogin) {
@@ -58,7 +58,7 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
               inputPasswordRef.current.focus();
             }
           }}
-          placeholder="Adresă Email"
+          placeholder="Adresă email"
           ref={inputEmailRef}
           returnKeyType="next"
           value={enteredEmail}
@@ -68,12 +68,12 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
             blurOnSubmit={false}
             isInvalid={credentialsInvalid.confirmEmail}
             keyboardType="email-address"
-            label="Confirmă Email"
+            label="Confirmă email"
             onChangeText={(value) => {
               handleInputValueUpdate('confirmEmail', value);
             }}
             onSubmitEditing={() => inputPasswordRef.current.focus()}
-            placeholder="Confirmă Email"
+            placeholder="Confirmă email"
             ref={inputConfirmEmailRef}
             returnKeyType="next"
             value={enteredConfirmEmail}
@@ -100,12 +100,12 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
         {!isLogin && (
           <Input
             isInvalid={credentialsInvalid.confirmPassword}
-            label="Confirmă Parola"
+            label="Confirmă parola"
             onChangeText={(value) => {
               handleInputValueUpdate('confirmPassword', value);
             }}
             onSubmitEditing={() => handleFormSubmit()}
-            placeholder="Confirmă Parola"
+            placeholder="Confirmă parola"
             ref={inputConfirmPasswordRef}
             returnKeyType="done"
             secure
