@@ -1,14 +1,16 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
-function FlatButton({ children, onPress }) {
+function FlatButton({ children, extraStyles, onPress }) {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
       onPress={onPress}
     >
       <View>
-        <Text style={styles.buttonText}>{children}</Text>
+        <Text style={[styles.buttonText, extraStyles?.buttonText]}>
+          {children}
+        </Text>
       </View>
     </Pressable>
   );

@@ -1,11 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
-function Button({ children, onPress }) {
+function Button({ children, color = 'primary', onPress }) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        styles[color],
+        pressed && styles.pressed,
+      ]}
     >
       <View>
         <Text style={styles.buttonText}>{children}</Text>
@@ -18,7 +22,6 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: theme.colors.primary,
     borderRadius: theme.borderRadius.md,
     elevation: 2,
     paddingHorizontal: theme.spacing['4'],
@@ -36,5 +39,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  primary: {
+    backgroundColor: theme.colors.primary,
+  },
+  secondary: {
+    backgroundColor: theme.colors.secondary,
+  },
+  danger: {
+    backgroundColor: theme.colors.danger,
   },
 });

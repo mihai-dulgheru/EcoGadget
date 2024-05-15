@@ -44,7 +44,7 @@ function RecyclingInfoStackNavigator() {
       <Stack.Screen
         name="RecyclingInfoDetails"
         component={RecyclingInfoDetailsScreen}
-        options={{ title: 'Detalii Reciclare' }}
+        options={{ title: 'Detalii reciclare' }}
       />
     </Stack.Navigator>
   );
@@ -56,12 +56,12 @@ function RecyclingLocationsStackNavigator() {
       <Stack.Screen
         name="RecyclingLocations"
         component={RecyclingLocationsScreen}
-        options={{ title: 'Locații Reciclare' }}
+        options={{ title: 'Locații reciclare' }}
       />
       <Stack.Screen
         name="RecyclingCenterDetails"
         component={RecyclingCenterDetailsScreen}
-        options={{ title: 'Detalii Centru de Reciclare' }}
+        options={{ title: 'Detalii centru de reciclare' }}
       />
     </Stack.Navigator>
   );
@@ -73,7 +73,7 @@ function ApplianceManagementStackNavigator() {
       <Stack.Screen
         name="ApplianceManagement"
         component={ApplianceManagementScreen}
-        options={{ title: 'Gestionare Electrocasnice' }}
+        options={{ title: 'Gestionare electrocasnice' }}
       />
       <Stack.Screen
         name="ApplianceEdit"
@@ -101,17 +101,17 @@ export default function TabNavigator() {
       <Tab.Screen
         name="RecyclingLocationsTab"
         component={RecyclingLocationsStackNavigator}
-        options={{ headerShown: false, title: 'Locații Reciclare' }}
+        options={{ headerShown: false, title: 'Locații reciclare' }}
       />
       <Tab.Screen
         name="ApplianceManagementTab"
         component={ApplianceManagementStackNavigator}
-        options={{ headerShown: false, title: 'Gestionare Electrocasnice' }}
+        options={{ headerShown: false, title: 'Gestionare electrocasnice' }}
       />
       <Tab.Screen
         name="UserAccount"
         component={UserAccountScreen}
-        options={{ title: 'Cont Utilizator' }}
+        options={{ title: 'Cont utilizator' }}
       />
     </Tab.Navigator>
   );

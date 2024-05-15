@@ -88,10 +88,10 @@ export default function RecyclingInfoScreen({ navigation }) {
 
   return (
     <FlatList
-      data={recyclingInfo}
-      renderItem={renderRecyclingInfo}
-      keyExtractor={(item) => item._id.toString()}
       contentContainerStyle={styles.listContainer}
+      data={recyclingInfo}
+      keyExtractor={(item) => item._id.toString()}
+      renderItem={renderRecyclingInfo}
     />
   );
 }

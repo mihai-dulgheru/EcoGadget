@@ -4,10 +4,10 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { FlatButton, IconButton } from '../components/UI';
+import { FlatButton, IconButton, Pill } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
@@ -61,23 +61,32 @@ export default function ApplianceManagementScreen({ navigation }) {
         />
       </View>
       <FlatList
+        contentContainerStyle={styles.listContainer}
         data={appliances}
         keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handleEdit(item)}>
+          <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
             <View style={styles.item}>
-              <Text style={styles.title}>
-                {`${item.name} - ${item.efficiencyRating}`}
+              <View style={styles.row}>
+                <Text style={styles.title}>{item.name}</Text>
+                <Pill color="green">{item.efficiencyRating}</Pill>
+              </View>
+              <Text style={styles.text}>
+                {`Consum de energie: ${item.energyUsage} kWh/an`}
               </Text>
-              <Text>{`Consum de energie: ${item.energyUsage} kWh/an`}</Text>
-              <Text>{`Emisii CO2: ${item.CO2Emissions} kg/an`}</Text>
+              <Text style={styles.text}>
+                {`Emisii CO2: ${item.CO2Emissions} kg/an`}
+              </Text>
               <View style={styles.button}>
-                <FlatButton onPress={() => handleDelete(item._id)}>
+                <FlatButton
+                  onPress={() => handleDelete(item._id)}
+                  extraStyles={{ buttonText: styles.buttonText }}
+                >
                   Șterge
                 </FlatButton>
               </View>
             </View>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         )}
       />
     </View>
@@ -87,42 +96,51 @@ export default function ApplianceManagementScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: theme.spacing['2'],
-    paddingTop: theme.spacing['4'],
   },
   addButton: {
     backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     borderWidth: theme.spacing.px,
-    bottom: theme.spacing['2'],
-    marginBottom: theme.spacing['2'],
-    marginEnd: theme.spacing['2'],
+    bottom: theme.spacing['4'],
     padding: theme.spacing['1'],
     position: 'absolute',
-    right: theme.spacing['2'],
+    right: theme.spacing['4'],
+    zIndex: 1,
+  },
+  listContainer: {
+    backgroundColor: theme.colors.backgroundPrimary,
+    flexGrow: 1,
+    gap: theme.spacing['4'],
+    padding: theme.spacing['4'],
   },
   item: {
-    backgroundColor: '#f9f9f9',
-    borderRadius: theme.borderRadius.md,
-    elevation: 2,
-    margin: theme.spacing['2'],
-    padding: theme.spacing['4'],
-    shadowColor: 'black',
-    shadowOffset: { height: 1, width: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.lg,
+    gap: theme.spacing['2'],
+    padding: theme.spacing['2'],
+  },
+  row: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   title: {
     ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
+  text: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
+  },
   button: {
-    borderColor: theme.colors.primary,
-    borderRadius: theme.borderRadius.full,
-    borderWidth: theme.spacing.px,
-    marginTop: theme.spacing['2'],
     paddingHorizontal: theme.spacing['1'],
     paddingVertical: theme.spacing['0.5'],
+  },
+  buttonText: {
+    ...theme.fontSize.sm,
+    color: theme.colors.danger,
+    textAlign: 'center',
   },
 });
