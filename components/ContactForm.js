@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   errorText: {
-    color: theme.colors.secondary,
+    color: theme.colors.danger,
   },
 });
 

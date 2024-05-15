@@ -36,7 +36,7 @@ const Input = forwardRef(
         <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
           {label}
         </Text>
-        <View style={styles.inputSection}>
+        <View style={[styles.inputSection, isInvalid && styles.inputInvalid]}>
           <TextInput
             autoCapitalize="none"
             autoFocus={autoFocus}
@@ -53,7 +53,6 @@ const Input = forwardRef(
             secureTextEntry={secureTextEntry}
             style={[
               styles.input,
-              isInvalid && styles.inputInvalid,
               (!multiline || numberOfLines === 1) && styles.singleline,
             ]}
             value={value}
@@ -86,11 +85,11 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing['2'],
   },
   labelInvalid: {
-    color: theme.colors.secondary,
+    color: theme.colors.danger,
   },
   inputSection: {
     backgroundColor: theme.colors.backgroundPrimary,
-    borderColor: 'gray',
+    borderColor: theme.colors.textSecondary,
     borderRadius: theme.borderRadius.default,
     borderWidth: theme.borderWidth.default,
     overflow: 'hidden',
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   inputInvalid: {
-    borderColor: theme.colors.secondary,
+    borderColor: theme.colors.danger,
   },
   icon: {
     alignItems: 'center',

@@ -4,42 +4,25 @@ import theme from '../../styles/theme';
 import { Button, Input } from '../UI';
 
 function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
-  const inputEmailRef = useRef(null);
-  const inputConfirmEmailRef = useRef(null);
-  const inputPasswordRef = useRef(null);
-  const inputConfirmPasswordRef = useRef(null);
+  const [user, setUser] = useState({
+    email: '',
+    confirmEmail: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const inputRefs = {
+    email: useRef(null),
+    confirmEmail: useRef(null),
+    password: useRef(null),
+    confirmPassword: useRef(null),
+  };
 
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
-
-  function handleInputValueUpdate(inputField, updatedValue) {
-    switch (inputField) {
-      case 'email':
-        setEnteredEmail(updatedValue);
-        break;
-      case 'confirmEmail':
-        setEnteredConfirmEmail(updatedValue);
-        break;
-      case 'password':
-        setEnteredPassword(updatedValue);
-        break;
-      case 'confirmPassword':
-        setEnteredConfirmPassword(updatedValue);
-        break;
-      default:
-        break;
-    }
+  function handleChange(fieldName, value) {
+    setUser((prevState) => ({ ...prevState, [fieldName]: value }));
   }
 
   function handleFormSubmit() {
-    onSubmit({
-      email: enteredEmail,
-      confirmEmail: enteredConfirmEmail,
-      password: enteredPassword,
-      confirmPassword: enteredConfirmPassword,
-    });
+    onSubmit(user);
   }
 
   return (
@@ -50,18 +33,18 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
           isInvalid={credentialsInvalid.email}
           keyboardType="email-address"
           label="Adresă email"
-          onChangeText={(value) => handleInputValueUpdate('email', value)}
+          onChangeText={(value) => handleChange('email', value)}
           onSubmitEditing={() => {
             if (!isLogin) {
-              inputConfirmEmailRef.current.focus();
+              inputRefs.confirmEmail.current.focus();
             } else {
-              inputPasswordRef.current.focus();
+              inputRefs.password.current.focus();
             }
           }}
           placeholder="Adresă email"
-          ref={inputEmailRef}
+          ref={inputRefs.email}
           returnKeyType="next"
-          value={enteredEmail}
+          value={user.email}
         />
         {!isLogin && (
           <Input
@@ -70,46 +53,46 @@ function AuthForm({ credentialsInvalid, isLogin, onSubmit }) {
             keyboardType="email-address"
             label="Confirmă email"
             onChangeText={(value) => {
-              handleInputValueUpdate('confirmEmail', value);
+              handleChange('confirmEmail', value);
             }}
-            onSubmitEditing={() => inputPasswordRef.current.focus()}
+            onSubmitEditing={() => inputRefs.password.current.focus()}
             placeholder="Confirmă email"
-            ref={inputConfirmEmailRef}
+            ref={inputRefs.confirmEmail}
             returnKeyType="next"
-            value={enteredConfirmEmail}
+            value={user.confirmEmail}
           />
         )}
         <Input
           blurOnSubmit={!!isLogin}
           isInvalid={credentialsInvalid.password}
           label="Parolă"
-          onChangeText={(value) => handleInputValueUpdate('password', value)}
+          onChangeText={(value) => handleChange('password', value)}
           onSubmitEditing={() => {
             if (!isLogin) {
-              inputConfirmPasswordRef.current.focus();
+              inputRefs.confirmPassword.current.focus();
             } else {
               handleFormSubmit();
             }
           }}
           placeholder="Parolă"
-          ref={inputPasswordRef}
+          ref={inputRefs.password}
           returnKeyType={isLogin ? 'done' : 'next'}
           secure
-          value={enteredPassword}
+          value={user.password}
         />
         {!isLogin && (
           <Input
             isInvalid={credentialsInvalid.confirmPassword}
             label="Confirmă parola"
             onChangeText={(value) => {
-              handleInputValueUpdate('confirmPassword', value);
+              handleChange('confirmPassword', value);
             }}
             onSubmitEditing={() => handleFormSubmit()}
             placeholder="Confirmă parola"
-            ref={inputConfirmPasswordRef}
+            ref={inputRefs.confirmPassword}
             returnKeyType="done"
             secure
-            value={enteredConfirmPassword}
+            value={user.confirmPassword}
           />
         )}
         <View style={styles.buttonContainer}>

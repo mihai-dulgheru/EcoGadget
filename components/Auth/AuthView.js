@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import theme from '../../styles/theme';
@@ -23,7 +24,7 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
     }
   }
 
-  function submitHandler(credentials) {
+  function validateCredentials(credentials) {
     let { email, confirmEmail, password, confirmPassword } = credentials;
 
     email = email.trim();
@@ -41,15 +42,25 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
       !passwordIsValid ||
       (!isSigningIn && (!emailsAreEqual || !passwordsAreEqual))
     ) {
-      Alert.alert('Date invalide', 'Verificați datele introduse.');
-      setCredentialsInvalid({
+      return {
         email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
         password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
-      });
+        confirmEmail: !emailsAreEqual,
+        confirmPassword: !passwordsAreEqual,
+      };
+    }
+
+    return {};
+  }
+
+  function submitHandler(credentials) {
+    const invalidCredentials = validateCredentials(credentials);
+    if (!isEmpty(invalidCredentials)) {
+      Alert.alert('Date invalide', 'Verificați datele introduse.');
+      setCredentialsInvalid(invalidCredentials);
       return;
     }
+    const { email, password } = credentials;
     onAuthenticate({ email, password });
   }
 
