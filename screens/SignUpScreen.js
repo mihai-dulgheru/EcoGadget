@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Alert } from 'react-native';
-import { AuthContent } from '../components/Auth';
+import { AuthView } from '../components/Auth';
 import { LoadingOverlay } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
 import { signUp } from '../utils/Auth';
@@ -25,6 +25,9 @@ export default function SignUpScreen() {
   }
 
   return (
-    <AuthContent onAuthenticate={(credentials) => handleSignUp(credentials)} />
+    <AuthView
+      authType="signUp"
+      onAuthenticate={(credentials) => handleSignUp(credentials)}
+    />
   );
 }

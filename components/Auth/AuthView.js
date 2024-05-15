@@ -1,22 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import theme from '../../styles/theme';
 import { FlatButton } from '../UI';
 import AuthForm from './AuthForm';
 
-function AuthContent({ isLogin, onAuthenticate }) {
-  const navigation = useNavigation();
-
+function AuthView({ authType = 'signIn', onAuthenticate }) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
     confirmEmail: false,
     confirmPassword: false,
   });
+  const isSigningIn = useMemo(() => authType === 'signIn', [authType]);
+  const navigation = useNavigation();
 
   function switchAuthModeHandler() {
-    if (isLogin) {
+    if (isSigningIn) {
       navigation.replace('SignUp');
     } else {
       navigation.replace('SignIn');
@@ -39,7 +39,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
     if (
       !emailIsValid ||
       !passwordIsValid ||
-      (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
+      (!isSigningIn && (!emailsAreEqual || !passwordsAreEqual))
     ) {
       Alert.alert('Date invalide', 'Verificați datele introduse.');
       setCredentialsInvalid({
@@ -60,7 +60,7 @@ function AuthContent({ isLogin, onAuthenticate }) {
     >
       <AuthForm
         credentialsInvalid={credentialsInvalid}
-        isLogin={isLogin}
+        isLogin={isSigningIn}
         onSubmit={(credentials) => submitHandler(credentials)}
       />
       <View style={styles.buttonContainer}>
@@ -68,14 +68,14 @@ function AuthContent({ isLogin, onAuthenticate }) {
           extraStyles={{ buttonText: styles.buttonText }}
           onPress={() => switchAuthModeHandler()}
         >
-          {isLogin ? 'Creează un cont nou' : 'Autentifică-te'}
+          {isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
         </FlatButton>
       </View>
     </ScrollView>
   );
 }
 
-export default AuthContent;
+export default AuthView;
 
 const styles = StyleSheet.create({
   container: {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: theme.spacing['4'],
+    padding: theme.spacing['8'],
   },
   buttonContainer: {
     marginTop: theme.spacing['4'],

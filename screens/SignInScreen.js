@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Alert } from 'react-native';
-import { AuthContent } from '../components/Auth';
+import { AuthView } from '../components/Auth';
 import { LoadingOverlay } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
 import { signInWithPassword } from '../utils/Auth';
@@ -25,8 +25,8 @@ export default function SignInScreen() {
   }
 
   return (
-    <AuthContent
-      isLogin
+    <AuthView
+      authType="signIn"
       onAuthenticate={(credentials) => handleSignIn(credentials)}
     />
   );

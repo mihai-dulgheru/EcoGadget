@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
+    ...theme.fontSize.base,
     color: theme.colors.primary,
     textAlign: 'center',
   },
