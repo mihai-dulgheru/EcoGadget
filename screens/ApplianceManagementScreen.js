@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.spacing['4'],
   },
   addButton: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     borderWidth: theme.spacing.px,

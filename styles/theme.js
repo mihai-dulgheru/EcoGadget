@@ -18,7 +18,7 @@ const theme = {
     default: 1,
   },
   colors: {
-    background: '#FFFFFF',
+    backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#F0F0F0',
     primary: '#78DE00',
     secondary: '#E1F2CD',

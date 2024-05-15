@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.spacing['6'],
   },
   locationContainer: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.backgroundPrimary,
     borderRadius: theme.borderRadius.md,
     elevation: 2,
     flexDirection: 'row',

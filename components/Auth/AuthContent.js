@@ -73,7 +73,7 @@ export default AuthContent;
 
 const styles = StyleSheet.create({
   contentContainer: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.backgroundPrimary,
     borderRadius: theme.borderRadius.lg,
     elevation: 2,
     marginHorizontal: theme.spacing['8'],

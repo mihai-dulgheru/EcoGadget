@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary,
   },
   inputSection: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.backgroundPrimary,
     borderColor: 'gray',
     borderRadius: theme.borderRadius.default,
     borderWidth: theme.borderWidth.default,
