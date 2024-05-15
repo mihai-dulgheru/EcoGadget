@@ -30,9 +30,9 @@ const deleteAppliance = async (id) => {
   }
 };
 
-const getAppliances = async () => {
+const getAppliances = async (AxiosAuth) => {
   try {
-    const response = await Axios.get('/appliances');
+    const response = await AxiosAuth.get('/appliances');
     return response.data;
   } catch (error) {
     if (error.response) {

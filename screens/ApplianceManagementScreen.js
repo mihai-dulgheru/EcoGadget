@@ -10,16 +10,18 @@ import {
 import { FlatButton, IconButton } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import theme from '../styles/theme';
+import { useAxiosAuth } from '../utils/Axios';
 
 export default function ApplianceManagementScreen({ navigation }) {
   const [appliances, setAppliances] = useState([]);
+  const AxiosAuth = useAxiosAuth();
 
   useEffect(() => {
     fetchAppliances();
   }, []);
 
   const fetchAppliances = async () => {
-    const { data } = await ApplianceService.getAppliances();
+    const data = await ApplianceService.getAppliances(AxiosAuth);
     setAppliances(data);
   };
 
@@ -89,13 +91,16 @@ const styles = StyleSheet.create({
     paddingTop: theme.spacing['4'],
   },
   addButton: {
-    alignSelf: 'flex-end',
+    backgroundColor: theme.colors.background,
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     borderWidth: theme.spacing.px,
-    marginBottom: theme.spacing['4'],
+    bottom: theme.spacing['2'],
+    marginBottom: theme.spacing['2'],
     marginEnd: theme.spacing['2'],
     padding: theme.spacing['1'],
+    position: 'absolute',
+    right: theme.spacing['2'],
   },
   item: {
     backgroundColor: '#f9f9f9',

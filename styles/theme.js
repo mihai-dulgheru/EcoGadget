@@ -18,11 +18,12 @@ const theme = {
     default: 1,
   },
   colors: {
-    background: '#ffffff',
-    primary: '#4a148c',
-    secondary: '#ff6f00',
-    textPrimary: '#333333',
-    textSecondary: '#666666',
+    background: '#FFFFFF',
+    backgroundSecondary: '#F0F0F0',
+    primary: '#78DE00',
+    secondary: '#E1F2CD',
+    textPrimary: '#030303',
+    textSecondary: '#70706E',
   },
   fontSize: {
     xs: {

@@ -21,6 +21,7 @@ export default function UserAccountScreen() {
       } catch (error) {
         console.error('Error fetching account info:', error);
         setStatus('error');
+        await auth.signOut();
       }
     };
 

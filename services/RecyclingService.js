@@ -4,9 +4,7 @@ import { calculateDistance } from '../utils/GeoUtils';
 const getRecyclingLocations = async (coords) => {
   try {
     const response = await Axios.get('/recycling-locations');
-    const locations = response.data;
-
-    return locations.data
+    return response.data
       .map((location) => ({
         ...location,
         distance: calculateDistance(

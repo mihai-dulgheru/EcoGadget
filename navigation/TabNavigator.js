@@ -10,6 +10,7 @@ import {
   RecyclingLocationsScreen,
   UserAccountScreen,
 } from '../screens';
+import theme from '../styles/theme';
 
 function getTabIcon(route) {
   return function ({ focused, color, size }) {
@@ -88,8 +89,8 @@ export default function TabNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: getTabIcon(route),
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textSecondary,
       })}
     >
       <Tab.Screen

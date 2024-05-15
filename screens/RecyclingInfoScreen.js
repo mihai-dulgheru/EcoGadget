@@ -20,7 +20,7 @@ export default function RecyclingInfoScreen({ navigation }) {
   useEffect(() => {
     const fetchRecyclingInfo = async () => {
       try {
-        const { data } = await RecyclingInfoService.getRecyclingInfo();
+        const data = await RecyclingInfoService.getRecyclingInfo();
         setRecyclingInfo(data);
         setStatus('success');
       } catch (error) {
