@@ -21,7 +21,7 @@ function getTabIcon(route) {
     } else if (route.name === 'RecyclingLocationsTab') {
       iconName = focused ? 'map' : 'map-outline';
     } else if (route.name === 'ApplianceManagementTab') {
-      iconName = focused ? 'build' : 'build-outline';
+      iconName = focused ? 'power' : 'power-outline';
     } else if (route.name === 'UserAccount') {
       iconName = focused ? 'person' : 'person-outline';
     }
@@ -39,7 +39,7 @@ function RecyclingInfoStackNavigator() {
       <Stack.Screen
         name="RecyclingInfo"
         component={RecyclingInfoScreen}
-        options={{ title: 'Reciclare' }}
+        options={{ title: 'Informații reciclare' }}
       />
       <Stack.Screen
         name="RecyclingInfoDetails"
@@ -96,22 +96,22 @@ export default function MainNavigator() {
       <Tab.Screen
         name="RecyclingInfoTab"
         component={RecyclingInfoStackNavigator}
-        options={{ headerShown: false, title: 'Reciclare' }}
+        options={{ headerShown: false, title: 'Informații' }}
       />
       <Tab.Screen
         name="RecyclingLocationsTab"
         component={RecyclingLocationsStackNavigator}
-        options={{ headerShown: false, title: 'Locații reciclare' }}
+        options={{ headerShown: false, title: 'Locații' }}
       />
       <Tab.Screen
         name="ApplianceManagementTab"
         component={ApplianceManagementStackNavigator}
-        options={{ headerShown: false, title: 'Gestionare electrocasnice' }}
+        options={{ headerShown: false, title: 'Electrocasnice' }}
       />
       <Tab.Screen
         name="UserAccount"
         component={UserAccountScreen}
-        options={{ title: 'Cont utilizator' }}
+        options={{ title: 'Cont' }}
       />
     </Tab.Navigator>
   );

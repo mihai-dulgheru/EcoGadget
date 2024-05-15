@@ -1,8 +1,6 @@
-import { Axios } from '../utils/Axios';
-
-const addAppliance = async (applianceData) => {
+async function addAppliance(AxiosAuth, applianceData) {
   try {
-    const response = await Axios.post('/appliances', applianceData);
+    const response = await AxiosAuth.post('/appliances', applianceData);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -13,11 +11,11 @@ const addAppliance = async (applianceData) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
-const deleteAppliance = async (id) => {
+async function deleteAppliance(AxiosAuth, id) {
   try {
-    const response = await Axios.delete(`/appliances/${id}`);
+    const response = await AxiosAuth.delete(`/appliances/${id}`);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -28,9 +26,9 @@ const deleteAppliance = async (id) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
-const getAppliances = async (AxiosAuth) => {
+async function getAppliances(AxiosAuth) {
   try {
     const response = await AxiosAuth.get('/appliances');
     return response.data;
@@ -43,11 +41,11 @@ const getAppliances = async (AxiosAuth) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
-const updateAppliance = async (id, applianceData) => {
+async function updateAppliance(AxiosAuth, id, applianceData) {
   try {
-    const response = await Axios.put(`/appliances/${id}`, applianceData);
+    const response = await AxiosAuth.put(`/appliances/${id}`, applianceData);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -58,7 +56,7 @@ const updateAppliance = async (id, applianceData) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
 export default {
   addAppliance,

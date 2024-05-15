@@ -1,6 +1,6 @@
 import { Axios } from '../utils/Axios';
 
-const sendContactMessage = async (data) => {
+async function sendContactMessage(data) {
   try {
     const response = await Axios.post('/messages', data);
     return response.data;
@@ -13,7 +13,7 @@ const sendContactMessage = async (data) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
 export default {
   sendContactMessage,

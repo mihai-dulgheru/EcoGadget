@@ -1,30 +1,32 @@
+import { isEmpty } from 'lodash';
 import { useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Button, Input } from '../components/UI';
+import { Button, Error, Input, Loading } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import theme from '../styles/theme';
+import { useAxiosAuth } from '../utils/Axios';
 
 export default function ApplianceEditScreen({ navigation, route }) {
+  const defaultAppliance = {
+    name: 'Congelator',
+    description: 'Congelator cu 3 sertare',
+    productionYear: 2018,
+    energyUsage: 300,
+    CO2Emissions: 150,
+    expectedLifespan: 10,
+    disposalOptions: 'Reciclare',
+    efficiencyRating: 'A++',
+    materialComposition: {
+      metal: 60,
+      plastic: 30,
+      other: 10,
+    },
+  };
   const [appliance, setAppliance] = useState(
-    route.params.appliance || {
-      name: '',
-      description: '',
-      productionYear: '',
-      energyUsage: '',
-      CO2Emissions: '',
-      expectedLifespan: '',
-      disposalOptions: '',
-      efficiencyRating: '',
-      materialComposition: {
-        metal: '',
-        plastic: '',
-        other: '',
-      },
-    }
+    !isEmpty(route.params.appliance) ? route.params.appliance : defaultAppliance
   );
-
   const [errors, setErrors] = useState({});
-
+  const [status, setStatus] = useState('idle');
   const inputRefs = {
     name: useRef(null),
     description: useRef(null),
@@ -38,6 +40,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
     plastic: useRef(null),
     other: useRef(null),
   };
+  const AxiosAuth = useAxiosAuth();
 
   const validateInputs = () => {
     const newErrors = {};
@@ -74,10 +77,8 @@ export default function ApplianceEditScreen({ navigation, route }) {
     if (!appliance.materialComposition?.other) {
       newErrors.other = 'Procentul altor materiale este obligatoriu.';
     }
-
     setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
+    return isEmpty(newErrors);
   };
 
   const handleSave = async () => {
@@ -89,13 +90,36 @@ export default function ApplianceEditScreen({ navigation, route }) {
       return;
     }
 
-    if (appliance._id) {
-      await ApplianceService.updateAppliance(appliance._id, appliance);
-    } else {
-      await ApplianceService.addAppliance(appliance);
+    try {
+      setStatus('loading');
+      if (appliance._id) {
+        await ApplianceService.updateAppliance(
+          AxiosAuth,
+          appliance._id,
+          appliance
+        );
+      } else {
+        await ApplianceService.addAppliance(AxiosAuth, appliance);
+      }
+      navigation.navigate('ApplianceManagement', { dataUpdatedAt: Date.now() });
+    } catch (error) {
+      console.error('Error saving appliance:', error);
+      Alert.alert(
+        'Eroare',
+        'A apărut o eroare la salvarea electrocasnicului. Vă rugăm să încercați din nou.',
+        [{ text: 'OK' }]
+      );
+      setStatus('error');
     }
-    navigation.goBack();
   };
+
+  if (status === 'loading') {
+    return <Loading />;
+  }
+
+  if (status === 'error') {
+    return <Error message="A apărut o eroare la salvarea electrocasnicului" />;
+  }
 
   return (
     <ScrollView
@@ -286,7 +310,9 @@ export default function ApplianceEditScreen({ navigation, route }) {
           value={appliance.materialComposition?.other?.toString()}
         />
       </View>
-      <Button onPress={handleSave}>Salvează electrocasnic</Button>
+      <View style={styles.buttonContainer}>
+        <Button onPress={handleSave}>Salvează electrocasnic</Button>
+      </View>
     </ScrollView>
   );
 }
@@ -304,5 +330,8 @@ const styles = StyleSheet.create({
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontWeight: 'bold',
+  },
+  buttonContainer: {
+    marginBottom: theme.spacing['2'],
   },
 });

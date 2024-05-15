@@ -6,6 +6,8 @@ import { ro } from 'date-fns/locale';
  * @param {*} date - date to format
  * @returns {string} - formatted date
  */
-const formatDate = (date) => format(date, 'd MMMM yyyy', { locale: ro });
+function formatDate(date) {
+  return format(date, 'd MMMM yyyy', { locale: ro });
+}
 
 export { formatDate };

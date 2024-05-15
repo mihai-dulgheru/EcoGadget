@@ -8,7 +8,7 @@
  * @param {number} lon2 Longitude of the second point.
  * @returns {number} The distance in kilometers between the two points.
  */
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
+function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Earth's radius in kilometers
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
@@ -21,6 +21,6 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = R * c;
   return distance;
-};
+}
 
 export { calculateDistance };

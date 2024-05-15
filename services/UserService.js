@@ -1,4 +1,4 @@
-const getAccountInfo = async (AxiosAuth) => {
+async function getAccountInfo(AxiosAuth) {
   try {
     const response = await AxiosAuth.get('/accounts/lookup');
     return response.data;
@@ -11,7 +11,7 @@ const getAccountInfo = async (AxiosAuth) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
 export default {
   getAccountInfo,

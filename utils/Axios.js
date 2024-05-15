@@ -9,7 +9,7 @@ const Axios = axios.create({
   },
 });
 
-const useAxiosAuth = () => {
+function useAxiosAuth() {
   const { token } = useContext(AuthContext);
 
   const AxiosAuth = axios.create({
@@ -21,6 +21,6 @@ const useAxiosAuth = () => {
   });
 
   return AxiosAuth;
-};
+}
 
 export { Axios, useAxiosAuth };

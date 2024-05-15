@@ -1,6 +1,6 @@
 import { Axios } from '../utils/Axios';
 
-const getRecyclingInfo = async () => {
+async function getRecyclingInfo() {
   try {
     const response = await Axios.get('/recycling-info');
     return response.data;
@@ -13,7 +13,7 @@ const getRecyclingInfo = async () => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
 export default {
   getRecyclingInfo,

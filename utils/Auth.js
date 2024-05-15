@@ -1,8 +1,8 @@
 import { Axios } from './Axios';
 
-async function authenticate(mode, email, password) {
+async function authenticateUser(type, userCredentials) {
   try {
-    const response = await Axios.post(`/accounts/${mode}`, { email, password });
+    const response = await Axios.post(`/accounts/${type}`, userCredentials);
     const { idToken } = response.data;
     return idToken;
   } catch (error) {
@@ -16,12 +16,12 @@ async function authenticate(mode, email, password) {
   }
 }
 
-function signUp(email, password) {
-  return authenticate('sign-up', email, password);
+function signUp(credentials) {
+  return authenticateUser('sign-up', credentials);
 }
 
-function signInWithPassword(email, password) {
-  return authenticate('sign-in-with-password', email, password);
+function signInWithPassword(credentials) {
+  return authenticateUser('sign-in-with-password', credentials);
 }
 
 export { signInWithPassword, signUp };

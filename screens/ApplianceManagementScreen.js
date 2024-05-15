@@ -7,23 +7,33 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { FlatButton, IconButton, Pill } from '../components/UI';
+import { ListEmptyComponent } from '../components';
+import { Error, FlatButton, IconButton, Loading, Pill } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function ApplianceManagementScreen({ navigation }) {
+export default function ApplianceManagementScreen({ navigation, route }) {
+  const { dataUpdatedAt } = route.params || {};
   const [appliances, setAppliances] = useState([]);
+  const [status, setStatus] = useState('loading');
   const AxiosAuth = useAxiosAuth();
+
+  async function fetchAppliances() {
+    try {
+      setStatus('loading');
+      const data = await ApplianceService.getAppliances(AxiosAuth);
+      setAppliances(data);
+      setStatus('success');
+    } catch (error) {
+      console.error('Error loading appliances:', error);
+      setStatus('error');
+    }
+  }
 
   useEffect(() => {
     fetchAppliances();
-  }, []);
-
-  const fetchAppliances = async () => {
-    const data = await ApplianceService.getAppliances(AxiosAuth);
-    setAppliances(data);
-  };
+  }, [dataUpdatedAt]);
 
   const handleAddButtonPress = () => {
     navigation.navigate('ApplianceEdit', { appliance: {} });
@@ -42,28 +52,46 @@ export default function ApplianceManagementScreen({ navigation }) {
         {
           text: 'Șterge',
           onPress: async () => {
-            await ApplianceService.deleteAppliance(id);
-            fetchAppliances();
+            try {
+              setStatus('loading');
+              await ApplianceService.deleteAppliance(AxiosAuth, id);
+              await fetchAppliances();
+              setStatus('success');
+            } catch (error) {
+              console.error('Error deleting appliance:', error);
+              setStatus('error');
+            }
           },
         },
       ]
     );
   };
 
+  if (status === 'loading') {
+    return <Loading />;
+  }
+
+  if (status === 'error') {
+    return (
+      <Error message="A apărut o eroare la încărcarea informațiilor despre aparate" />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.addButton}>
         <IconButton
-          color={theme.colors.primary}
+          color="white"
           icon="add"
           onPress={handleAddButtonPress}
-          size={24}
+          size={28}
         />
       </View>
       <FlatList
         contentContainerStyle={styles.listContainer}
         data={appliances}
         keyExtractor={(item) => item._id.toString()}
+        ListEmptyComponent={ListEmptyComponent}
         renderItem={({ item }) => (
           <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
             <View style={styles.item}>
@@ -98,14 +126,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    backgroundColor: theme.colors.backgroundPrimary,
+    alignItems: 'center',
+    backgroundColor: theme.colors.primary,
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     borderWidth: theme.spacing.px,
     bottom: theme.spacing['4'],
+    height: theme.spacing['14'],
+    justifyContent: 'center',
     padding: theme.spacing['1'],
     position: 'absolute',
     right: theme.spacing['4'],
+    width: theme.spacing['14'],
     zIndex: 1,
   },
   listContainer: {

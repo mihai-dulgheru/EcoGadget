@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { isEmpty } from 'lodash';
+import { isEmpty, pick, some } from 'lodash';
 import { useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import theme from '../../styles/theme';
@@ -8,10 +8,11 @@ import AuthForm from './AuthForm';
 
 function AuthView({ authType = 'signIn', onAuthenticate }) {
   const [credentialsInvalid, setCredentialsInvalid] = useState({
+    lastName: false,
+    firstName: false,
     email: false,
+    phone: false,
     password: false,
-    confirmEmail: false,
-    confirmPassword: false,
   });
   const isSigningIn = useMemo(() => authType === 'signIn', [authType]);
   const navigation = useNavigation();
@@ -25,32 +26,23 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
   }
 
   function validateCredentials(credentials) {
-    let { email, confirmEmail, password, confirmPassword } = credentials;
+    const { lastName, firstName, email, phone, password } = credentials;
 
-    email = email.trim();
-    confirmEmail = confirmEmail.trim();
-    password = password.trim();
-    confirmPassword = confirmPassword.trim();
+    const validationResults = {
+      lastName: lastName.length === 0,
+      firstName: firstName.length === 0,
+      email: !email.includes('@'),
+      phone: phone.length === 0,
+      password: password.length <= 6,
+    };
 
-    const emailIsValid = email.includes('@');
-    const passwordIsValid = password.length > 6;
-    const emailsAreEqual = email === confirmEmail;
-    const passwordsAreEqual = password === confirmPassword;
-
-    if (
-      !emailIsValid ||
-      !passwordIsValid ||
-      (!isSigningIn && (!emailsAreEqual || !passwordsAreEqual))
-    ) {
-      return {
-        email: !emailIsValid,
-        password: !passwordIsValid,
-        confirmEmail: !emailsAreEqual,
-        confirmPassword: !passwordsAreEqual,
-      };
+    if (isSigningIn) {
+      const filteredFields = pick(validationResults, ['email', 'password']);
+      return some(pick(validationResults, ['email', 'password']), Boolean)
+        ? filteredFields
+        : {};
     }
-
-    return {};
+    return some(validationResults, Boolean) ? validationResults : {};
   }
 
   function submitHandler(credentials) {
@@ -60,8 +52,7 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
       setCredentialsInvalid(invalidCredentials);
       return;
     }
-    const { email, password } = credentials;
-    onAuthenticate({ email, password });
+    onAuthenticate(credentials);
   }
 
   return (
@@ -71,7 +62,7 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
     >
       <AuthForm
         credentialsInvalid={credentialsInvalid}
-        isLogin={isSigningIn}
+        isSigningIn={isSigningIn}
         onSubmit={(credentials) => submitHandler(credentials)}
       />
       <View style={styles.buttonContainer}>

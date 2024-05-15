@@ -1,7 +1,7 @@
 import { Axios } from '../utils/Axios';
 import { calculateDistance } from '../utils/GeoUtils';
 
-const getRecyclingLocations = async (coords) => {
+async function getRecyclingLocations(coords) {
   try {
     const response = await Axios.get('/recycling-locations');
     return response.data
@@ -28,7 +28,7 @@ const getRecyclingLocations = async (coords) => {
       throw new Error('An error occurred');
     }
   }
-};
+}
 
 export default {
   getRecyclingLocations,

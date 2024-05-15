@@ -9,10 +9,10 @@ export default function SignInScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const auth = useContext(AuthContext);
 
-  async function handleSignIn({ email, password }) {
+  async function handleSignIn(credentials) {
     setIsAuthenticating(true);
     try {
-      const token = await signInWithPassword(email, password);
+      const token = await signInWithPassword(credentials);
       await auth.authenticate(token);
     } catch (error) {
       Alert.alert('Autentificare eșuată!', error.message);

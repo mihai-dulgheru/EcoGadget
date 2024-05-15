@@ -9,10 +9,10 @@ export default function SignUpScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const auth = useContext(AuthContext);
 
-  async function handleSignUp({ email, password }) {
+  async function handleSignUp(credentials) {
     setIsAuthenticating(true);
     try {
-      const token = await signUp(email, password);
+      const token = await signUp(credentials);
       await auth.authenticate(token);
     } catch (error) {
       Alert.alert('Înregistrare eșuată', error.message);
