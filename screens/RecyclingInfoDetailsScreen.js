@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...theme.fontSize.xl,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
   subtitle: {
@@ -67,10 +68,11 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     borderRadius: theme.borderRadius.md,
+    height: theme.spacing['48'],
     overflow: 'hidden',
   },
   map: {
-    height: theme.spacing['48'],
+    height: '100%',
     width: '100%',
   },
 });

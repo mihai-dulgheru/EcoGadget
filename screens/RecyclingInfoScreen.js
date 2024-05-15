@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
   subtitle: {

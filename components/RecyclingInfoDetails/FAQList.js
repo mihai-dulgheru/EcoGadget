@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
     fontWeight: '500',
   },
   faq: {
@@ -34,9 +35,11 @@ const styles = StyleSheet.create({
   },
   question: {
     ...theme.fontSize.base,
+    color: theme.colors.textPrimary,
     fontWeight: '500',
   },
   answer: {
     ...theme.fontSize.base,
+    color: theme.colors.textPrimary,
   },
 });

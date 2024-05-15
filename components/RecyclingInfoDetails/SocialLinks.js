@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
     fontWeight: '500',
   },
   linkContainer: {},

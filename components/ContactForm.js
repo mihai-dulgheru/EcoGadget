@@ -7,14 +7,14 @@ import { Button } from './UI';
 function ContactForm({ centerId }) {
   const {
     control,
+    formState: { errors },
     handleSubmit,
     reset,
-    formState: { errors },
   } = useForm({
     defaultValues: {
-      name: '',
       email: '',
       message: '',
+      name: '',
     },
   });
 
@@ -22,11 +22,11 @@ function ContactForm({ centerId }) {
     try {
       await ContactService.sendContactMessage({ ...data, centerId });
       reset();
-      Alert.alert('Success', 'Your message has been sent successfully!');
+      Alert.alert('Succes', 'Mesajul a fost trimis cu succes!');
     } catch (error) {
       Alert.alert(
-        'Error',
-        error.message || 'There was an error sending your message.'
+        'Eroare',
+        error.message || 'A apărut o eroare la trimiterea mesajului'
       );
       console.error('Submission error', error);
     }
@@ -38,7 +38,7 @@ function ContactForm({ centerId }) {
         <Controller
           control={control}
           rules={{
-            required: 'Name is required',
+            required: 'Numele este obligatoriu',
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
@@ -46,7 +46,7 @@ function ContactForm({ centerId }) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholder="Name"
+              placeholder="Nume"
             />
           )}
           name="name"
@@ -59,10 +59,10 @@ function ContactForm({ centerId }) {
         <Controller
           control={control}
           rules={{
-            required: 'Email is required',
+            required: 'Adresa de email este obligatorie',
             pattern: {
               value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i,
-              message: 'Invalid email address',
+              message: 'Adresa de email nu este validă',
             },
           }}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -71,7 +71,7 @@ function ContactForm({ centerId }) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholder="Email"
+              placeholder="Adresa de email"
               keyboardType="email-address"
             />
           )}
@@ -85,7 +85,7 @@ function ContactForm({ centerId }) {
         <Controller
           control={control}
           rules={{
-            required: 'Message is required',
+            required: 'Mesajul este obligatoriu',
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
@@ -93,7 +93,7 @@ function ContactForm({ centerId }) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              placeholder="Message"
+              placeholder="Mesaj"
               multiline
             />
           )}
@@ -103,9 +103,7 @@ function ContactForm({ centerId }) {
           <Text style={styles.errorText}>{errors.message.message}</Text>
         )}
       </View>
-      <View style={styles.buttonContainer}>
-        <Button onPress={handleSubmit(onSubmit)}>Send Message</Button>
-      </View>
+      <Button onPress={handleSubmit(onSubmit)}>Trimite</Button>
     </View>
   );
 }
@@ -113,7 +111,6 @@ function ContactForm({ centerId }) {
 const styles = StyleSheet.create({
   formContainer: {
     gap: theme.spacing['4'],
-    padding: theme.spacing['6'],
   },
   input: {
     borderColor: theme.colors.textPrimary,
@@ -128,9 +125,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: theme.colors.secondary,
-  },
-  buttonContainer: {
-    alignItems: 'center',
   },
 });
 

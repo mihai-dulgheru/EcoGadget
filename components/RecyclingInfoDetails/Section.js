@@ -82,10 +82,12 @@ const styles = StyleSheet.create({
   },
   heading: {
     ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
     fontWeight: '500',
   },
   content: {
     ...theme.fontSize.base,
+    color: theme.colors.textPrimary,
   },
   image: {
     borderRadius: theme.borderRadius.md,

@@ -1,7 +1,6 @@
 import {
   Linking,
   Platform,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -34,11 +33,11 @@ export default function RecyclingCenterDetailsScreen({ route }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollViewContent}
-      >
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
+      <View style={styles.mapContainer}>
         <MapView
           style={styles.map}
           initialRegion={{
@@ -65,84 +64,86 @@ export default function RecyclingCenterDetailsScreen({ route }) {
             description={center.address}
           />
         </MapView>
-        <Button onPress={openInMaps}>Get Directions</Button>
-        <Text style={styles.title}>{center.name}</Text>
-        <Text style={styles.description}>{center.description}</Text>
+      </View>
+      <Button onPress={openInMaps}>Deschide in Maps</Button>
+      <Text style={styles.title}>{center.name}</Text>
+      <Text style={styles.description}>{center.description}</Text>
+      <Text style={styles.info}>
+        {'Adresa: '}
+        {center.address}
+      </Text>
+      <Text style={styles.heading}>Program</Text>
+      <View>
+        {Object.entries(center.schedule).map(([day, hours]) => (
+          <Text style={styles.schedule} key={day}>
+            {`${day.charAt(0).toUpperCase() + day.slice(1)}: ${hours}`}
+          </Text>
+        ))}
+      </View>
+      <Button onPress={openDialScreen}>
+        {'Sună la '}
+        {center.phone}
+      </Button>
+      <Text style={styles.heading}>Contact</Text>
+      <ContactForm centerId={center._id} />
+      <Text style={styles.heading}>Informații companie</Text>
+      <View>
         <Text style={styles.info}>
-          Address:
-          {center.address}
-        </Text>
-        <Text style={styles.info}>Schedule</Text>
-        <View style={styles.scheduleContainer}>
-          {Object.entries(center.schedule).map(([day, hours]) => (
-            <Text style={styles.scheduleText} key={day}>
-              {`${day.charAt(0).toUpperCase() + day.slice(1)}: ${hours}`}
-            </Text>
-          ))}
-        </View>
-        <Button onPress={openDialScreen}>Call Center</Button>
-        <Text style={styles.info}>Contact Form</Text>
-        <View style={styles.form}>
-          <ContactForm centerId={center._id} />
-        </View>
-        <Text style={styles.info}>Other Information</Text>
-        <Text style={styles.info}>
-          Company:
+          {'Denumire: '}
           {center.company}
         </Text>
         <Text style={styles.info}>
-          CUI:
+          {'CUI: '}
           {center.cui}
         </Text>
         <Text style={styles.info}>
-          Reg. Com:
+          {'Reg. Com: '}
           {center.regCom}
         </Text>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  scrollView: {
+    backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
   },
-  scrollViewContent: {
-    alignItems: 'center',
+  contentContainer: {
+    gap: theme.spacing['4'],
+    padding: theme.spacing['4'],
+  },
+  mapContainer: {
+    borderRadius: theme.borderRadius.md,
+    height: theme.spacing['48'],
+    overflow: 'hidden',
   },
   map: {
-    height: theme.spacing['48'],
-    marginBottom: theme.spacing['6'],
+    height: '100%',
     width: '100%',
   },
   title: {
-    ...theme.fontSize['2xl'],
+    ...theme.fontSize.xl,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
-    marginBottom: theme.spacing['6'],
+    marginTop: theme.spacing['2'],
   },
   description: {
     ...theme.fontSize.base,
-    marginBottom: theme.spacing['6'],
+    color: theme.colors.textPrimary,
   },
   info: {
     ...theme.fontSize.base,
-    marginBottom: theme.spacing['4'],
+    color: theme.colors.textPrimary,
   },
-  scheduleContainer: {
-    alignItems: 'flex-start',
-    alignSelf: 'stretch',
-    marginBottom: theme.spacing['6'],
+  heading: {
+    ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
+    fontWeight: '500',
   },
-  scheduleText: {
+  schedule: {
     ...theme.fontSize.base,
-    marginBottom: theme.spacing['2'],
-  },
-  form: {
-    width: '100%',
+    color: theme.colors.textPrimary,
   },
 });

@@ -68,9 +68,9 @@ export default function RecyclingLocationsScreen({ navigation }) {
             style={styles.locationImage}
           />
           <View style={styles.locationInfo}>
+            <Text style={styles.locationSchedule}>{todaySchedule}</Text>
             <Text style={styles.locationName}>{item.name}</Text>
             <Text style={styles.locationAddress}>{item.address}</Text>
-            <Text style={styles.locationSchedule}>{todaySchedule}</Text>
             <Text style={styles.locationDistance}>{item.distance}</Text>
           </View>
         </View>
@@ -116,49 +116,42 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary,
   },
   listContainer: {
+    backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    paddingTop: theme.spacing['6'],
+    gap: theme.spacing['4'],
+    padding: theme.spacing['4'],
   },
   locationContainer: {
-    backgroundColor: theme.colors.backgroundPrimary,
-    borderRadius: theme.borderRadius.md,
-    elevation: 2,
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.lg,
     flexDirection: 'row',
-    marginBottom: theme.spacing['6'],
-    marginHorizontal: theme.spacing['6'],
-    overflow: 'hidden',
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    gap: theme.spacing['4'],
+    padding: theme.spacing['2'],
   },
   locationImage: {
+    borderRadius: theme.borderRadius.md,
     height: 'full',
-    marginRight: theme.spacing['6'],
-    width: theme.spacing['28'],
+    width: theme.spacing['32'],
   },
   locationInfo: {
-    flex: 1,
-    justifyContent: 'center',
+    gap: theme.spacing['0.5'],
+  },
+  locationSchedule: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textPrimary,
+    fontWeight: '500',
   },
   locationName: {
     ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
     fontWeight: 'bold',
-    marginBottom: theme.spacing['2'],
   },
   locationAddress: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
-    marginBottom: theme.spacing['1'],
-  },
-  locationSchedule: {
-    ...theme.fontSize.sm,
-    color: theme.colors.textSecondary,
-    marginBottom: theme.spacing['1'],
   },
   locationDistance: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
-    marginBottom: theme.spacing['1'],
   },
 });
