@@ -22,34 +22,52 @@ export default function Section({ section }) {
           />
         ))}
       {section.video && (
-        <Video
-          ref={video}
-          style={styles.video}
-          source={{
-            uri: section.video.url,
-          }}
-          useNativeControls
-          resizeMode={ResizeMode.CONTAIN}
-          isLooping
-        />
+        <View style={styles.videoContainer}>
+          <Video
+            ref={video}
+            style={styles.video}
+            source={{
+              uri: section.video.url,
+            }}
+            useNativeControls
+            resizeMode={ResizeMode.CONTAIN}
+            isLooping
+          />
+        </View>
       )}
-      {section.links &&
-        section.links.map((link) => (
-          <Text
-            key={link._id}
-            style={styles.link}
-            onPress={() => Linking.openURL(link.url)}
-          >
-            {link.title}
-          </Text>
-        ))}
+      {section.links && section.links.length > 0 && (
+        <View style={styles.container}>
+          <Text style={styles.heading}>Linkuri utile</Text>
+          <View>
+            {section.links.map((link) => (
+              <Text
+                key={link._id}
+                style={[styles.content, styles.link]}
+                onPress={() => Linking.openURL(link.url)}
+              >
+                {link.title}
+              </Text>
+            ))}
+          </View>
+        </View>
+      )}
       {section.contact && (
-        <View>
-          <Text>{section.contact.address}</Text>
-          <Text>{section.contact.email}</Text>
-          <Text onPress={() => Linking.openURL(`tel:${section.contact.phone}`)}>
-            {section.contact.phone}
-          </Text>
+        <View style={styles.container}>
+          <Text style={styles.heading}>Contact</Text>
+          <View>
+            <Text style={[styles.content, styles.contact]}>
+              {section.contact.address}
+            </Text>
+            <Text style={[styles.content, styles.contact]}>
+              {section.contact.email}
+            </Text>
+            <Text
+              style={[styles.content, styles.contact]}
+              onPress={() => Linking.openURL(`tel:${section.contact.phone}`)}
+            >
+              {section.contact.phone}
+            </Text>
+          </View>
         </View>
       )}
       {section.social && <SocialLinks links={section.social} />}
@@ -59,24 +77,31 @@ export default function Section({ section }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    gap: theme.spacing['4'],
+  },
   heading: {
     ...theme.fontSize.lg,
-    fontWeight: 'bold',
-    marginBottom: theme.spacing['4'],
+    fontWeight: '500',
   },
-  content: {},
+  content: {
+    ...theme.fontSize.base,
+  },
   image: {
+    borderRadius: theme.borderRadius.md,
     height: theme.spacing['48'],
-    marginBottom: theme.spacing['4'],
     width: '100%',
   },
-  video: {
+  videoContainer: {
+    borderRadius: theme.borderRadius.md,
     height: theme.spacing['48'],
+    overflow: 'hidden',
+  },
+  video: {
+    height: '100%',
     width: '100%',
   },
   link: {
-    color: 'blue',
-    marginBottom: theme.spacing['4'],
+    color: theme.colors.primary,
   },
 });

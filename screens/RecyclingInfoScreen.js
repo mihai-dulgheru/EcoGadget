@@ -106,21 +106,25 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary,
   },
   listContainer: {
+    backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing['6'],
-    padding: theme.spacing['6'],
+    gap: theme.spacing['4'],
+    padding: theme.spacing['4'],
   },
-  infoBlock: {},
+  infoBlock: {
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.lg,
+    padding: theme.spacing['2'],
+    gap: theme.spacing['2'],
+  },
   image: {
     borderRadius: theme.borderRadius.md,
     height: theme.spacing['40'],
-    marginBottom: theme.spacing['4'],
     width: '100%',
   },
   title: {
     ...theme.fontSize.lg,
     fontWeight: 'bold',
-    marginBottom: theme.spacing['2'],
   },
   subtitle: {
     ...theme.fontSize.base,
@@ -130,6 +134,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     gap: theme.spacing['2'],
-    marginTop: theme.spacing['2'],
   },
 });
