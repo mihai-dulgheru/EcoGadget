@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
@@ -24,6 +24,12 @@ export default function ContactForm({ debug = false, locationId }) {
     name: '',
     email: '',
     message: '',
+  };
+
+  const inputRefs = {
+    name: useRef(null),
+    email: useRef(null),
+    message: useRef(null),
   };
 
   const onSubmit = async (values, { resetForm }) => {
@@ -52,15 +58,27 @@ export default function ContactForm({ debug = false, locationId }) {
       {(props) => (
         <View style={styles.formContainer}>
           <View>
-            <Field formikProps={props} name="name" placeholder="Nume" />
+            <Field
+              blurOnSubmit={false}
+              formikProps={props}
+              name="name"
+              onSubmitEditing={() => inputRefs.email.current.focus()}
+              placeholder="Nume"
+              ref={inputRefs.name}
+              returnKeyType="next"
+            />
             <ErrorMessage name="name" />
           </View>
           <View>
             <Field
+              blurOnSubmit={false}
               formikProps={props}
               keyboardType="email-address"
               name="email"
+              onSubmitEditing={() => inputRefs.message.current.focus()}
               placeholder="Adresa de email"
+              ref={inputRefs.email}
+              returnKeyType="next"
             />
             <ErrorMessage name="email" />
           </View>
@@ -71,6 +89,7 @@ export default function ContactForm({ debug = false, locationId }) {
               name="message"
               numberOfLines={4}
               placeholder="Mesaj"
+              ref={inputRefs.message}
             />
             <ErrorMessage name="message" />
           </View>
