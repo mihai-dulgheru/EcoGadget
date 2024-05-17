@@ -23,13 +23,13 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     borderRadius: theme.borderRadius.md,
-    elevation: 2,
-    paddingHorizontal: theme.spacing['4'],
-    paddingVertical: theme.spacing['2'],
-    shadowColor: 'black',
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    paddingHorizontal: theme.spacing['5'],
+    paddingVertical: theme.spacing['2.5'],
+    // elevation: 2,
+    // shadowColor: 'black',
+    // shadowOffset: { width: 1, height: 1 },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 4,
   },
   pressed: {
     opacity: 0.7,

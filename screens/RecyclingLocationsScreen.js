@@ -1,7 +1,6 @@
 import * as Location from 'expo-location';
 import { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -9,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { Error, Loading } from '../components/UI';
 import RecyclingService from '../services/RecyclingService';
 import theme from '../styles/theme';
 
@@ -79,42 +79,24 @@ export default function RecyclingLocationsScreen({ navigation }) {
   };
 
   if (status === 'loading') {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-      </View>
-    );
+    return <Loading />;
   }
 
   if (status === 'error') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.error}>
-          A apărut o eroare la încărcarea locațiilor
-        </Text>
-      </View>
-    );
+    return <Error message="A apărut o eroare la încărcarea locațiilor" />;
   }
 
   return (
     <FlatList
-      data={locations}
-      renderItem={renderLocation}
-      keyExtractor={(item) => item._id.toString()}
       contentContainerStyle={styles.listContainer}
+      data={locations}
+      keyExtractor={(item) => item._id.toString()}
+      renderItem={renderLocation}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
-  error: {
-    color: theme.colors.error,
-  },
   listContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,

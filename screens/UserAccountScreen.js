@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
-import { Button } from '../components/UI';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Button, Error, Loading } from '../components/UI';
 import UserService from '../services/UserService';
 import { AuthContext } from '../store/AuthContext';
 import theme from '../styles/theme';
@@ -42,46 +42,40 @@ export default function UserAccountScreen() {
   };
 
   if (status === 'loading') {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-      </View>
-    );
+    return <Loading />;
   }
 
   if (status === 'error') {
     return (
-      <View style={styles.container}>
-        <Text style={styles.error}>
-          A apărut o eroare la încărcarea detaliilor utilizatorului
-        </Text>
-      </View>
+      <Error message="A apărut o eroare la încărcarea detaliilor utilizatorului" />
     );
   }
 
   return (
     <View style={styles.container}>
-      <View style={{}}>
-        <View style={styles.infoBlock}>
-          <Text style={styles.label}>Nume</Text>
-          <Text style={styles.value}>{accountInfo.lastName}</Text>
+      <View style={styles.content}>
+        <View style={{}}>
+          <View style={styles.infoBlock}>
+            <Text style={styles.label}>Nume</Text>
+            <Text style={styles.value}>{accountInfo.lastName}</Text>
+          </View>
+          <View style={styles.infoBlock}>
+            <Text style={styles.label}>Prenume</Text>
+            <Text style={styles.value}>{accountInfo.firstName}</Text>
+          </View>
+          <View style={styles.infoBlock}>
+            <Text style={styles.label}>E-mail</Text>
+            <Text style={styles.value}>{accountInfo.email}</Text>
+          </View>
+          <View style={[styles.infoBlock, styles.infoBlockLast]}>
+            <Text style={styles.label}>Telefon</Text>
+            <Text style={styles.value}>{accountInfo.phone}</Text>
+          </View>
         </View>
-        <View style={styles.infoBlock}>
-          <Text style={styles.label}>Prenume</Text>
-          <Text style={styles.value}>{accountInfo.firstName}</Text>
-        </View>
-        <View style={styles.infoBlock}>
-          <Text style={styles.label}>E-mail</Text>
-          <Text style={styles.value}>{accountInfo.email}</Text>
-        </View>
-        <View style={[styles.infoBlock, styles.infoBlockLast]}>
-          <Text style={styles.label}>Telefon</Text>
-          <Text style={styles.value}>{accountInfo.phone}</Text>
-        </View>
+        <Button color="error" onPress={handleLogout}>
+          Deconectare
+        </Button>
       </View>
-      <Button color="error" onPress={handleLogout}>
-        Deconectare
-      </Button>
     </View>
   );
 }
@@ -90,8 +84,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
-    gap: theme.spacing['4'],
     padding: theme.spacing['4'],
+  },
+  content: {
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.lg,
+    gap: theme.spacing['2'],
+    padding: theme.spacing['2'],
   },
   infoBlock: {
     borderBottomColor: theme.colors.textSecondary,
