@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-function Pill({ color, icon, children }) {
+export default function Pill({ color, icon, children }) {
   return (
     <View style={[styles.root, styles[color]]}>
       <View style={styles.content}>
@@ -10,8 +10,6 @@ function Pill({ color, icon, children }) {
     </View>
   );
 }
-
-export default Pill;
 
 const styles = StyleSheet.create({
   root: {

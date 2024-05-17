@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
-function FlatButton({ children, extraStyles, onPress }) {
+export default function FlatButton({ children, extraStyles, onPress }) {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
@@ -15,8 +15,6 @@ function FlatButton({ children, extraStyles, onPress }) {
     </Pressable>
   );
 }
-
-export default FlatButton;
 
 const styles = StyleSheet.create({
   button: {

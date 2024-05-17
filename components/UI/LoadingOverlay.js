@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
-function LoadingOverlay({ message }) {
+export default function LoadingOverlay({ message }) {
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.message}>{message}</Text>
@@ -9,8 +9,6 @@ function LoadingOverlay({ message }) {
     </View>
   );
 }
-
-export default LoadingOverlay;
 
 const styles = StyleSheet.create({
   rootContainer: {

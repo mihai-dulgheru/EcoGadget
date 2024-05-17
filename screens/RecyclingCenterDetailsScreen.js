@@ -85,7 +85,7 @@ export default function RecyclingCenterDetailsScreen({ route }) {
         {center.phone}
       </Button>
       <Text style={styles.heading}>Contact</Text>
-      <ContactForm centerId={center._id} />
+      <ContactForm locationId={center._id} />
       <Text style={styles.heading}>Informații companie</Text>
       <View>
         <Text style={styles.info}>

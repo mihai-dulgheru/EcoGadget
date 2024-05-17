@@ -1,27 +1,30 @@
-import { Controller, useForm } from 'react-hook-form';
-import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Formik } from 'formik';
+import { Alert, StyleSheet, TextInput, View } from 'react-native';
+import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
 import theme from '../../styles/theme';
-import { Button } from '../UI';
+import Button from '../UI/Button';
+import ErrorMessage from './ErrorMessage';
 
-function ContactForm({ centerId }) {
-  const {
-    control,
-    formState: { errors },
-    handleSubmit,
-    reset,
-  } = useForm({
-    defaultValues: {
-      email: '',
-      message: '',
-      name: '',
-    },
-  });
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Numele este obligatoriu'),
+  email: Yup.string()
+    .email('Adresa de email nu este validă')
+    .required('Adresa de email este obligatorie'),
+  message: Yup.string().required('Mesajul este obligatoriu'),
+});
 
-  const onSubmit = async (data) => {
+export default function ContactForm({ locationId }) {
+  const initialValues = {
+    name: '',
+    email: '',
+    message: '',
+  };
+
+  const onSubmit = async (values, { resetForm }) => {
     try {
-      await ContactService.sendContactMessage({ ...data, centerId });
-      reset();
+      await ContactService.sendContactMessage({ ...values, locationId });
+      resetForm();
       Alert.alert('Succes', 'Mesajul a fost trimis cu succes!');
     } catch (error) {
       Alert.alert(
@@ -33,78 +36,49 @@ function ContactForm({ centerId }) {
   };
 
   return (
-    <View style={styles.formContainer}>
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: 'Numele este obligatoriu',
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+    >
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <View style={styles.formContainer}>
+          <View>
             <TextInput
               style={styles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
+              onBlur={handleBlur('name')}
+              onChangeText={handleChange('name')}
+              value={values.name}
               placeholder="Nume"
             />
-          )}
-          name="name"
-        />
-        {errors.name && (
-          <Text style={styles.errorText}>{errors.name.message}</Text>
-        )}
-      </View>
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: 'Adresa de email este obligatorie',
-            pattern: {
-              value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i,
-              message: 'Adresa de email nu este validă',
-            },
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
+            <ErrorMessage name="name" />
+          </View>
+          <View>
             <TextInput
               style={styles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
+              onBlur={handleBlur('email')}
+              onChangeText={handleChange('email')}
+              value={values.email}
               placeholder="Adresa de email"
               keyboardType="email-address"
             />
-          )}
-          name="email"
-        />
-        {errors.email && (
-          <Text style={styles.errorText}>{errors.email.message}</Text>
-        )}
-      </View>
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: 'Mesajul este obligatoriu',
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
+            <ErrorMessage name="email" />
+          </View>
+          <View>
             <TextInput
               style={[styles.input, styles.textArea]}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
+              onBlur={handleBlur('message')}
+              onChangeText={handleChange('message')}
+              value={values.message}
               placeholder="Mesaj"
               multiline
             />
-          )}
-          name="message"
-        />
-        {errors.message && (
-          <Text style={styles.errorText}>{errors.message.message}</Text>
-        )}
-      </View>
-      <Button onPress={handleSubmit(onSubmit)}>Trimite</Button>
-    </View>
+            <ErrorMessage name="message" />
+          </View>
+          <Button onPress={handleSubmit}>Trimite</Button>
+        </View>
+      )}
+    </Formik>
   );
 }
 
@@ -116,16 +90,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.border,
     borderRadius: theme.borderRadius.md,
     borderWidth: theme.borderWidth.default,
-    padding: theme.spacing['4'],
+    paddingHorizontal: theme.spacing['4'],
+    paddingVertical: theme.spacing['2'],
   },
   textArea: {
     height: theme.spacing['24'],
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
   },
-  errorText: {
-    color: theme.colors.error,
-  },
 });
-
-export default ContactForm;
