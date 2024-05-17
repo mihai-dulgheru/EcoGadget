@@ -1,16 +1,43 @@
-import { useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Formik } from 'formik';
+import { useRef } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
+import * as Yup from 'yup';
 import theme from '../../styles/theme';
-import { Button, Input } from '../UI';
+import { Debug, ErrorMessage, Field } from '../Formik';
+import { Button } from '../UI';
 
-function AuthForm({ credentialsInvalid, isSigningIn, onSubmit }) {
-  const [user, setUser] = useState({
-    lastName: 'Dulgheru',
-    firstName: 'Mihai-Nicolae',
-    email: 'dulgherumihai19@stud.ase.ro',
-    phone: '0757949057',
-    password: 'Password123!',
-  });
+const validationSchema = Yup.object().shape({
+  lastName: Yup.string().when('isSigningIn', {
+    is: false,
+    then: (schema) => schema.required('Numele este obligatoriu'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  firstName: Yup.string().when('isSigningIn', {
+    is: false,
+    then: (schema) => schema.required('Prenumele este obligatoriu'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  email: Yup.string()
+    .email('Adresa de email nu este validă')
+    .required('Adresa de email este obligatorie'),
+  phone: Yup.string()
+    .matches(/^[0-9]+$/, 'Telefonul trebuie să conțină doar cifre')
+    .min(10, 'Telefonul trebuie să aibă cel puțin 10 cifre')
+    .when('isSigningIn', {
+      is: false,
+      then: (schema) => schema.required('Telefonul este obligatoriu'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  password: Yup.string()
+    .min(8, 'Parola trebuie să aibă cel puțin 8 caractere')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      'Parola trebuie să conțină cel puțin o literă mare, o literă mică, un număr și un caracter special'
+    )
+    .required('Parola este obligatorie'),
+});
+
+export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
   const inputRefs = {
     lastName: useRef(null),
     firstName: useRef(null),
@@ -19,93 +46,123 @@ function AuthForm({ credentialsInvalid, isSigningIn, onSubmit }) {
     password: useRef(null),
   };
 
-  function handleChange(fieldName, value) {
-    setUser((prevState) => ({ ...prevState, [fieldName]: value }));
-  }
+  const initialValues = {
+    isSigningIn,
+    lastName: 'Dulgheru',
+    firstName: 'Mihai-Nicolae',
+    email: 'dulgherumihai19@stud.ase.ro',
+    phone: '0757949057',
+    password: 'Password123!',
+  };
 
-  function handleFormSubmit() {
-    onSubmit(user);
-  }
+  const handleFormSubmit = async (values) => {
+    try {
+      onSubmit(values);
+    } catch (error) {
+      Alert.alert(
+        'Eroare',
+        error.message || 'A apărut o eroare la trimiterea formularului'
+      );
+      console.error('Submission error', error);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      {!isSigningIn && (
-        <>
-          <Input
-            blurOnSubmit={false}
-            isInvalid={credentialsInvalid.lastName}
-            label="Nume"
-            onChangeText={(value) => handleChange('lastName', value)}
-            onSubmitEditing={() => inputRefs.firstName.current.focus()}
-            placeholder="Nume"
-            ref={inputRefs.lastName}
-            returnKeyType="next"
-            value={user.lastName}
-          />
-          <Input
-            blurOnSubmit={false}
-            isInvalid={credentialsInvalid.firstName}
-            label="Prenume"
-            onChangeText={(value) => handleChange('firstName', value)}
-            onSubmitEditing={() => inputRefs.email.current.focus()}
-            placeholder="Prenume"
-            ref={inputRefs.firstName}
-            returnKeyType="next"
-            value={user.firstName}
-          />
-        </>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleFormSubmit}
+    >
+      {(props) => (
+        <View style={styles.container}>
+          {!isSigningIn && (
+            <>
+              <View>
+                <Field
+                  blurOnSubmit={false}
+                  formikProps={props}
+                  label="Nume"
+                  name="lastName"
+                  onSubmitEditing={() => inputRefs.firstName.current.focus()}
+                  placeholder="Nume"
+                  ref={inputRefs.lastName}
+                  returnKeyType="next"
+                />
+                <ErrorMessage name="lastName" />
+              </View>
+              <View>
+                <Field
+                  blurOnSubmit={false}
+                  formikProps={props}
+                  label="Prenume"
+                  name="firstName"
+                  onSubmitEditing={() => inputRefs.email.current.focus()}
+                  placeholder="Prenume"
+                  ref={inputRefs.firstName}
+                  returnKeyType="next"
+                />
+                <ErrorMessage name="firstName" />
+              </View>
+            </>
+          )}
+          <View>
+            <Field
+              blurOnSubmit={false}
+              formikProps={props}
+              keyboardType="email-address"
+              label="Adresă email"
+              name="email"
+              onSubmitEditing={() => {
+                if (!isSigningIn) {
+                  inputRefs.phone.current.focus();
+                } else {
+                  inputRefs.password.current.focus();
+                }
+              }}
+              placeholder="Adresă email"
+              ref={inputRefs.email}
+              returnKeyType="next"
+            />
+            <ErrorMessage name="email" />
+          </View>
+          {!isSigningIn && (
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                keyboardType="phone-pad"
+                label="Telefon"
+                name="phone"
+                onSubmitEditing={() => inputRefs.password.current.focus()}
+                placeholder="Telefon"
+                ref={inputRefs.phone}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="phone" />
+            </View>
+          )}
+          <View>
+            <Field
+              formikProps={props}
+              label="Parolă"
+              name="password"
+              placeholder="Parolă"
+              ref={inputRefs.password}
+              secure
+            />
+            <ErrorMessage name="password" />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button onPress={props.handleSubmit}>
+              {isSigningIn ? 'Autentificare' : 'Înregistrare'}
+            </Button>
+          </View>
+          <Debug debug={debug} formikProps={props} />
+        </View>
       )}
-      <Input
-        blurOnSubmit={false}
-        isInvalid={credentialsInvalid.email}
-        keyboardType="email-address"
-        label="Adresă email"
-        onChangeText={(value) => handleChange('email', value)}
-        onSubmitEditing={() => {
-          if (!isSigningIn) {
-            inputRefs.phone.current.focus();
-          } else {
-            inputRefs.password.current.focus();
-          }
-        }}
-        placeholder="Adresă email"
-        ref={inputRefs.email}
-        returnKeyType="next"
-        value={user.email}
-      />
-      {!isSigningIn && (
-        <Input
-          blurOnSubmit={false}
-          isInvalid={credentialsInvalid.phone}
-          keyboardType="phone-pad"
-          label="Telefon"
-          onChangeText={(value) => handleChange('phone', value)}
-          onSubmitEditing={() => inputRefs.password.current.focus()}
-          placeholder="Telefon"
-          ref={inputRefs.phone}
-          returnKeyType="next"
-          value={user.phone}
-        />
-      )}
-      <Input
-        isInvalid={credentialsInvalid.password}
-        label="Parolă"
-        onChangeText={(value) => handleChange('password', value)}
-        placeholder="Parolă"
-        ref={inputRefs.password}
-        secure
-        value={user.password}
-      />
-      <View style={styles.buttonContainer}>
-        <Button onPress={() => handleFormSubmit()}>
-          {isSigningIn ? 'Autentificare' : 'Înregistrare'}
-        </Button>
-      </View>
-    </View>
+    </Formik>
   );
 }
-
-export default AuthForm;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,11 +1,10 @@
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
-import global from '../../styles/global';
 import theme from '../../styles/theme';
-import { ErrorMessage, Field } from '../Formik';
+import { Debug, ErrorMessage, Field } from '../Formik';
 import { Button } from '../UI';
 
 const validationSchema = Yup.object().shape({
@@ -95,11 +94,7 @@ export default function ContactForm({ debug = false, locationId }) {
           <Button disabled={status === 'loading'} onPress={props.handleSubmit}>
             Trimite
           </Button>
-          {debug && (
-            <Text style={global.debugContainer}>
-              {JSON.stringify(props, null, 2)}
-            </Text>
-          )}
+          <Debug debug={debug} formikProps={props} />
         </View>
       )}
     </Formik>
