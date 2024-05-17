@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { isEmpty, pick, some } from 'lodash';
 import { useMemo, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import theme from '../../styles/theme';
 import { FlatButton } from '../UI';
 import AuthForm from './AuthForm';
@@ -65,14 +65,12 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
         isSigningIn={isSigningIn}
         onSubmit={(credentials) => submitHandler(credentials)}
       />
-      <View style={styles.buttonContainer}>
-        <FlatButton
-          extraStyles={{ buttonText: styles.buttonText }}
-          onPress={() => switchAuthModeHandler()}
-        >
-          {isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
-        </FlatButton>
-      </View>
+      <FlatButton
+        extraStyles={{ buttonText: styles.buttonText }}
+        onPress={() => switchAuthModeHandler()}
+      >
+        {isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
+      </FlatButton>
     </ScrollView>
   );
 }
@@ -86,11 +84,9 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
+    gap: theme.spacing['2'],
     justifyContent: 'center',
     padding: theme.spacing['8'],
-  },
-  buttonContainer: {
-    marginTop: theme.spacing['4'],
   },
   buttonText: {
     ...theme.fontSize.sm,

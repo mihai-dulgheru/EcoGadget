@@ -21,8 +21,9 @@ export default function Button({ children, color = 'primary', onPress }) {
 const styles = StyleSheet.create({
   button: {
     borderRadius: theme.borderRadius.md,
-    paddingHorizontal: theme.spacing['5'],
-    paddingVertical: theme.spacing['2.5'],
+    borderWidth: theme.borderWidth.default,
+    paddingHorizontal: theme.spacing['4'],
+    paddingVertical: theme.spacing['2'],
     // elevation: 2,
     // shadowColor: 'black',
     // shadowOffset: { width: 1, height: 1 },
@@ -40,11 +41,14 @@ const styles = StyleSheet.create({
   },
   primary: {
     backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.primary,
   },
   secondary: {
     backgroundColor: theme.colors.secondary,
+    borderColor: theme.colors.secondary,
   },
   error: {
     backgroundColor: theme.colors.error,
+    borderColor: theme.colors.error,
   },
 });

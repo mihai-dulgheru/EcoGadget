@@ -11,7 +11,7 @@ export default function Select({
   isInvalid,
 }) {
   return (
-    <View style={styles.container}>
+    <View>
       <Text style={styles.label}>{label}</Text>
       <View
         style={
@@ -40,18 +40,19 @@ export default function Select({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: theme.spacing['2'],
-  },
   label: {
-    marginBottom: theme.spacing['2'],
-    color: theme.colors.textPrimary,
     ...theme.fontSize.sm,
+    color: theme.colors.textPrimary,
+    marginBottom: theme.spacing['1'],
   },
   pickerContainer: {
-    borderWidth: theme.borderWidth.default,
+    backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.default,
+    borderRadius: theme.borderRadius.md,
+    borderWidth: theme.borderWidth.default,
+    height: theme.spacing['12'],
+    justifyContent: 'center',
+    overflow: 'hidden',
   },
   picker: {
     color: theme.colors.textPrimary,
@@ -60,8 +61,8 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.error,
   },
   errorText: {
-    marginTop: theme.spacing['1'],
-    color: theme.colors.error,
     ...theme.fontSize.sm,
+    color: theme.colors.error,
+    marginTop: theme.spacing['1'],
   },
 });

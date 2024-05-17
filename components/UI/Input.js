@@ -14,11 +14,12 @@ const Input = forwardRef(
     {
       autoFocus = false,
       blurOnSubmit = true,
-      isInvalid,
+      isInvalid = false,
       keyboardType = 'default',
       label,
       multiline,
       numberOfLines,
+      onBlur,
       onChangeText,
       onFocus,
       onSubmitEditing,
@@ -32,10 +33,12 @@ const Input = forwardRef(
     const [secureTextEntry, setSecureTextEntry] = useState(secure);
 
     return (
-      <View style={styles.container}>
-        <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
-          {label}
-        </Text>
+      <View>
+        {label && (
+          <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
+            {label}
+          </Text>
+        )}
         <View style={[styles.inputSection, isInvalid && styles.inputInvalid]}>
           <TextInput
             autoCapitalize="none"
@@ -44,6 +47,7 @@ const Input = forwardRef(
             keyboardType={keyboardType}
             multiline={multiline}
             numberOfLines={numberOfLines}
+            onBlur={onBlur}
             onChangeText={onChangeText}
             onFocus={onFocus}
             onSubmitEditing={onSubmitEditing}
@@ -51,10 +55,7 @@ const Input = forwardRef(
             ref={ref}
             returnKeyType={returnKeyType}
             secureTextEntry={secureTextEntry}
-            style={[
-              styles.input,
-              (!multiline || numberOfLines === 1) && styles.singleline,
-            ]}
+            style={[styles.input, multiline && styles.textArea]}
             value={value}
           />
           {secure && (
@@ -78,13 +79,10 @@ const Input = forwardRef(
 export default Input;
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: theme.spacing['2'],
-  },
   label: {
-    marginBottom: theme.spacing['2'],
-    color: theme.colors.textPrimary,
     ...theme.fontSize.sm,
+    color: theme.colors.textPrimary,
+    marginBottom: theme.spacing['1'],
   },
   labelInvalid: {
     color: theme.colors.error,
@@ -92,36 +90,36 @@ const styles = StyleSheet.create({
   inputSection: {
     backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.default,
+    borderRadius: theme.borderRadius.md,
     borderWidth: theme.borderWidth.default,
     overflow: 'hidden',
   },
   input: {
     ...theme.fontSize.base,
-    alignItems: 'center',
     color: theme.colors.textPrimary,
-    display: 'flex',
-    flexDirection: 'row',
-    padding: theme.spacing['2'],
-    textAlignVertical: 'top',
-  },
-  singleline: {
-    height: theme.spacing['10'],
-    paddingHorizontal: theme.spacing['2'],
-    paddingVertical: theme.spacing['0'],
+    justifyContent: 'center',
+    minHeight: theme.spacing['12'],
+    paddingHorizontal: theme.spacing['4'],
+    paddingVertical: theme.spacing['2'],
     textAlignVertical: 'center',
   },
   inputInvalid: {
     borderColor: theme.colors.error,
   },
+  textArea: {
+    justifyContent: 'flex-start',
+    maxHeight: theme.spacing['48'],
+    minHeight: theme.spacing['24'],
+    textAlignVertical: 'top',
+  },
   icon: {
     alignItems: 'center',
-    display: 'flex',
-    height: theme.spacing['10'],
+    height: '100%',
     justifyContent: 'center',
+    paddingHorizontal: theme.spacing['4'],
+    paddingVertical: theme.spacing['2'],
     position: 'absolute',
     right: 0,
     top: 0,
-    width: theme.spacing['10'],
   },
 });

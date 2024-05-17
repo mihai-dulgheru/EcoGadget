@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import {
+  Button,
   Error,
   FlatButton,
   IconButton,
@@ -111,13 +112,20 @@ export default function ApplianceManagementScreen({ navigation, route }) {
               <Text style={styles.text}>
                 {`Emisii CO2: ${item.CO2Emissions} kg/an`}
               </Text>
-              <View style={styles.button}>
-                <FlatButton
-                  extraStyles={{ buttonText: styles.buttonText }}
-                  onPress={() => handleDelete(item._id)}
-                >
-                  Șterge
-                </FlatButton>
+              <View style={styles.actionButtons}>
+                <View style={styles.buttonContainer}>
+                  <Button color="secondary" onPress={() => handleEdit(item)}>
+                    Editează
+                  </Button>
+                </View>
+                <View style={styles.buttonContainer}>
+                  <FlatButton
+                    extraStyles={{ buttonText: styles.buttonTextDelete }}
+                    onPress={() => handleDelete(item._id)}
+                  >
+                    Șterge
+                  </FlatButton>
+                </View>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
   row: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: theme.spacing['2'],
   },
   title: {
     ...theme.fontSize.lg,
@@ -172,11 +180,16 @@ const styles = StyleSheet.create({
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
   },
-  button: {
-    paddingHorizontal: theme.spacing['1'],
-    paddingVertical: theme.spacing['0.5'],
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing['2'],
+    gap: theme.spacing['2'],
   },
-  buttonText: {
+  buttonContainer: {
+    width: '48%',
+  },
+  buttonTextDelete: {
     ...theme.fontSize.sm,
     color: theme.colors.error,
     textAlign: 'center',

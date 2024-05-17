@@ -29,79 +29,77 @@ function AuthForm({ credentialsInvalid, isSigningIn, onSubmit }) {
 
   return (
     <View style={styles.container}>
-      <View>
-        {!isSigningIn && (
-          <>
-            <Input
-              blurOnSubmit={false}
-              isInvalid={credentialsInvalid.lastName}
-              label="Nume"
-              onChangeText={(value) => handleChange('lastName', value)}
-              onSubmitEditing={() => inputRefs.lastName.current.focus()}
-              placeholder="Nume"
-              ref={inputRefs.lastName}
-              returnKeyType="next"
-              value={user.lastName}
-            />
-            <Input
-              blurOnSubmit={false}
-              isInvalid={credentialsInvalid.firstName}
-              label="Prenume"
-              onChangeText={(value) => handleChange('firstName', value)}
-              onSubmitEditing={() => inputRefs.email.current.focus()}
-              placeholder="Prenume"
-              ref={inputRefs.firstName}
-              returnKeyType="next"
-              value={user.firstName}
-            />
-          </>
-        )}
-        <Input
-          blurOnSubmit={false}
-          isInvalid={credentialsInvalid.email}
-          keyboardType="email-address"
-          label="Adresă email"
-          onChangeText={(value) => handleChange('email', value)}
-          onSubmitEditing={() => {
-            if (!isSigningIn) {
-              inputRefs.phone.current.focus();
-            } else {
-              inputRefs.password.current.focus();
-            }
-          }}
-          placeholder="Adresă email"
-          ref={inputRefs.email}
-          returnKeyType="next"
-          value={user.email}
-        />
-        {!isSigningIn && (
+      {!isSigningIn && (
+        <>
           <Input
             blurOnSubmit={false}
-            isInvalid={credentialsInvalid.phone}
-            keyboardType="phone-pad"
-            label="Telefon"
-            onChangeText={(value) => handleChange('phone', value)}
-            onSubmitEditing={() => inputRefs.password.current.focus()}
-            placeholder="Telefon"
-            ref={inputRefs.phone}
+            isInvalid={credentialsInvalid.lastName}
+            label="Nume"
+            onChangeText={(value) => handleChange('lastName', value)}
+            onSubmitEditing={() => inputRefs.firstName.current.focus()}
+            placeholder="Nume"
+            ref={inputRefs.lastName}
             returnKeyType="next"
-            value={user.phone}
+            value={user.lastName}
           />
-        )}
+          <Input
+            blurOnSubmit={false}
+            isInvalid={credentialsInvalid.firstName}
+            label="Prenume"
+            onChangeText={(value) => handleChange('firstName', value)}
+            onSubmitEditing={() => inputRefs.email.current.focus()}
+            placeholder="Prenume"
+            ref={inputRefs.firstName}
+            returnKeyType="next"
+            value={user.firstName}
+          />
+        </>
+      )}
+      <Input
+        blurOnSubmit={false}
+        isInvalid={credentialsInvalid.email}
+        keyboardType="email-address"
+        label="Adresă email"
+        onChangeText={(value) => handleChange('email', value)}
+        onSubmitEditing={() => {
+          if (!isSigningIn) {
+            inputRefs.phone.current.focus();
+          } else {
+            inputRefs.password.current.focus();
+          }
+        }}
+        placeholder="Adresă email"
+        ref={inputRefs.email}
+        returnKeyType="next"
+        value={user.email}
+      />
+      {!isSigningIn && (
         <Input
-          isInvalid={credentialsInvalid.password}
-          label="Parolă"
-          onChangeText={(value) => handleChange('password', value)}
-          placeholder="Parolă"
-          ref={inputRefs.password}
-          secure
-          value={user.password}
+          blurOnSubmit={false}
+          isInvalid={credentialsInvalid.phone}
+          keyboardType="phone-pad"
+          label="Telefon"
+          onChangeText={(value) => handleChange('phone', value)}
+          onSubmitEditing={() => inputRefs.password.current.focus()}
+          placeholder="Telefon"
+          ref={inputRefs.phone}
+          returnKeyType="next"
+          value={user.phone}
         />
-        <View style={styles.buttonContainer}>
-          <Button onPress={() => handleFormSubmit()}>
-            {isSigningIn ? 'Autentificare' : 'Înregistrare'}
-          </Button>
-        </View>
+      )}
+      <Input
+        isInvalid={credentialsInvalid.password}
+        label="Parolă"
+        onChangeText={(value) => handleChange('password', value)}
+        placeholder="Parolă"
+        ref={inputRefs.password}
+        secure
+        value={user.password}
+      />
+      <View style={styles.buttonContainer}>
+        <Button onPress={() => handleFormSubmit()}>
+          {isSigningIn ? 'Autentificare' : 'Înregistrare'}
+        </Button>
       </View>
     </View>
   );
@@ -111,7 +109,7 @@ export default AuthForm;
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing['2'],
   },
   buttonContainer: {
     marginTop: theme.spacing['4'],

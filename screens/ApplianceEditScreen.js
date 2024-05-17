@@ -129,7 +129,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <View>
+      <View style={styles.spacingSmall}>
         <Input
           blurOnSubmit={false}
           errorText={errors.name}
@@ -242,7 +242,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
           isInvalid={!!errors.efficiencyRating}
         />
       </View>
-      <View>
+      <View style={styles.spacingSmall}>
         <Text style={styles.header}>Compoziția materialului (%)</Text>
         <Input
           blurOnSubmit={false}
@@ -324,12 +324,15 @@ const styles = StyleSheet.create({
     gap: theme.spacing['4'],
     padding: theme.spacing['4'],
   },
+  spacingSmall: {
+    gap: theme.spacing['2'],
+  },
   header: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontWeight: 'bold',
   },
   buttonContainer: {
-    marginBottom: theme.spacing['2'],
+    marginTop: theme.spacing['4'],
   },
 });

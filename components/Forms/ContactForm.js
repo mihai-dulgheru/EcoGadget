@@ -1,8 +1,9 @@
 import { Formik } from 'formik';
-import { Alert, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
 import theme from '../../styles/theme';
+import { Input } from '../UI';
 import Button from '../UI/Button';
 import ErrorMessage from './ErrorMessage';
 
@@ -44,8 +45,7 @@ export default function ContactForm({ locationId }) {
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <View style={styles.formContainer}>
           <View>
-            <TextInput
-              style={styles.input}
+            <Input
               onBlur={handleBlur('name')}
               onChangeText={handleChange('name')}
               value={values.name}
@@ -54,8 +54,7 @@ export default function ContactForm({ locationId }) {
             <ErrorMessage name="name" />
           </View>
           <View>
-            <TextInput
-              style={styles.input}
+            <Input
               onBlur={handleBlur('email')}
               onChangeText={handleChange('email')}
               value={values.email}
@@ -65,13 +64,13 @@ export default function ContactForm({ locationId }) {
             <ErrorMessage name="email" />
           </View>
           <View>
-            <TextInput
-              style={[styles.input, styles.textArea]}
+            <Input
               onBlur={handleBlur('message')}
               onChangeText={handleChange('message')}
               value={values.message}
               placeholder="Mesaj"
               multiline
+              numberOfLines={4}
             />
             <ErrorMessage name="message" />
           </View>
@@ -85,17 +84,5 @@ export default function ContactForm({ locationId }) {
 const styles = StyleSheet.create({
   formContainer: {
     gap: theme.spacing['4'],
-  },
-  input: {
-    borderColor: theme.colors.border,
-    borderRadius: theme.borderRadius.md,
-    borderWidth: theme.borderWidth.default,
-    paddingHorizontal: theme.spacing['4'],
-    paddingVertical: theme.spacing['2'],
-  },
-  textArea: {
-    height: theme.spacing['24'],
-    justifyContent: 'flex-start',
-    textAlignVertical: 'top',
   },
 });
