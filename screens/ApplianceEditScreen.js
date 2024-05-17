@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button, Error, Input, Loading, Select } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 import {
@@ -129,7 +130,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <View style={styles.spacingSmall}>
+      <View style={global.spacingSmall}>
         <Input
           blurOnSubmit={false}
           errorText={errors.name}
@@ -242,7 +243,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
           isInvalid={!!errors.efficiencyRating}
         />
       </View>
-      <View style={styles.spacingSmall}>
+      <View style={global.spacingSmall}>
         <Text style={styles.header}>Compoziția materialului (%)</Text>
         <Input
           blurOnSubmit={false}
@@ -323,9 +324,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     gap: theme.spacing['4'],
     padding: theme.spacing['4'],
-  },
-  spacingSmall: {
-    gap: theme.spacing['2'],
   },
   header: {
     ...theme.fontSize.base,

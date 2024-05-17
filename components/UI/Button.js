@@ -1,9 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
-export default function Button({ children, color = 'primary', onPress }) {
+export default function Button({
+  children,
+  color = 'primary',
+  disabled,
+  onPress,
+}) {
   return (
     <Pressable
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,

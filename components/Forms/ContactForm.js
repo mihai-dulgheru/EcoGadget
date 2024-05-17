@@ -1,11 +1,13 @@
 import { Formik } from 'formik';
-import { Alert, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
-import { Input } from '../UI';
 import Button from '../UI/Button';
 import ErrorMessage from './ErrorMessage';
+import Field from './Field';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Numele este obligatoriu'),
@@ -15,7 +17,9 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required('Mesajul este obligatoriu'),
 });
 
-export default function ContactForm({ locationId }) {
+export default function ContactForm({ debug = false, locationId }) {
+  const [status, setStatus] = useState('idle');
+
   const initialValues = {
     name: '',
     email: '',
@@ -24,15 +28,18 @@ export default function ContactForm({ locationId }) {
 
   const onSubmit = async (values, { resetForm }) => {
     try {
+      setStatus('loading');
       await ContactService.sendContactMessage({ ...values, locationId });
-      resetForm();
       Alert.alert('Succes', 'Mesajul a fost trimis cu succes!');
+      resetForm();
+      setStatus('success');
     } catch (error) {
       Alert.alert(
         'Eroare',
         error.message || 'A apărut o eroare la trimiterea mesajului'
       );
       console.error('Submission error', error);
+      setStatus('error');
     }
   };
 
@@ -42,39 +49,39 @@ export default function ContactForm({ locationId }) {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      {({ handleChange, handleBlur, handleSubmit, values }) => (
+      {(props) => (
         <View style={styles.formContainer}>
           <View>
-            <Input
-              onBlur={handleBlur('name')}
-              onChangeText={handleChange('name')}
-              value={values.name}
-              placeholder="Nume"
-            />
+            <Field formikProps={props} name="name" placeholder="Nume" />
             <ErrorMessage name="name" />
           </View>
           <View>
-            <Input
-              onBlur={handleBlur('email')}
-              onChangeText={handleChange('email')}
-              value={values.email}
-              placeholder="Adresa de email"
+            <Field
+              formikProps={props}
               keyboardType="email-address"
+              name="email"
+              placeholder="Adresa de email"
             />
             <ErrorMessage name="email" />
           </View>
           <View>
-            <Input
-              onBlur={handleBlur('message')}
-              onChangeText={handleChange('message')}
-              value={values.message}
-              placeholder="Mesaj"
+            <Field
+              formikProps={props}
               multiline
+              name="message"
               numberOfLines={4}
+              placeholder="Mesaj"
             />
             <ErrorMessage name="message" />
           </View>
-          <Button onPress={handleSubmit}>Trimite</Button>
+          <Button disabled={status === 'loading'} onPress={props.handleSubmit}>
+            Trimite
+          </Button>
+          {debug && (
+            <Text style={global.debugContainer}>
+              {JSON.stringify(props, null, 2)}
+            </Text>
+          )}
         </View>
       )}
     </Formik>

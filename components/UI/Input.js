@@ -12,21 +12,11 @@ import theme from '../../styles/theme';
 const Input = forwardRef(
   (
     {
-      autoFocus = false,
-      blurOnSubmit = true,
       isInvalid = false,
-      keyboardType = 'default',
-      label,
-      multiline,
-      numberOfLines,
-      onBlur,
-      onChangeText,
-      onFocus,
-      onSubmitEditing,
-      placeholder,
-      returnKeyType,
+      label = '',
+      multiline = false,
       secure = false,
-      value,
+      ...props
     },
     ref
   ) => {
@@ -42,21 +32,11 @@ const Input = forwardRef(
         <View style={[styles.inputSection, isInvalid && styles.inputInvalid]}>
           <TextInput
             autoCapitalize="none"
-            autoFocus={autoFocus}
-            blurOnSubmit={blurOnSubmit}
-            keyboardType={keyboardType}
             multiline={multiline}
-            numberOfLines={numberOfLines}
-            onBlur={onBlur}
-            onChangeText={onChangeText}
-            onFocus={onFocus}
-            onSubmitEditing={onSubmitEditing}
-            placeholder={placeholder}
             ref={ref}
-            returnKeyType={returnKeyType}
             secureTextEntry={secureTextEntry}
             style={[styles.input, multiline && styles.textArea]}
-            value={value}
+            {...props}
           />
           {secure && (
             <TouchableOpacity
