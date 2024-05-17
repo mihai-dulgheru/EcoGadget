@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { ContactForm } from '../components';
+import { ContactForm } from '../components/Forms';
 import { Button } from '../components/UI';
 import theme from '../styles/theme';
 

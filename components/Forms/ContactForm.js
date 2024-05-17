@@ -1,8 +1,8 @@
 import { Controller, useForm } from 'react-hook-form';
 import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
-import ContactService from '../services/ContactService';
-import theme from '../styles/theme';
-import { Button } from './UI';
+import ContactService from '../../services/ContactService';
+import theme from '../../styles/theme';
+import { Button } from '../UI';
 
 function ContactForm({ centerId }) {
   const {
