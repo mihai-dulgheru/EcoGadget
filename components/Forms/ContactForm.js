@@ -5,9 +5,8 @@ import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
 import global from '../../styles/global';
 import theme from '../../styles/theme';
-import Button from '../UI/Button';
-import ErrorMessage from './ErrorMessage';
-import Field from './Field';
+import { ErrorMessage, Field } from '../Formik';
+import { Button } from '../UI';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Numele este obligatoriu'),
