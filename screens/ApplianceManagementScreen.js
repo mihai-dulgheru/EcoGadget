@@ -7,8 +7,14 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { ListEmptyComponent } from '../components';
-import { Error, FlatButton, IconButton, Loading, Pill } from '../components/UI';
+import {
+  Error,
+  FlatButton,
+  IconButton,
+  ListEmptyComponent,
+  Loading,
+  Pill,
+} from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
