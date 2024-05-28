@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Avatar } from '../components';
 import { Button, Error, Loading } from '../components/UI';
 import UserService from '../services/UserService';
 import { AuthContext } from '../store/AuthContext';
@@ -53,8 +54,11 @@ export default function UserAccountScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.avatarContainer}>
+        <Avatar accountInfo={accountInfo} size="xl" />
+      </View>
       <View style={styles.content}>
-        <View style={{}}>
+        <View>
           <View style={styles.infoBlock}>
             <Text style={styles.label}>Nume</Text>
             <Text style={styles.value}>{accountInfo.lastName}</Text>
@@ -85,6 +89,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
     padding: theme.spacing['4'],
+  },
+  avatarContainer: {
+    alignItems: 'center',
+    marginBottom: theme.spacing['4'],
   },
   content: {
     backgroundColor: theme.colors.backgroundSecondary,
