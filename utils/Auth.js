@@ -3,8 +3,7 @@ import { Axios } from './Axios';
 async function authenticateUser(type, userCredentials) {
   try {
     const response = await Axios.post(`/accounts/${type}`, userCredentials);
-    const { idToken } = response.data;
-    return idToken;
+    return response.data;
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message);

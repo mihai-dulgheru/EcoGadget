@@ -12,8 +12,8 @@ export default function SignUpScreen() {
   async function handleSignUp(credentials) {
     setIsAuthenticating(true);
     try {
-      const token = await signUp(credentials);
-      await auth.authenticate(token);
+      const user = await signUp(credentials);
+      await auth.authenticate(user);
     } catch (error) {
       Alert.alert('Înregistrare eșuată', error.message);
       setIsAuthenticating(false);

@@ -27,9 +27,9 @@ function Root() {
   useEffect(() => {
     async function prepare() {
       try {
-        const token = await AsyncStorage.getItem('token');
-        if (token) {
-          await auth.authenticate(token);
+        const user = await AsyncStorage.getItem('user');
+        if (user) {
+          await auth.authenticate(user);
         }
       } catch (e) {
         console.warn(e);
