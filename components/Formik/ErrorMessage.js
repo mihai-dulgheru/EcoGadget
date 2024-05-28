@@ -1,10 +1,11 @@
 import { useFormikContext } from 'formik';
+import { get } from 'lodash';
 import { StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
 export default function ErrorMessage({ name }) {
   const { touched, errors } = useFormikContext();
-  const fieldError = touched[name] && errors[name];
+  const fieldError = get(touched, name) && get(errors, name);
 
   if (!fieldError) {
     return null;

@@ -1,109 +1,94 @@
+import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import { useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Button, Error, Input, Loading, Select } from '../components/UI';
+import * as Yup from 'yup';
+import { ErrorMessage, Field } from '../components/Formik';
+import { Button, Error, Loading, Select } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
-import {
-  DisposalOptions,
-  DisposalOptionsTranslations,
-  EfficiencyRatings,
-} from '../utils/Enums';
+import { DisposalOptions, EfficiencyRatings } from '../utils/Enums';
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Numele este obligatoriu'),
+  description: Yup.string().required('Descrierea este obligatorie'),
+  productionYear: Yup.number()
+    .typeError('Anul producției trebuie să fie un număr')
+    .required('Anul producției este obligatoriu'),
+  energyUsage: Yup.number()
+    .typeError('Consum de energie trebuie să fie un număr')
+    .required('Consum de energie este obligatoriu'),
+  CO2Emissions: Yup.number()
+    .typeError('Emisii de CO2 trebuie să fie un număr')
+    .required('Emisiile de CO2 sunt obligatorii'),
+  expectedLifespan: Yup.number()
+    .typeError('Durata de viață trebuie să fie un număr')
+    .required('Durata de viață este obligatorie'),
+  disposalOptions: Yup.string().required(
+    'Opțiunile de eliminare sunt obligatorii'
+  ),
+  efficiencyRating: Yup.string().required(
+    'Ratingul de eficiență este obligatoriu'
+  ),
+  materialComposition: Yup.object().shape({
+    metal: Yup.number()
+      .typeError('Procentul de metal trebuie să fie un număr')
+      .required('Procentul de metal este obligatoriu'),
+    plastic: Yup.number()
+      .typeError('Procentul de plastic trebuie să fie un număr')
+      .required('Procentul de plastic este obligatoriu'),
+    other: Yup.number()
+      .typeError('Procentul altor materiale trebuie să fie un număr')
+      .required('Procentul altor materiale este obligatoriu'),
+  }),
+});
 
 export default function ApplianceEditScreen({ navigation, route }) {
   const defaultAppliance = {
-    name: 'Congelator',
-    description: 'Congelator cu 3 sertare',
-    productionYear: 2018,
-    energyUsage: 300,
-    CO2Emissions: 150,
-    expectedLifespan: 10,
+    name: '',
+    description: '',
+    productionYear: '',
+    energyUsage: '',
+    CO2Emissions: '',
+    expectedLifespan: '',
     disposalOptions: DisposalOptions.RECYCLABLE,
-    efficiencyRating: EfficiencyRatings.A_PLUS_PLUS,
+    efficiencyRating: EfficiencyRatings.A_PLUS_PLUS_PLUS,
     materialComposition: {
-      metal: 60,
-      plastic: 30,
-      other: 10,
+      metal: '',
+      plastic: '',
+      other: '',
     },
   };
-  const [appliance, setAppliance] = useState(
-    !isEmpty(route.params.appliance) ? route.params.appliance : defaultAppliance
-  );
-  const [errors, setErrors] = useState({});
+
   const [status, setStatus] = useState('idle');
+  const AxiosAuth = useAxiosAuth();
+
   const inputRefs = {
-    name: useRef(null),
     description: useRef(null),
     productionYear: useRef(null),
     energyUsage: useRef(null),
     CO2Emissions: useRef(null),
     expectedLifespan: useRef(null),
-    metal: useRef(null),
-    plastic: useRef(null),
-    other: useRef(null),
-  };
-  const AxiosAuth = useAxiosAuth();
-
-  const validateInputs = () => {
-    const newErrors = {};
-    if (!appliance.name) {
-      newErrors.name = 'Numele este obligatoriu.';
-    }
-    if (!appliance.description) {
-      newErrors.description = 'Descrierea este obligatorie.';
-    }
-    if (!appliance.productionYear) {
-      newErrors.productionYear = 'Anul producției este obligatoriu.';
-    }
-    if (!appliance.energyUsage) {
-      newErrors.energyUsage = 'Consum de energie este obligatoriu.';
-    }
-    if (!appliance.CO2Emissions) {
-      newErrors.CO2Emissions = 'Emisiile de CO2 sunt obligatorii.';
-    }
-    if (!appliance.expectedLifespan) {
-      newErrors.expectedLifespan = 'Durata de viață este obligatorie.';
-    }
-    if (!appliance.disposalOptions) {
-      newErrors.disposalOptions = 'Opțiunile de eliminare sunt obligatorii.';
-    }
-    if (!appliance.efficiencyRating) {
-      newErrors.efficiencyRating = 'Ratingul de eficiență este obligatoriu.';
-    }
-    if (!appliance.materialComposition?.metal) {
-      newErrors.metal = 'Procentul de metal este obligatoriu.';
-    }
-    if (!appliance.materialComposition?.plastic) {
-      newErrors.plastic = 'Procentul de plastic este obligatoriu.';
-    }
-    if (!appliance.materialComposition?.other) {
-      newErrors.other = 'Procentul altor materiale este obligatoriu.';
-    }
-    setErrors(newErrors);
-    return isEmpty(newErrors);
+    materialComposition: {
+      metal: useRef(null),
+      plastic: useRef(null),
+      other: useRef(null),
+    },
   };
 
-  const handleSave = async () => {
-    if (!validateInputs()) {
-      Alert.alert(
-        'Eroare',
-        'Vă rugăm să completați toate câmpurile obligatorii.'
-      );
-      return;
-    }
+  const initialValues = !isEmpty(route.params.appliance)
+    ? route.params.appliance
+    : defaultAppliance;
 
+  const handleSave = async (values) => {
     try {
       setStatus('loading');
-      if (appliance._id) {
-        await ApplianceService.updateAppliance(
-          AxiosAuth,
-          appliance._id,
-          appliance
-        );
+      if (values._id) {
+        await ApplianceService.updateAppliance(AxiosAuth, values._id, values);
       } else {
-        await ApplianceService.addAppliance(AxiosAuth, appliance);
+        await ApplianceService.addAppliance(AxiosAuth, values);
       }
       navigation.navigate('ApplianceManagement', { dataUpdatedAt: Date.now() });
     } catch (error) {
@@ -126,193 +111,193 @@ export default function ApplianceEditScreen({ navigation, route }) {
   }
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.contentContainer}
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSave}
     >
-      <View style={global.spacingSmall}>
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.name}
-          isInvalid={!!errors.name}
-          label="Nume"
-          onChangeText={(text) => setAppliance({ ...appliance, name: text })}
-          onSubmitEditing={() => inputRefs.description.current.focus()}
-          placeholder="Introduceți numele electrocasnicului"
-          ref={inputRefs.name}
-          returnKeyType="next"
-          value={appliance.name}
-        />
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.description}
-          isInvalid={!!errors.description}
-          label="Descriere"
-          multiline
-          numberOfLines={4}
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, description: text })
-          }
-          onSubmitEditing={() => inputRefs.productionYear.current.focus()}
-          placeholder="Introduceți o descriere"
-          ref={inputRefs.description}
-          returnKeyType="next"
-          value={appliance.description}
-        />
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.productionYear}
-          isInvalid={!!errors.productionYear}
-          keyboardType="numeric"
-          label="Anul producției"
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, productionYear: text })
-          }
-          onSubmitEditing={() => inputRefs.energyUsage.current.focus()}
-          placeholder="Introduceți anul producției"
-          ref={inputRefs.productionYear}
-          returnKeyType="next"
-          value={appliance.productionYear?.toString()}
-        />
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.energyUsage}
-          isInvalid={!!errors.energyUsage}
-          keyboardType="numeric"
-          label="Consum de energie (kWh/an)"
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, energyUsage: text })
-          }
-          onSubmitEditing={() => inputRefs.CO2Emissions.current.focus()}
-          placeholder="Introduceți consumul de energie"
-          ref={inputRefs.energyUsage}
-          returnKeyType="next"
-          value={appliance.energyUsage?.toString()}
-        />
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.CO2Emissions}
-          isInvalid={!!errors.CO2Emissions}
-          keyboardType="numeric"
-          label="Emisii de CO2 (kg/an)"
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, CO2Emissions: text })
-          }
-          onSubmitEditing={() => inputRefs.expectedLifespan.current.focus()}
-          placeholder="Introduceți emisiile de CO2"
-          ref={inputRefs.CO2Emissions}
-          returnKeyType="next"
-          value={appliance.CO2Emissions?.toString()}
-        />
-        <Input
-          errorText={errors.expectedLifespan}
-          isInvalid={!!errors.expectedLifespan}
-          keyboardType="numeric"
-          label="Durata de viață estimată (ani)"
-          onChangeText={(text) =>
-            setAppliance({ ...appliance, expectedLifespan: text })
-          }
-          placeholder="Introduceți durata de viață estimată"
-          ref={inputRefs.expectedLifespan}
-          value={appliance.expectedLifespan?.toString()}
-        />
-        <Select
-          label="Opțiuni de eliminare"
-          selectedValue={appliance.disposalOptions}
-          onValueChange={(value) =>
-            setAppliance({ ...appliance, disposalOptions: value })
-          }
-          items={Object.keys(DisposalOptions).map((key) => ({
-            label: DisposalOptionsTranslations[key],
-            value: DisposalOptions[key],
-          }))}
-          errorText={errors.disposalOptions}
-          isInvalid={!!errors.disposalOptions}
-        />
-        <Select
-          label="Rating de eficiență"
-          selectedValue={appliance.efficiencyRating}
-          onValueChange={(value) =>
-            setAppliance({ ...appliance, efficiencyRating: value })
-          }
-          items={Object.values(EfficiencyRatings).map((rating) => ({
-            label: rating,
-            value: rating,
-          }))}
-          errorText={errors.efficiencyRating}
-          isInvalid={!!errors.efficiencyRating}
-        />
-      </View>
-      <View style={global.spacingSmall}>
-        <Text style={styles.header}>Compoziția materialului (%)</Text>
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.metal}
-          isInvalid={!!errors.metal}
-          keyboardType="numeric"
-          label="Metal"
-          onChangeText={(text) =>
-            setAppliance({
-              ...appliance,
-              materialComposition: {
-                ...appliance.materialComposition,
-                metal: text,
-              },
-            })
-          }
-          onSubmitEditing={() => inputRefs.plastic.current.focus()}
-          placeholder="Introduceți procentul de metal"
-          ref={inputRefs.metal}
-          returnKeyType="next"
-          value={appliance.materialComposition?.metal?.toString()}
-        />
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.plastic}
-          isInvalid={!!errors.plastic}
-          keyboardType="numeric"
-          label="Plastic"
-          onChangeText={(text) =>
-            setAppliance({
-              ...appliance,
-              materialComposition: {
-                ...appliance.materialComposition,
-                plastic: text,
-              },
-            })
-          }
-          onSubmitEditing={() => inputRefs.other.current.focus()}
-          placeholder="Introduceți procentul de plastic"
-          ref={inputRefs.plastic}
-          returnKeyType="next"
-          value={appliance.materialComposition?.plastic?.toString()}
-        />
-        <Input
-          blurOnSubmit={false}
-          errorText={errors.other}
-          isInvalid={!!errors.other}
-          keyboardType="numeric"
-          label="Altele"
-          onChangeText={(text) =>
-            setAppliance({
-              ...appliance,
-              materialComposition: {
-                ...appliance.materialComposition,
-                other: text,
-              },
-            })
-          }
-          onSubmitEditing={handleSave}
-          placeholder="Introduceți procentul altor materiale"
-          ref={inputRefs.other}
-          returnKeyType="done"
-          value={appliance.materialComposition?.other?.toString()}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button onPress={handleSave}>Salvează electrocasnic</Button>
-      </View>
-    </ScrollView>
+      {(props) => (
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
+          <View style={global.spacingSmall}>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                label="Nume"
+                name="name"
+                onSubmitEditing={() => inputRefs.description.current.focus()}
+                placeholder="Introduceți numele electrocasnicului"
+                ref={inputRefs.name}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="name" />
+            </View>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                label="Descriere"
+                multiline
+                name="description"
+                numberOfLines={4}
+                onSubmitEditing={() => inputRefs.productionYear.current.focus()}
+                placeholder="Introduceți o descriere"
+                ref={inputRefs.description}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="description" />
+            </View>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                keyboardType="numeric"
+                label="Anul producției"
+                name="productionYear"
+                onSubmitEditing={() => inputRefs.energyUsage.current.focus()}
+                placeholder="Introduceți anul producției"
+                ref={inputRefs.productionYear}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="productionYear" />
+            </View>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                keyboardType="numeric"
+                label="Consum de energie (kWh/an)"
+                name="energyUsage"
+                onSubmitEditing={() => inputRefs.CO2Emissions.current.focus()}
+                placeholder="Introduceți consumul de energie"
+                ref={inputRefs.energyUsage}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="energyUsage" />
+            </View>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                keyboardType="numeric"
+                label="Emisii de CO2 (kg/an)"
+                name="CO2Emissions"
+                onSubmitEditing={() =>
+                  inputRefs.expectedLifespan.current.focus()
+                }
+                placeholder="Introduceți emisiile de CO2"
+                ref={inputRefs.CO2Emissions}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="CO2Emissions" />
+            </View>
+            <View>
+              <Field
+                formikProps={props}
+                keyboardType="numeric"
+                label="Durata de viață estimată (ani)"
+                name="expectedLifespan"
+                placeholder="Introduceți durata de viață estimată"
+                ref={inputRefs.expectedLifespan}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="expectedLifespan" />
+            </View>
+            <View>
+              <Select
+                label="Opțiuni de eliminare"
+                selectedValue={props.values.disposalOptions}
+                onValueChange={props.handleChange('disposalOptions')}
+                items={Object.keys(DisposalOptions).map((key) => ({
+                  label: DisposalOptions[key],
+                  value: DisposalOptions[key],
+                }))}
+                errorText={
+                  props.touched.disposalOptions && props.errors.disposalOptions
+                }
+                isInvalid={
+                  props.touched.disposalOptions &&
+                  !!props.errors.disposalOptions
+                }
+              />
+            </View>
+            <View>
+              <Select
+                label="Rating de eficiență"
+                selectedValue={props.values.efficiencyRating}
+                onValueChange={props.handleChange('efficiencyRating')}
+                items={Object.values(EfficiencyRatings).map((rating) => ({
+                  label: rating,
+                  value: rating,
+                }))}
+                errorText={
+                  props.touched.efficiencyRating &&
+                  props.errors.efficiencyRating
+                }
+                isInvalid={
+                  props.touched.efficiencyRating &&
+                  !!props.errors.efficiencyRating
+                }
+              />
+              <ErrorMessage name="efficiencyRating" />
+            </View>
+          </View>
+          <View style={global.spacingSmall}>
+            <Text style={styles.header}>Compoziția materialului (%)</Text>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                keyboardType="numeric"
+                label="Metal"
+                name="materialComposition.metal"
+                onSubmitEditing={() =>
+                  inputRefs.materialComposition.plastic.current.focus()
+                }
+                placeholder="Introduceți procentul de metal"
+                ref={inputRefs.materialComposition.metal}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="materialComposition.metal" />
+            </View>
+            <View>
+              <Field
+                blurOnSubmit={false}
+                formikProps={props}
+                keyboardType="numeric"
+                label="Plastic"
+                name="materialComposition.plastic"
+                onSubmitEditing={() =>
+                  inputRefs.materialComposition.other.current.focus()
+                }
+                placeholder="Introduceți procentul de plastic"
+                ref={inputRefs.materialComposition.plastic}
+                returnKeyType="next"
+              />
+              <ErrorMessage name="materialComposition.plastic" />
+            </View>
+            <View>
+              <Field
+                formikProps={props}
+                keyboardType="numeric"
+                label="Altele"
+                name="materialComposition.other"
+                placeholder="Introduceți procentul altor materiale"
+                ref={inputRefs.materialComposition.other}
+                returnKeyType="done"
+              />
+              <ErrorMessage name="materialComposition.other" />
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button onPress={props.handleSubmit}>Salvează electrocasnic</Button>
+          </View>
+        </ScrollView>
+      )}
+    </Formik>
   );
 }
 

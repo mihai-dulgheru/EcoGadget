@@ -12,14 +12,8 @@ export default function Select({
 }) {
   return (
     <View>
-      <Text style={styles.label}>{label}</Text>
-      <View
-        style={
-          isInvalid
-            ? [styles.pickerContainer, styles.invalid]
-            : styles.pickerContainer
-        }
-      >
+      <Text style={[styles.label, isInvalid && styles.errorText]}>{label}</Text>
+      <View style={[styles.pickerContainer, isInvalid && styles.invalid]}>
         <Picker
           selectedValue={selectedValue}
           onValueChange={onValueChange}
@@ -59,10 +53,10 @@ const styles = StyleSheet.create({
   },
   invalid: {
     borderColor: theme.colors.error,
+    marginBottom: theme.spacing['1'],
   },
   errorText: {
     ...theme.fontSize.sm,
     color: theme.colors.error,
-    marginTop: theme.spacing['1'],
   },
 });
