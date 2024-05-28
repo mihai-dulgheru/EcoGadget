@@ -1,9 +1,13 @@
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import { useRef, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
-import { ErrorMessage, Field } from '../components/Formik';
+import {
+  ErrorMessage,
+  Field,
+  MaterialCompositionField,
+} from '../components/Formik';
 import { Button, Error, Loading, Select } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
@@ -35,13 +39,19 @@ const validationSchema = Yup.object().shape({
   materialComposition: Yup.object().shape({
     metal: Yup.number()
       .typeError('Procentul de metal trebuie să fie un număr')
-      .required('Procentul de metal este obligatoriu'),
+      .required('Procentul de metal este obligatoriu')
+      .min(0, 'Procentul de metal trebuie să fie între 0 și 100')
+      .max(100, 'Procentul de metal trebuie să fie între 0 și 100'),
     plastic: Yup.number()
       .typeError('Procentul de plastic trebuie să fie un număr')
-      .required('Procentul de plastic este obligatoriu'),
+      .required('Procentul de plastic este obligatoriu')
+      .min(0, 'Procentul de plastic trebuie să fie între 0 și 100')
+      .max(100, 'Procentul de plastic trebuie să fie între 0 și 100'),
     other: Yup.number()
       .typeError('Procentul altor materiale trebuie să fie un număr')
-      .required('Procentul altor materiale este obligatoriu'),
+      .required('Procentul altor materiale este obligatoriu')
+      .min(0, 'Procentul altor materiale trebuie să fie între 0 și 100')
+      .max(100, 'Procentul altor materiale trebuie să fie între 0 și 100'),
   }),
 });
 
@@ -245,53 +255,11 @@ export default function ApplianceEditScreen({ navigation, route }) {
               <ErrorMessage name="efficiencyRating" />
             </View>
           </View>
-          <View style={global.spacingSmall}>
-            <Text style={styles.header}>Compoziția materialului (%)</Text>
-            <View>
-              <Field
-                blurOnSubmit={false}
-                formikProps={props}
-                keyboardType="numeric"
-                label="Metal"
-                name="materialComposition.metal"
-                onSubmitEditing={() =>
-                  inputRefs.materialComposition.plastic.current.focus()
-                }
-                placeholder="Introduceți procentul de metal"
-                ref={inputRefs.materialComposition.metal}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="materialComposition.metal" />
-            </View>
-            <View>
-              <Field
-                blurOnSubmit={false}
-                formikProps={props}
-                keyboardType="numeric"
-                label="Plastic"
-                name="materialComposition.plastic"
-                onSubmitEditing={() =>
-                  inputRefs.materialComposition.other.current.focus()
-                }
-                placeholder="Introduceți procentul de plastic"
-                ref={inputRefs.materialComposition.plastic}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="materialComposition.plastic" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                keyboardType="numeric"
-                label="Altele"
-                name="materialComposition.other"
-                placeholder="Introduceți procentul altor materiale"
-                ref={inputRefs.materialComposition.other}
-                returnKeyType="done"
-              />
-              <ErrorMessage name="materialComposition.other" />
-            </View>
-          </View>
+          <MaterialCompositionField
+            formikProps={props}
+            inputRefs={inputRefs.materialComposition}
+            styles={styles}
+          />
           <View style={styles.buttonContainer}>
             <Button onPress={props.handleSubmit}>Salvează electrocasnic</Button>
           </View>
