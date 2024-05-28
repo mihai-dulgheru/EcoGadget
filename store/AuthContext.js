@@ -33,7 +33,7 @@ function AuthContextProvider({ children }) {
       authenticate,
       signOut,
     }),
-    [accessToken]
+    [accessToken, user]
   );
 
   return (

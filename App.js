@@ -1,22 +1,10 @@
-import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { AuthNavigation, MainNavigator } from './navigation';
+import { RoleBasedNavigation } from './navigation';
 import AuthContextProvider, { AuthContext } from './store/AuthContext';
 import AsyncStorage from './utils/AsyncStorage';
-
-function Navigation() {
-  const auth = useContext(AuthContext);
-
-  return (
-    <NavigationContainer>
-      {!auth.isSignedIn && <AuthNavigation />}
-      {auth.isSignedIn && <MainNavigator />}
-    </NavigationContainer>
-  );
-}
 
 SplashScreen.preventAutoHideAsync();
 
@@ -53,7 +41,7 @@ function Root() {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      <Navigation />
+      <RoleBasedNavigation />
     </View>
   );
 }
