@@ -2,10 +2,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import theme from '../../styles/theme';
 
 export default function Button({
-  children,
   color = 'primary',
   disabled,
   onPress,
+  title,
 }) {
   return (
     <Pressable
@@ -18,7 +18,7 @@ export default function Button({
       ]}
     >
       <View>
-        <Text style={styles.buttonText}>{children}</Text>
+        <Text style={styles.buttonText}>{title}</Text>
       </View>
     </Pressable>
   );

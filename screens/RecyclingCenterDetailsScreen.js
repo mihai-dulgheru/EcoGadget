@@ -65,7 +65,7 @@ export default function RecyclingCenterDetailsScreen({ route }) {
           />
         </MapView>
       </View>
-      <Button onPress={openInMaps}>Deschide in Maps</Button>
+      <Button title="Deschide in Maps" onPress={openInMaps} />
       <Text style={styles.title}>{center.name}</Text>
       <Text style={styles.description}>{center.description}</Text>
       <Text style={styles.info}>
@@ -80,10 +80,7 @@ export default function RecyclingCenterDetailsScreen({ route }) {
           </Text>
         ))}
       </View>
-      <Button onPress={openDialScreen}>
-        {'Sună la '}
-        {center.phone}
-      </Button>
+      <Button title={`Sună la ${center.phone}`} onPress={openDialScreen} />
       <Text style={styles.heading}>Contact</Text>
       <ContactForm locationId={center._id} />
       <Text style={styles.heading}>Informații companie</Text>

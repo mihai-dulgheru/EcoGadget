@@ -5,9 +5,10 @@ export default function RecyclingLocationListScreen({ navigation }) {
   return (
     <View>
       <Text>Lista Locațiilor de Reciclare</Text>
-      <Button onPress={() => navigation.navigate('RecyclingLocationEdit')}>
-        Adaugă Locație
-      </Button>
+      <Button
+        title="Adaugă Locație"
+        onPress={() => navigation.navigate('RecyclingLocationEdit')}
+      />
       {/* Lista locațiilor cu butoane pentru editare și ștergere */}
     </View>
   );

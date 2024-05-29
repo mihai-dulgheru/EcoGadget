@@ -153,9 +153,10 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
             <ErrorMessage name="password" />
           </View>
           <View style={styles.buttonContainer}>
-            <Button onPress={props.handleSubmit}>
-              {isSigningIn ? 'Autentificare' : 'Înregistrare'}
-            </Button>
+            <Button
+              title={isSigningIn ? 'Autentificare' : 'Înregistrare'}
+              onPress={props.handleSubmit}
+            />
           </View>
           <Debug debug={debug} formikProps={props} />
         </View>

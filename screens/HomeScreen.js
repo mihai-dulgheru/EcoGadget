@@ -12,10 +12,11 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Bine ai venit!</Text>
-      <Button onPress={() => navigation.navigate('RecyclingLocations')}>
-        Vezi Locațiile de Reciclare
-      </Button>
-      <Button onPress={auth.signOut}>Deconectare</Button>
+      <Button
+        title="Vezi Locațiile de Reciclare"
+        onPress={() => navigation.navigate('RecyclingLocations')}
+      />
+      <Button title="Deconectare" onPress={auth.signOut} />
     </View>
   );
 }

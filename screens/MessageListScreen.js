@@ -6,9 +6,10 @@ export default function MessageListScreen({ navigation }) {
     <View>
       <Text>Lista Mesajelor Utilizatorilor</Text>
       {/* Lista mesajelor cu butoane pentru vizualizare detalii */}
-      <Button onPress={() => navigation.navigate('MessageDetail')}>
-        Detalii Mesaj
-      </Button>
+      <Button
+        title="Detalii Mesaj"
+        onPress={() => navigation.navigate('MessageDetail')}
+      />
     </View>
   );
 }

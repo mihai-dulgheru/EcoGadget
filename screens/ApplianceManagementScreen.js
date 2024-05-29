@@ -114,9 +114,11 @@ export default function ApplianceManagementScreen({ navigation, route }) {
               </Text>
               <View style={styles.actionButtons}>
                 <View style={styles.buttonContainer}>
-                  <Button color="secondary" onPress={() => handleEdit(item)}>
-                    Editează
-                  </Button>
+                  <Button
+                    title="Editează"
+                    color="secondary"
+                    onPress={() => handleEdit(item)}
+                  />
                 </View>
                 <View style={styles.buttonContainer}>
                   <FlatButton

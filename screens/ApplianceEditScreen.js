@@ -261,7 +261,10 @@ export default function ApplianceEditScreen({ navigation, route }) {
             styles={styles}
           />
           <View style={styles.buttonContainer}>
-            <Button onPress={props.handleSubmit}>Salvează electrocasnic</Button>
+            <Button
+              title="Salvează electrocasnic"
+              onPress={props.handleSubmit}
+            />
           </View>
         </ScrollView>
       )}

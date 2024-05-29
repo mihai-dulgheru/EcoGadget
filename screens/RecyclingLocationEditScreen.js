@@ -12,9 +12,10 @@ export default function RecyclingLocationEditScreen({ route }) {
       <Input placeholder="Adresă" />
       <Input placeholder="Telefon" />
       <Input placeholder="Descriere" />
-      <Button onPress={() => {}}>
-        {locationId ? 'Salvează Modificările' : 'Adaugă Locație'}
-      </Button>
+      <Button
+        title={locationId ? 'Salvează Modificările' : 'Adaugă Locație'}
+        onPress={() => {}}
+      />
     </View>
   );
 }

@@ -91,9 +91,11 @@ export default function ContactForm({ debug = false, locationId }) {
             />
             <ErrorMessage name="message" />
           </View>
-          <Button disabled={status === 'loading'} onPress={props.handleSubmit}>
-            Trimite
-          </Button>
+          <Button
+            title="Trimite"
+            disabled={status === 'loading'}
+            onPress={props.handleSubmit}
+          />
           <Debug debug={debug} formikProps={props} />
         </View>
       )}
