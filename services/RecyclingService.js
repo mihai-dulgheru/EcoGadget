@@ -1,5 +1,40 @@
+import * as FileSystem from 'expo-file-system';
 import { Axios } from '../utils/Axios';
 import { calculateDistance } from '../utils/GeoUtils';
+
+async function addRecyclingLocation(axiosInstance, values) {
+  try {
+    const { image, ...rest } = values;
+    // TODO: Change the URL to the correct endpoint
+    const response = await FileSystem.uploadAsync(
+      `${axiosInstance.defaults.baseURL}/recycling-manager/recycling-locations/multipart-upload`,
+      values.image,
+      {
+        headers: {
+          authorization: axiosInstance.defaults.headers.Authorization,
+        },
+        httpMethod: 'PATCH',
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: 'file',
+        parameters: {
+          formData: JSON.stringify(rest),
+        },
+      }
+    );
+    if (response.status !== 200) {
+      throw new Error('An error occurred');
+    }
+    return response.body;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
 
 async function getRecyclingLocations(coords) {
   try {
@@ -30,6 +65,26 @@ async function getRecyclingLocations(coords) {
   }
 }
 
+async function updateRecyclingLocation(axiosInstance, id, values) {
+  try {
+    const response = await axiosInstance.put(
+      `/recycling-manager/recycling-locations/${id}`,
+      values
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
 export default {
+  addRecyclingLocation,
   getRecyclingLocations,
+  updateRecyclingLocation,
 };

@@ -1,6 +1,6 @@
-async function getAccountInfo(AxiosAuth) {
+async function getAccountInfo(axiosInstance) {
   try {
-    const response = await AxiosAuth.get('/accounts/lookup');
+    const response = await axiosInstance.get('/accounts/lookup');
     return response.data;
   } catch (error) {
     if (error.response) {

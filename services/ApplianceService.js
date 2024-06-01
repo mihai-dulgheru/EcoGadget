@@ -1,6 +1,6 @@
-async function addAppliance(AxiosAuth, applianceData) {
+async function addAppliance(axiosInstance, applianceData) {
   try {
-    const response = await AxiosAuth.post('/appliances', applianceData);
+    const response = await axiosInstance.post('/appliances', applianceData);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -13,9 +13,9 @@ async function addAppliance(AxiosAuth, applianceData) {
   }
 }
 
-async function deleteAppliance(AxiosAuth, id) {
+async function deleteAppliance(axiosInstance, id) {
   try {
-    const response = await AxiosAuth.delete(`/appliances/${id}`);
+    const response = await axiosInstance.delete(`/appliances/${id}`);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -28,9 +28,9 @@ async function deleteAppliance(AxiosAuth, id) {
   }
 }
 
-async function getAppliances(AxiosAuth) {
+async function getAppliances(axiosInstance) {
   try {
-    const response = await AxiosAuth.get('/appliances');
+    const response = await axiosInstance.get('/appliances');
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -43,9 +43,12 @@ async function getAppliances(AxiosAuth) {
   }
 }
 
-async function updateAppliance(AxiosAuth, id, applianceData) {
+async function updateAppliance(axiosInstance, id, applianceData) {
   try {
-    const response = await AxiosAuth.put(`/appliances/${id}`, applianceData);
+    const response = await axiosInstance.put(
+      `/appliances/${id}`,
+      applianceData
+    );
     return response.data;
   } catch (error) {
     if (error.response) {

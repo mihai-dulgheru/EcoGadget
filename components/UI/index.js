@@ -2,6 +2,7 @@ export { default as Button } from './Button';
 export { default as Error } from './Error';
 export { default as FlatButton } from './FlatButton';
 export { default as IconButton } from './IconButton';
+export { default as ImagePicker } from './ImagePicker';
 export { default as Input } from './Input';
 export { default as ListEmptyComponent } from './ListEmptyComponent';
 export { default as Loading } from './Loading';

@@ -27,6 +27,7 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
       } catch (error) {
         console.error('Error fetching statistics', error);
         setStatus('error');
+        await auth.signOut();
       }
     };
 

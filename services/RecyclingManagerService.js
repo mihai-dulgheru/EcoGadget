@@ -1,8 +1,8 @@
 import { Axios } from '../utils/Axios';
 
-async function getStatistics(AxiosAuth) {
+async function getStatistics(axiosInstance) {
   try {
-    const response = await AxiosAuth.get('/recycling-manager/statistics');
+    const response = await axiosInstance.get('/recycling-manager/statistics');
     return response.data;
   } catch (error) {
     throw new Error(
