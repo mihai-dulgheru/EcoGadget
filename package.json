@@ -18,7 +18,7 @@
     "@types/react": "~18.2.45",
     "axios": "^1.6.8",
     "date-fns": "^3.6.0",
-    "expo": "^50.0.17",
+    "expo": "~50.0.19",
     "expo-av": "~13.10.6",
     "expo-checkbox": "~2.7.0",
     "expo-constants": "~15.4.6",
