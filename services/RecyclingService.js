@@ -5,23 +5,22 @@ import { calculateDistance } from '../utils/GeoUtils';
 async function addRecyclingLocation(axiosInstance, values) {
   try {
     const { image, ...rest } = values;
-    // TODO: Change the URL to the correct endpoint
     const response = await FileSystem.uploadAsync(
-      `${axiosInstance.defaults.baseURL}/recycling-manager/recycling-locations/multipart-upload`,
+      `${axiosInstance.defaults.baseURL}/recycling-manager/recycling-locations`,
       values.image,
       {
         headers: {
           authorization: axiosInstance.defaults.headers.Authorization,
         },
-        httpMethod: 'PATCH',
+        httpMethod: 'POST',
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        fieldName: 'file',
+        fieldName: 'image',
         parameters: {
           formData: JSON.stringify(rest),
         },
       }
     );
-    if (response.status !== 200) {
+    if (response.status !== 201) {
       throw new Error('An error occurred');
     }
     return response.body;

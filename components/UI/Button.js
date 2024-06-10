@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     borderWidth: theme.borderWidth.default,
     paddingHorizontal: theme.spacing['4'],
     paddingVertical: theme.spacing['2'],
+    width: '100%',
     // elevation: 2,
     // shadowColor: 'black',
     // shadowOffset: { width: 1, height: 1 },

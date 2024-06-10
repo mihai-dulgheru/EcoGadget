@@ -12,6 +12,9 @@ const global = StyleSheet.create({
   spacingSmall: {
     gap: theme.spacing['2'],
   },
+  spacingMedium: {
+    gap: theme.spacing['4'],
+  },
 });
 
 export default global;

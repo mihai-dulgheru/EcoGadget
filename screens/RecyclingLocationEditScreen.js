@@ -1,7 +1,8 @@
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
+import { LocationPicker, ScheduleField } from '../components';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
 import { Button, Error, ImagePicker, Loading } from '../components/UI';
 import RecyclingService from '../services/RecyclingService';
@@ -37,26 +38,6 @@ const validationSchema = Yup.object().shape({
 
 export default function RecyclingLocationEditScreen({ navigation, route }) {
   const defaultLocation = {
-    // TODO: Remove default values
-    // name: '',
-    // address: '',
-    // image: '',
-    // phone: '',
-    // description: '',
-    // schedule: {
-    //   monday: '',
-    //   tuesday: '',
-    //   wednesday: '',
-    //   thursday: '',
-    //   friday: '',
-    //   saturday: '',
-    //   sunday: '',
-    // },
-    // company: '',
-    // cui: '',
-    // regCom: '',
-    // latitude: '',
-    // longitude: '',
     name: 'Recycling Center 1',
     address: '123 Main St, YourCity',
     image: '',
@@ -69,7 +50,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
       wednesday: '9:00 AM - 5:00 PM',
       thursday: '9:00 AM - 5:00 PM',
       friday: '9:00 AM - 5:00 PM',
-      saturday: '10:00 AM - 2:00 PM',
+      saturday: 'Closed',
       sunday: 'Closed',
     },
     company: 'EcoRecycle Inc.',
@@ -116,10 +97,9 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
       } else {
         await RecyclingService.addRecyclingLocation(AxiosAuth, values);
       }
-      // TODO: Refresh the list of locations
-      // navigation.navigate('RecyclingLocationList', {
-      //   dataUpdatedAt: Date.now(),
-      // });
+      navigation.navigate('RecyclingLocationList', {
+        dataUpdatedAt: Date.now(),
+      });
     } catch (error) {
       console.error('Error saving location:', error);
       Alert.alert(
@@ -153,11 +133,14 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={global.spacingSmall}>
-            <ImagePicker
-              onImagePicked={(image) => props.setFieldValue('image', image)}
-              initialImage={props.values.image}
-              style={styles.imagePicker}
-            />
+            <View>
+              <ImagePicker
+                onImagePicked={(image) => props.setFieldValue('image', image)}
+                initialImage={props.values.image}
+                style={styles.imagePicker}
+              />
+              <ErrorMessage name="image" />
+            </View>
             <View>
               <Field
                 blurOnSubmit={false}
@@ -183,6 +166,18 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
                 returnKeyType="next"
               />
               <ErrorMessage name="address" />
+            </View>
+            <View>
+              <LocationPicker
+                initialLatitude={props.values.latitude}
+                initialLongitude={props.values.longitude}
+                address={props.values.address}
+                onLocationPicked={(lat, lng) => {
+                  props.setFieldValue('latitude', lat);
+                  props.setFieldValue('longitude', lng);
+                }}
+                style={styles.map}
+              />
             </View>
             <View>
               <Field
@@ -215,99 +210,65 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               <ErrorMessage name="description" />
             </View>
             <View>
-              <Field
-                formikProps={props}
-                label="Luni"
-                name="schedule.monday"
-                onSubmitEditing={() =>
-                  inputRefs.schedule.tuesday.current.focus()
-                }
-                placeholder="Introduceți programul pentru luni"
-                ref={inputRefs.schedule.monday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.monday" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                label="Marți"
-                name="schedule.tuesday"
-                onSubmitEditing={() =>
-                  inputRefs.schedule.wednesday.current.focus()
-                }
-                placeholder="Introduceți programul pentru marți"
-                ref={inputRefs.schedule.tuesday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.tuesday" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                label="Miercuri"
-                name="schedule.wednesday"
-                onSubmitEditing={() =>
-                  inputRefs.schedule.thursday.current.focus()
-                }
-                placeholder="Introduceți programul pentru miercuri"
-                ref={inputRefs.schedule.wednesday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.wednesday" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                label="Joi"
-                name="schedule.thursday"
-                onSubmitEditing={() =>
-                  inputRefs.schedule.friday.current.focus()
-                }
-                placeholder="Introduceți programul pentru joi"
-                ref={inputRefs.schedule.thursday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.thursday" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                label="Vineri"
-                name="schedule.friday"
-                onSubmitEditing={() =>
-                  inputRefs.schedule.saturday.current.focus()
-                }
-                placeholder="Introduceți programul pentru vineri"
-                ref={inputRefs.schedule.friday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.friday" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                label="Sâmbătă"
-                name="schedule.saturday"
-                onSubmitEditing={() =>
-                  inputRefs.schedule.sunday.current.focus()
-                }
-                placeholder="Introduceți programul pentru sâmbătă"
-                ref={inputRefs.schedule.saturday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.saturday" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                label="Duminică"
-                name="schedule.sunday"
-                placeholder="Introduceți programul pentru duminică"
-                ref={inputRefs.schedule.sunday}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="schedule.sunday" />
+              <Text style={styles.scheduleLabel}>Program</Text>
+              <View style={styles.scheduleContainer}>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Luni"
+                    name="schedule.monday"
+                  />
+                  <ErrorMessage name="schedule.monday" />
+                </View>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Marți"
+                    name="schedule.tuesday"
+                  />
+                  <ErrorMessage name="schedule.tuesday" />
+                </View>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Miercuri"
+                    name="schedule.wednesday"
+                  />
+                  <ErrorMessage name="schedule.wednesday" />
+                </View>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Joi"
+                    name="schedule.thursday"
+                  />
+                  <ErrorMessage name="schedule.thursday" />
+                </View>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Vineri"
+                    name="schedule.friday"
+                  />
+                  <ErrorMessage name="schedule.friday" />
+                </View>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Sâmbătă"
+                    name="schedule.saturday"
+                  />
+                  <ErrorMessage name="schedule.saturday" />
+                </View>
+                <View>
+                  <ScheduleField
+                    formikProps={props}
+                    label="Duminică"
+                    name="schedule.sunday"
+                  />
+                  <ErrorMessage name="schedule.sunday" />
+                </View>
+              </View>
             </View>
             <View>
               <Field
@@ -345,38 +306,11 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               />
               <ErrorMessage name="regCom" />
             </View>
-            {/* TODO: Add location picker (map view) */}
-            <View>
-              <Field
-                formikProps={props}
-                keyboardType="numeric"
-                label="Latitudine"
-                name="latitude"
-                onSubmitEditing={() => inputRefs.longitude.current.focus()}
-                placeholder="Introduceți latitudinea locației"
-                ref={inputRefs.latitude}
-                returnKeyType="next"
-              />
-              <ErrorMessage name="latitude" />
-            </View>
-            <View>
-              <Field
-                formikProps={props}
-                keyboardType="numeric"
-                label="Longitudine"
-                name="longitude"
-                placeholder="Introduceți longitudinea locației"
-                ref={inputRefs.longitude}
-                returnKeyType="done"
-              />
-              <ErrorMessage name="longitude" />
-            </View>
           </View>
           <View style={styles.buttonContainer}>
             <Button title="Salvează locația" onPress={props.handleSubmit} />
           </View>
-          {/* TODO: Remove debug component */}
-          <Debug debug formikProps={props} />
+          <Debug debug={false} formikProps={props} />
         </ScrollView>
       )}
     </Formik>
@@ -396,6 +330,18 @@ const styles = StyleSheet.create({
     padding: theme.spacing['4'],
   },
   buttonContainer: {
-    marginTop: theme.spacing['4'],
+    marginVertical: theme.spacing['4'],
+  },
+  map: {
+    width: '100%',
+    height: 300,
+  },
+  scheduleContainer: {
+    gap: theme.spacing['2'],
+  },
+  scheduleLabel: {
+    ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
+    fontWeight: '500',
   },
 });
