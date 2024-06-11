@@ -22,6 +22,7 @@ module.exports = {
   rules: {
     'comma-dangle': ['off'],
     'func-names': ['off'],
+    'function-paren-newline': ['off'],
     'global-require': ['off'],
     'implicit-arrow-linebreak': ['off'],
     'import/no-extraneous-dependencies': ['off'],

@@ -313,7 +313,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
           <View style={styles.buttonContainer}>
             <Button title="Salvează locația" onPress={props.handleSubmit} />
           </View>
-          <Debug debug={false} formikProps={props} />
+          <Debug formikProps={props} />
         </ScrollView>
       )}
     </Formik>
