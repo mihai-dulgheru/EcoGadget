@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import { Axios } from '../utils/Axios';
 import { calculateDistance } from '../utils/GeoUtils';
+import { hasImageChanged } from '../utils/ImagePicker';
 
 async function addRecyclingLocation(axiosInstance, values) {
   try {
@@ -66,10 +67,40 @@ async function getRecyclingLocations(coords) {
 
 async function updateRecyclingLocation(axiosInstance, id, values) {
   try {
+    const { image, ...rest } = values;
+    if (hasImageChanged(image)) {
+      const response = await FileSystem.uploadAsync(
+        `${axiosInstance.defaults.baseURL}/recycling-manager/recycling-locations/${id}`,
+        image,
+        {
+          headers: {
+            authorization: axiosInstance.defaults.headers.Authorization,
+          },
+          httpMethod: 'PUT',
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: 'image',
+          parameters: {
+            formData: JSON.stringify(rest),
+          },
+        }
+      );
+      if (response.status !== 200) {
+        throw new Error('An error occurred');
+      }
+      return response.body;
+    }
     const response = await axiosInstance.put(
       `/recycling-manager/recycling-locations/${id}`,
-      values
+      values,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
+    if (response.status !== 200) {
+      throw new Error('An error occurred');
+    }
     return response.data;
   } catch (error) {
     if (error.response) {

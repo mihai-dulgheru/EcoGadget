@@ -1,5 +1,18 @@
 import { Axios } from '../utils/Axios';
 
+async function deleteRecyclingLocation(axiosInstance, id) {
+  try {
+    const response = await axiosInstance.delete(
+      `/recycling-manager/recycling-locations/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Error deleting recycling location'
+    );
+  }
+}
+
 async function getStatistics(axiosInstance) {
   try {
     const response = await axiosInstance.get('/recycling-manager/statistics');
@@ -11,9 +24,11 @@ async function getStatistics(axiosInstance) {
   }
 }
 
-async function getRecyclingLocations() {
+async function getRecyclingLocations(axiosInstance) {
   try {
-    const response = await Axios.get('/recycling-manager/recycling-locations');
+    const response = await axiosInstance.get(
+      '/recycling-manager/recycling-locations'
+    );
     return response.data;
   } catch (error) {
     throw new Error(
@@ -32,7 +47,8 @@ async function getMessages() {
 }
 
 export default {
-  getStatistics,
-  getRecyclingLocations,
+  deleteRecyclingLocation,
   getMessages,
+  getRecyclingLocations,
+  getStatistics,
 };

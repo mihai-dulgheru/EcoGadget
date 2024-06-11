@@ -1,4 +1,5 @@
 import { Formik } from 'formik';
+import { isEmpty } from 'lodash';
 import { useRef, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
@@ -38,12 +39,11 @@ const validationSchema = Yup.object().shape({
 
 export default function RecyclingLocationEditScreen({ navigation, route }) {
   const defaultLocation = {
-    name: 'Recycling Center 1',
-    address: '123 Main St, YourCity',
+    name: '',
+    address: '',
     image: '',
-    phone: '+1234567890',
-    description:
-      'This is a state-of-the-art facility that specializes in recycling electronics and hazardous materials.',
+    phone: '',
+    description: '',
     schedule: {
       monday: '9:00 AM - 5:00 PM',
       tuesday: '9:00 AM - 5:00 PM',
@@ -53,11 +53,11 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
       saturday: 'Closed',
       sunday: 'Closed',
     },
-    company: 'EcoRecycle Inc.',
-    cui: 'RO12345678',
-    regCom: 'J12/3456/2009',
-    latitude: 44.43301523279083,
-    longitude: 26.040600654474453,
+    company: '',
+    cui: '',
+    regCom: '',
+    latitude: '',
+    longitude: '',
   };
 
   const [status, setStatus] = useState('idle');
@@ -83,7 +83,9 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
     longitude: useRef(null),
   };
 
-  const initialValues = route.params?.location || defaultLocation;
+  const initialValues = !isEmpty(route.params.location)
+    ? route.params.location
+    : defaultLocation;
 
   const handleSave = async (values) => {
     try {
@@ -132,7 +134,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <View style={global.spacingSmall}>
+          <View style={global.spacingMedium}>
             <View>
               <ImagePicker
                 onImagePicked={(image) => props.setFieldValue('image', image)}
@@ -183,6 +185,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               <Field
                 blurOnSubmit={false}
                 formikProps={props}
+                keyboardType="phone-pad"
                 label="Telefon"
                 name="phone"
                 onSubmitEditing={() => inputRefs.description.current.focus()}
@@ -322,22 +325,22 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
   },
-  imagePicker: {
-    gap: theme.spacing['4'],
-  },
   contentContainer: {
     gap: theme.spacing['4'],
     padding: theme.spacing['4'],
   },
+  imagePicker: {
+    gap: theme.spacing['4'],
+  },
   buttonContainer: {
-    marginVertical: theme.spacing['4'],
+    marginTop: theme.spacing['4'],
   },
   map: {
+    height: theme.spacing['80'],
     width: '100%',
-    height: 300,
   },
   scheduleContainer: {
-    gap: theme.spacing['2'],
+    gap: theme.spacing['4'],
   },
   scheduleLabel: {
     ...theme.fontSize.lg,

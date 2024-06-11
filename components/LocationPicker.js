@@ -78,10 +78,16 @@ export default function LocationPicker({
   return (
     <View style={styles.mapContainer}>
       <MapView
-        style={[styles.map, style]}
-        region={region}
         onPress={handleMapPress}
         onRegionChangeComplete={setRegion}
+        region={region}
+        showsBuildings={false}
+        showsCompass={false}
+        showsIndoors={false}
+        showsMyLocationButton={false}
+        showsPointsOfInterest={false}
+        showsScale={false}
+        style={[styles.map, style]}
       >
         {marker.latitude && marker.longitude && <Marker coordinate={marker} />}
       </MapView>

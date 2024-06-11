@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button, Error, Loading } from '../components/UI';
 import RecyclingManagerService from '../services/RecyclingManagerService';
 import { AuthContext } from '../store/AuthContext';
+import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
 export default function RecyclingManagerDashboardScreen({ navigation }) {
@@ -65,32 +66,38 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
           <Text key={message._id}>{message.message}</Text>
         ))}
       </View>
-      <Button
-        title="Lista locațiilor de reciclare"
-        onPress={() => navigation.navigate('RecyclingLocationList')}
-      />
-      <Button
-        title="Lista mesajelor utilizatorilor"
-        onPress={() => navigation.navigate('MessageList')}
-      />
-      <Button title="Deconectare" onPress={auth.signOut} />
+      <View style={styles.actions}>
+        <Button
+          title="Lista locațiilor de reciclare"
+          onPress={() => navigation.navigate('RecyclingLocationList')}
+        />
+        <Button
+          title="Lista mesajelor utilizatorilor"
+          onPress={() => navigation.navigate('MessageList')}
+        />
+        <Button title="Deconectare" onPress={auth.signOut} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
+    padding: theme.spacing[4],
   },
   title: {
-    fontSize: 24,
+    ...theme.fontSize['2xl'],
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: theme.spacing[4],
   },
   stat: {
-    fontSize: 18,
-    marginBottom: 10,
+    ...theme.fontSize.lg,
+    marginBottom: theme.spacing[2],
+  },
+  actions: {
+    gap: theme.spacing[2],
+    marginTop: theme.spacing[4],
   },
 });

@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
   },
   locationImage: {
     borderRadius: theme.borderRadius.md,
-    height: 'full',
     width: theme.spacing['32'],
   },
   locationInfo: {
