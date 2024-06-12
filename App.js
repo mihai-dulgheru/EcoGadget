@@ -1,7 +1,15 @@
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  focusManager,
+} from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
+import { useAppState } from './hooks/useAppState';
+import { useOnlineManager } from './hooks/useOnlineManager';
 import { RoleBasedNavigation } from './navigation';
 import AuthContextProvider, { AuthContext } from './store/AuthContext';
 import AsyncStorage from './utils/AsyncStorage';
@@ -46,14 +54,29 @@ function Root() {
   );
 }
 
+function onAppStateChange(status) {
+  // React Query already supports in web browser refetch on window focus by default
+  if (Platform.OS !== 'web') {
+    focusManager.setFocused(status === 'active');
+  }
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: 2 } },
+});
+
 export default function App() {
+  useAppState(onAppStateChange);
+  useOnlineManager();
+  useReactQueryDevTools(queryClient);
+
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
         <Root />
       </AuthContextProvider>
       <StatusBar style="auto" />
-    </>
+    </QueryClientProvider>
   );
 }
 

@@ -55,23 +55,23 @@ const validationSchema = Yup.object().shape({
   }),
 });
 
-export default function ApplianceEditScreen({ navigation, route }) {
-  const defaultAppliance = {
-    name: '',
-    description: '',
-    productionYear: '',
-    energyUsage: '',
-    CO2Emissions: '',
-    expectedLifespan: '',
-    disposalOptions: DisposalOptions.RECYCLABLE,
-    efficiencyRating: EfficiencyRatings.A_PLUS_PLUS_PLUS,
-    materialComposition: {
-      metal: '',
-      plastic: '',
-      other: '',
-    },
-  };
+const defaultAppliance = {
+  name: '',
+  description: '',
+  productionYear: '',
+  energyUsage: '',
+  CO2Emissions: '',
+  expectedLifespan: '',
+  disposalOptions: DisposalOptions.RECYCLABLE,
+  efficiencyRating: EfficiencyRatings.A_PLUS_PLUS_PLUS,
+  materialComposition: {
+    metal: '',
+    plastic: '',
+    other: '',
+  },
+};
 
+export default function ApplianceEditScreen({ navigation, route }) {
   const [status, setStatus] = useState('idle');
   const AxiosAuth = useAxiosAuth();
 

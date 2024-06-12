@@ -15,7 +15,7 @@ export default function SignInScreen() {
       const user = await signInWithPassword(credentials);
       await auth.authenticate(user);
     } catch (error) {
-      Alert.alert('Autentificare eșuată!', error.message);
+      Alert.alert('Autentificare eșuată', error.message);
       setIsAuthenticating(false);
     }
   }

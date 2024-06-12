@@ -29,9 +29,8 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
       <FlatButton
         extraStyles={{ buttonText: styles.buttonText }}
         onPress={() => switchAuthModeHandler()}
-      >
-        {isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
-      </FlatButton>
+        title={isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
+      />
     </ScrollView>
   );
 }

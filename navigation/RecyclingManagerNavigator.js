@@ -20,22 +20,22 @@ export default function RecyclingManagerNavigator() {
       <Stack.Screen
         name="RecyclingLocationList"
         component={RecyclingLocationListScreen}
-        options={{ title: 'Locații de Reciclare' }}
+        options={{ title: 'Locații de reciclare' }}
       />
       <Stack.Screen
         name="RecyclingLocationEdit"
         component={RecyclingLocationEditScreen}
-        options={{ title: 'Editare Locație' }}
+        options={{ title: 'Editare locație' }}
       />
       <Stack.Screen
         name="MessageList"
         component={MessageListScreen}
-        options={{ title: 'Mesaje Utilizatori' }}
+        options={{ title: 'Mesaje utilizatori' }}
       />
       <Stack.Screen
         name="MessageDetail"
         component={MessageDetailScreen}
-        options={{ title: 'Detalii Mesaj' }}
+        options={{ title: 'Detalii mesaj' }}
       />
     </Stack.Navigator>
   );

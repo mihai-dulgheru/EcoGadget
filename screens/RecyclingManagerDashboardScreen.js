@@ -1,13 +1,18 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useContext, useEffect, useMemo } from 'react';
 import {
   Animated,
+  RefreshControl,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { Error, IconButton, Loading } from '../components/UI';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
+import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import RecyclingManagerService from '../services/RecyclingManagerService';
 import { AuthContext } from '../store/AuthContext';
 import theme from '../styles/theme';
@@ -29,48 +34,56 @@ function DashboardCard({ icon, title, count, onPress, fadeAnim }) {
 
 export default function RecyclingManagerDashboardScreen({ navigation }) {
   const auth = useContext(AuthContext);
-  const [stats, setStats] = useState({
-    recyclingLocationCount: 0,
-    messageCount: 0,
-  });
-  const [status, setStatus] = useState('loading');
   const AxiosAuth = useAxiosAuth();
+  const fadeAnim = useMemo(() => new Animated.Value(0), []);
 
-  const fadeAnim = useState(new Animated.Value(0))[0];
+  const fetchStatistics = useCallback(async () => {
+    const statistics = await RecyclingManagerService.getStatistics(AxiosAuth);
+    return statistics;
+  }, [AxiosAuth]);
 
-  const fetchData = useCallback(async () => {
-    try {
-      setStatus('loading');
-      const statistics = await RecyclingManagerService.getStatistics(AxiosAuth);
-      setStats(statistics);
-      setStatus('success');
+  const {
+    data: stats,
+    error,
+    isPending,
+    isSuccess,
+    refetch,
+  } = useQuery({
+    queryKey: ['statistics'],
+    queryFn: fetchStatistics,
+  });
 
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  useRefreshOnFocus(refetch);
+
+  useEffect(() => {
+    if (isSuccess) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 1000,
         useNativeDriver: true,
       }).start();
-    } catch (error) {
-      console.error('Error fetching statistics', error);
-      setStatus('error');
-      await auth.signOut();
     }
-  }, [AxiosAuth, auth, fadeAnim]);
+  }, [fadeAnim, isSuccess]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  if (status === 'loading') {
+  if (isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la încărcarea datelor" />;
+  if (error) {
+    return <Error message={error.message} />;
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefetchingByUser}
+          onRefresh={refetchByUser}
+        />
+      }
+    >
       <View style={styles.header}>
         <Text style={styles.title}>Dashboard</Text>
         <IconButton
@@ -83,18 +96,18 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
       <DashboardCard
         icon="trash-bin"
         title="Locații de reciclare"
-        count={stats.recyclingLocationCount}
+        count={stats?.recyclingLocationCount}
         onPress={() => navigation.navigate('RecyclingLocationList')}
         fadeAnim={fadeAnim}
       />
       <DashboardCard
         icon="chatbox-ellipses"
         title="Mesaje utilizatori"
-        count={stats.messageCount}
+        count={stats?.messageCount}
         onPress={() => navigation.navigate('MessageList')}
         fadeAnim={fadeAnim}
       />
-    </View>
+    </ScrollView>
   );
 }
 

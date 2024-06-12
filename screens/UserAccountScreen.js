@@ -30,7 +30,7 @@ export default function UserAccountScreen() {
   }, []);
 
   const handleLogout = () => {
-    Alert.alert('Deconectare', 'Sunteți sigur că doriți să vă deconectați?', [
+    Alert.alert('Deconectare', 'Ești sigur că vrei să te deconectezi?', [
       {
         text: 'Anulare',
         style: 'cancel',

@@ -15,14 +15,14 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required('Mesajul este obligatoriu'),
 });
 
+const initialValues = {
+  name: '',
+  email: '',
+  message: '',
+};
+
 export default function ContactForm({ debug = false, locationId }) {
   const [status, setStatus] = useState('idle');
-
-  const initialValues = {
-    name: '',
-    email: '',
-    message: '',
-  };
 
   const inputRefs = {
     name: useRef(null),
@@ -34,7 +34,7 @@ export default function ContactForm({ debug = false, locationId }) {
     try {
       setStatus('loading');
       await ContactService.sendContactMessage({ ...values, locationId });
-      Alert.alert('Succes', 'Mesajul a fost trimis cu succes!');
+      Alert.alert('Succes', 'Mesajul a fost trimis cu succes');
       resetForm();
       setStatus('success');
     } catch (error) {

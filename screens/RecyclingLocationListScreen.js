@@ -1,9 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import {
   Alert,
   FlatList,
   Image,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -16,74 +18,116 @@ import {
   ListEmptyComponent,
   Loading,
 } from '../components/UI';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
+import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import RecyclingManagerService from '../services/RecyclingManagerService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function RecyclingLocationListScreen({ navigation, route }) {
-  const { dataUpdatedAt } = route.params || {};
-  const [locations, setLocations] = useState([]);
-  const [status, setStatus] = useState('loading');
+export default function RecyclingLocationListScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
 
-  async function fetchLocations() {
-    try {
-      setStatus('loading');
-      const data =
-        await RecyclingManagerService.getRecyclingLocations(AxiosAuth);
-      setLocations(data);
-      setStatus('success');
-    } catch (error) {
-      console.error('Error loading locations:', error);
-      setStatus('error');
-    }
-  }
+  const fetchLocations = useCallback(async () => {
+    const locations =
+      await RecyclingManagerService.getRecyclingLocations(AxiosAuth);
+    return locations;
+  }, [AxiosAuth]);
 
-  useEffect(() => {
-    fetchLocations();
-  }, [dataUpdatedAt]);
+  const {
+    data: locations,
+    error,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ['locations'],
+    queryFn: fetchLocations,
+  });
 
-  const handleAddButtonPress = () => {
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  useRefreshOnFocus(refetch);
+
+  const deleteLocation = useCallback(
+    async (id) => {
+      await RecyclingManagerService.deleteRecyclingLocation(AxiosAuth, id);
+    },
+    [AxiosAuth]
+  );
+
+  const mutation = useMutation({
+    mutationFn: deleteLocation,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['locations']);
+    },
+  });
+
+  const handleAddButtonPress = useCallback(() => {
     navigation.navigate('RecyclingLocationEdit', { location: {} });
-  };
+  }, [navigation]);
 
-  const handleEdit = (location) => {
-    navigation.navigate('RecyclingLocationEdit', { location });
-  };
+  const handleEdit = useCallback(
+    (location) => {
+      navigation.navigate('RecyclingLocationEdit', { location });
+    },
+    [navigation]
+  );
 
-  const handleDelete = async (id) => {
-    Alert.alert(
-      'Confirmă ștergerea',
-      'Ești sigur că vrei să ștergi această locație?',
-      [
-        { text: 'Anulează', style: 'cancel' },
-        {
-          text: 'Șterge',
-          onPress: async () => {
-            try {
-              setStatus('loading');
-              await RecyclingManagerService.deleteRecyclingLocation(
-                AxiosAuth,
-                id
-              );
-              await fetchLocations();
-              setStatus('success');
-            } catch (error) {
-              console.error('Error deleting location:', error);
-              setStatus('error');
-            }
+  const handleDelete = useCallback(
+    (id) => {
+      Alert.alert(
+        'Confirmă ștergerea',
+        'Ești sigur că vrei să ștergi această locație?',
+        [
+          { text: 'Anulează', style: 'cancel' },
+          {
+            text: 'Șterge',
+            onPress: () => mutation.mutateAsync(id),
           },
-        },
-      ]
-    );
-  };
+        ]
+      );
+    },
+    [mutation]
+  );
 
-  if (status === 'loading') {
+  const renderItem = useCallback(
+    ({ item }) => (
+      <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
+        <View style={styles.locationItem}>
+          <Image
+            defaultSource={require('../assets/images/placeholder.jpg')}
+            source={{ uri: item.image }}
+            style={styles.locationImage}
+          />
+          <Text style={styles.locationTitle}>{item.name}</Text>
+          <RecyclingScheduleView schedule={item.schedule} />
+          <View style={styles.addressContainer}>
+            <Ionicons
+              name="location"
+              color={theme.colors.textSecondary}
+              size={24}
+            />
+            <Text style={styles.addressText}>{item.address}</Text>
+          </View>
+          <View style={styles.locationDeleteButton}>
+            <IconButton
+              icon="trash"
+              color={theme.colors.textSecondary}
+              size={24}
+              onPress={() => handleDelete(item._id)}
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    ),
+    [handleDelete, handleEdit]
+  );
+
+  if (isPending || mutation.isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la încărcarea locațiilor" />;
+  if (error) {
+    return <Error message={error.message} />;
   }
 
   return (
@@ -101,35 +145,13 @@ export default function RecyclingLocationListScreen({ navigation, route }) {
         data={locations}
         keyExtractor={(item) => item._id.toString()}
         ListEmptyComponent={ListEmptyComponent}
-        renderItem={({ item }) => (
-          <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
-            <View style={styles.locationItem}>
-              <Image
-                defaultSource={require('../assets/images/placeholder.jpg')}
-                source={{ uri: item.image }}
-                style={styles.locationImage}
-              />
-              <Text style={styles.locationTitle}>{item.name}</Text>
-              <RecyclingScheduleView schedule={item.schedule} />
-              <View style={styles.addressContainer}>
-                <Ionicons
-                  name="location"
-                  color={theme.colors.textSecondary}
-                  size={24}
-                />
-                <Text style={styles.addressText}>{item.address}</Text>
-              </View>
-              <View style={styles.locationDeleteButton}>
-                <IconButton
-                  icon="trash"
-                  color={theme.colors.textSecondary}
-                  size={24}
-                  onPress={() => handleDelete(item._id)}
-                />
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        )}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingByUser}
+            onRefresh={refetchByUser}
+          />
+        }
+        renderItem={renderItem}
       />
     </View>
   );

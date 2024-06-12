@@ -35,6 +35,7 @@ module.exports = {
     'react/jsx-curly-newline': ['off'],
     'react/jsx-filename-extension': ['off'],
     'react/jsx-props-no-spreading': ['error', { custom: 'ignore' }],
+    'react/jsx-wrap-multilines': ['off'],
     'react/prop-types': ['off'],
     'react/react-in-jsx-scope': ['off'],
     'react/style-prop-object': ['off'],

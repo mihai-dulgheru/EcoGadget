@@ -91,7 +91,9 @@ async function updateRecyclingLocation(axiosInstance, id, values) {
     }
     const response = await axiosInstance.put(
       `/recycling-manager/recycling-locations/${id}`,
-      values,
+      {
+        formData: JSON.stringify(rest),
+      },
       {
         headers: {
           'Content-Type': 'multipart/form-data',

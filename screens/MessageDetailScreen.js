@@ -1,9 +1,10 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useCallback } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
-import { Button, Error, Loading } from '../components/UI';
+import { Button, Loading } from '../components/UI';
 import RecyclingManagerService from '../services/RecyclingManagerService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
@@ -12,43 +13,51 @@ const validationSchema = Yup.object().shape({
   response: Yup.string().trim().required('Răspunsul este obligatoriu'),
 });
 
+const initialValues = {
+  response: '',
+};
+
 export default function MessageDetailScreen({ route, navigation }) {
   const { message } = route.params || {};
-  const [status, setStatus] = useState('idle');
   const AxiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
 
-  const initialValues = {
-    response: '',
-  };
-
-  const onSubmit = async (values, { resetForm }) => {
-    try {
-      setStatus('loading');
+  const sendMessageResponse = useCallback(
+    async (response) => {
       await RecyclingManagerService.sendMessageResponse(
         AxiosAuth,
         message._id,
-        values.response
+        response
       );
-      Alert.alert('Succes', 'Răspunsul a fost trimis cu succes!');
-      resetForm();
-      setStatus('success');
+    },
+    [AxiosAuth, message._id]
+  );
+
+  const mutation = useMutation({
+    mutationFn: sendMessageResponse,
+    onSuccess: () => {
+      Alert.alert('Succes', 'Răspunsul a fost trimis cu succes');
+      queryClient.invalidateQueries(['messages']);
       navigation.navigate('MessageList', { dataUpdatedAt: Date.now() });
-    } catch (error) {
+    },
+    onError: (error) => {
       Alert.alert(
         'Eroare',
         error.message || 'A apărut o eroare la trimiterea răspunsului'
       );
-      console.error('Error sending response:', error);
-      setStatus('error');
-    }
-  };
+    },
+  });
 
-  if (status === 'loading') {
+  const handleSubmit = useCallback(
+    async (values, { resetForm }) => {
+      await mutation.mutateAsync(values.response);
+      resetForm();
+    },
+    [mutation]
+  );
+
+  if (mutation.isPending) {
     return <Loading />;
-  }
-
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la trimiterea răspunsului" />;
   }
 
   return (
@@ -76,25 +85,26 @@ export default function MessageDetailScreen({ route, navigation }) {
         ) : (
           <Formik
             initialValues={initialValues}
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            {({ handleSubmit, ...props }) => (
+            {(props) => (
               <View style={styles.formContainer}>
-                <Field
-                  blurOnSubmit={false}
-                  formikProps={props}
-                  multiline
-                  name="response"
-                  numberOfLines={4}
-                  placeholder="Introduceți răspunsul dvs. aici"
-                  style={styles.textInput}
-                />
-                <ErrorMessage name="response" />
+                <View>
+                  <Field
+                    formikProps={props}
+                    multiline
+                    name="response"
+                    numberOfLines={4}
+                    placeholder="Introduceți răspunsul dvs. aici"
+                    style={styles.textInput}
+                  />
+                  <ErrorMessage name="response" />
+                </View>
                 <Button
+                  disabled={mutation.isPending}
+                  onPress={props.handleSubmit}
                   title="Trimite Răspunsul"
-                  onPress={handleSubmit}
-                  disabled={status === 'loading'}
                 />
                 <Debug formikProps={props} />
               </View>
@@ -135,7 +145,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing['2'],
   },
   formContainer: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing['8'],
   },
   textInput: {
     ...theme.fontSize.base,

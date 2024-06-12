@@ -1,11 +1,13 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { LocationPicker, ScheduleField } from '../components';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
-import { Button, Error, ImagePicker, Loading } from '../components/UI';
+import { Button, ImagePicker, LoadingOverlay } from '../components/UI';
+import { WEEKDAY_TRANSLATIONS } from '../constants';
 import RecyclingService from '../services/RecyclingService';
 import global from '../styles/global';
 import theme from '../styles/theme';
@@ -37,31 +39,31 @@ const validationSchema = Yup.object().shape({
     .required('Longitudinea este obligatorie'),
 });
 
-export default function RecyclingLocationEditScreen({ navigation, route }) {
-  const defaultLocation = {
-    name: '',
-    address: '',
-    image: '',
-    phone: '',
-    description: '',
-    schedule: {
-      monday: '9:00 AM - 5:00 PM',
-      tuesday: '9:00 AM - 5:00 PM',
-      wednesday: '9:00 AM - 5:00 PM',
-      thursday: '9:00 AM - 5:00 PM',
-      friday: '9:00 AM - 5:00 PM',
-      saturday: 'Closed',
-      sunday: 'Closed',
-    },
-    company: '',
-    cui: '',
-    regCom: '',
-    latitude: '',
-    longitude: '',
-  };
+const defaultLocation = {
+  name: 'Test',
+  address: 'Bulevardul 1 Decembrie 1918, nr. 12, Cluj-Napoca',
+  image: '',
+  phone: '0723456789',
+  description: 'Descriere test',
+  schedule: {
+    monday: '9:00 AM - 5:00 PM',
+    tuesday: '9:00 AM - 5:00 PM',
+    wednesday: '9:00 AM - 5:00 PM',
+    thursday: '9:00 AM - 5:00 PM',
+    friday: '9:00 AM - 5:00 PM',
+    saturday: 'Closed',
+    sunday: 'Closed',
+  },
+  company: 'Test Company',
+  cui: '12345678',
+  regCom: 'J12/1234/2021',
+  latitude: 46.770807,
+  longitude: 23.5720542,
+};
 
-  const [status, setStatus] = useState('idle');
+export default function RecyclingLocationEditScreen({ navigation, route }) {
   const AxiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
 
   const inputRefs = {
     address: useRef(null),
@@ -83,13 +85,15 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
     longitude: useRef(null),
   };
 
-  const initialValues = !isEmpty(route.params.location)
-    ? route.params.location
-    : defaultLocation;
+  const initialValues = useMemo(() => {
+    if (route.params.location && !isEmpty(route.params.location)) {
+      return route.params.location;
+    }
+    return defaultLocation;
+  }, [route.params.location]);
 
-  const handleSave = async (values) => {
-    try {
-      setStatus('loading');
+  const saveLocation = useCallback(
+    async (values) => {
       if (values._id) {
         await RecyclingService.updateRecyclingLocation(
           AxiosAuth,
@@ -99,28 +103,38 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
       } else {
         await RecyclingService.addRecyclingLocation(AxiosAuth, values);
       }
-      navigation.navigate('RecyclingLocationList', {
-        dataUpdatedAt: Date.now(),
-      });
-    } catch (error) {
+    },
+    [AxiosAuth]
+  );
+
+  const mutation = useMutation({
+    mutationFn: saveLocation,
+    onSuccess: () => {
+      Alert.alert('Succes', 'Locația a fost salvată cu succes', [
+        { text: 'OK' },
+      ]);
+      queryClient.invalidateQueries({ queryKey: ['locations'] });
+      navigation.goBack();
+    },
+    onError: (error) => {
       console.error('Error saving location:', error);
       Alert.alert(
         'Eroare',
         'A apărut o eroare la salvarea locației. Vă rugăm să încercați din nou.',
         [{ text: 'OK' }]
       );
-      setStatus('error');
-    } finally {
-      setStatus('idle');
-    }
-  };
+    },
+  });
 
-  if (status === 'loading') {
-    return <Loading />;
-  }
+  const handleSave = useCallback(
+    async (values) => {
+      await mutation.mutateAsync(values);
+    },
+    [mutation]
+  );
 
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la salvarea locației" />;
+  if (mutation.isPending) {
+    return <LoadingOverlay message="Salvare locație..." />;
   }
 
   return (
@@ -160,7 +174,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               <Field
                 blurOnSubmit={false}
                 formikProps={props}
-                label="Adresa"
+                label="Adresă"
                 name="address"
                 onSubmitEditing={() => inputRefs.phone.current.focus()}
                 placeholder="Introduceți adresa locației"
@@ -169,18 +183,16 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               />
               <ErrorMessage name="address" />
             </View>
-            <View>
-              <LocationPicker
-                initialLatitude={props.values.latitude}
-                initialLongitude={props.values.longitude}
-                address={props.values.address}
-                onLocationPicked={(lat, lng) => {
-                  props.setFieldValue('latitude', lat);
-                  props.setFieldValue('longitude', lng);
-                }}
-                style={styles.map}
-              />
-            </View>
+            <LocationPicker
+              initialLatitude={props.values.latitude}
+              initialLongitude={props.values.longitude}
+              address={props.values.address}
+              onLocationPicked={(lat, lng) => {
+                props.setFieldValue('latitude', lat);
+                props.setFieldValue('longitude', lng);
+              }}
+              style={styles.map}
+            />
             <View>
               <Field
                 blurOnSubmit={false}
@@ -212,69 +224,22 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               />
               <ErrorMessage name="description" />
             </View>
-            <View>
-              <Text style={styles.scheduleLabel}>Program</Text>
-              <View style={styles.scheduleContainer}>
-                <View>
+            <Text style={styles.scheduleLabel}>Program</Text>
+            <View style={styles.scheduleContainer}>
+              {Object.keys(props.values.schedule).map((day) => (
+                <View key={day}>
                   <ScheduleField
                     formikProps={props}
-                    label="Luni"
-                    name="schedule.monday"
+                    label={WEEKDAY_TRANSLATIONS[day]}
+                    name={`schedule.${day}`}
                   />
-                  <ErrorMessage name="schedule.monday" />
+                  <ErrorMessage name={`schedule.${day}`} />
                 </View>
-                <View>
-                  <ScheduleField
-                    formikProps={props}
-                    label="Marți"
-                    name="schedule.tuesday"
-                  />
-                  <ErrorMessage name="schedule.tuesday" />
-                </View>
-                <View>
-                  <ScheduleField
-                    formikProps={props}
-                    label="Miercuri"
-                    name="schedule.wednesday"
-                  />
-                  <ErrorMessage name="schedule.wednesday" />
-                </View>
-                <View>
-                  <ScheduleField
-                    formikProps={props}
-                    label="Joi"
-                    name="schedule.thursday"
-                  />
-                  <ErrorMessage name="schedule.thursday" />
-                </View>
-                <View>
-                  <ScheduleField
-                    formikProps={props}
-                    label="Vineri"
-                    name="schedule.friday"
-                  />
-                  <ErrorMessage name="schedule.friday" />
-                </View>
-                <View>
-                  <ScheduleField
-                    formikProps={props}
-                    label="Sâmbătă"
-                    name="schedule.saturday"
-                  />
-                  <ErrorMessage name="schedule.saturday" />
-                </View>
-                <View>
-                  <ScheduleField
-                    formikProps={props}
-                    label="Duminică"
-                    name="schedule.sunday"
-                  />
-                  <ErrorMessage name="schedule.sunday" />
-                </View>
-              </View>
+              ))}
             </View>
             <View>
               <Field
+                blurOnSubmit={false}
                 formikProps={props}
                 label="Companie"
                 name="company"
@@ -287,6 +252,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
             </View>
             <View>
               <Field
+                blurOnSubmit={false}
                 formikProps={props}
                 label="CUI"
                 name="cui"
@@ -302,10 +268,9 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
                 formikProps={props}
                 label="Registrul Comerțului"
                 name="regCom"
-                onSubmitEditing={() => inputRefs.latitude.current.focus()}
                 placeholder="Introduceți Registrul Comerțului"
                 ref={inputRefs.regCom}
-                returnKeyType="next"
+                returnKeyType="done"
               />
               <ErrorMessage name="regCom" />
             </View>

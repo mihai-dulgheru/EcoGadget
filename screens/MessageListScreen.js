@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useCallback } from 'react';
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -12,80 +14,83 @@ import {
   ListEmptyComponent,
   Loading,
 } from '../components/UI';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
+import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import RecyclingManagerService from '../services/RecyclingManagerService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function MessageListScreen({ navigation, route }) {
-  const { dataUpdatedAt } = route.params || {};
-  const [messages, setMessages] = useState([]);
-  const [status, setStatus] = useState('loading');
+export default function MessageListScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
 
   const fetchMessages = useCallback(async () => {
-    try {
-      setStatus('loading');
-      const data = await RecyclingManagerService.getMessages(AxiosAuth);
-      setMessages(data);
-      setStatus('success');
-    } catch (error) {
-      console.error('Error loading messages:', error);
-      setStatus('error');
-    }
+    const messages = await RecyclingManagerService.getMessages(AxiosAuth);
+    return messages;
   }, [AxiosAuth]);
 
-  useEffect(() => {
-    fetchMessages();
-  }, [dataUpdatedAt]);
+  const {
+    data: messages,
+    error,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ['messages'],
+    queryFn: fetchMessages,
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const handleViewDetails = async (message) => {
-    if (!message.read) {
-      try {
-        await RecyclingManagerService.markMessageAsRead(AxiosAuth, message._id);
-        setMessages((prevMessages) =>
-          prevMessages.map((msg) => {
-            if (msg._id === message._id) {
-              return { ...msg, read: true };
-            }
-            return msg;
-          })
-        );
-      } catch (error) {
-        console.error('Error marking message as read:', error);
-        setStatus('error');
-        return;
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  useRefreshOnFocus(refetch);
+
+  const markAsReadMutation = useMutation({
+    mutationFn: (id) =>
+      RecyclingManagerService.markMessageAsRead(AxiosAuth, id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['messages']);
+    },
+  });
+
+  const handleViewDetails = useCallback(
+    async (message) => {
+      if (!message.read) {
+        markAsReadMutation.mutate(message._id);
       }
-    }
-    navigation.navigate('MessageDetail', { message });
-  };
+      navigation.navigate('MessageDetail', { message });
+    },
+    [markAsReadMutation, navigation]
+  );
 
-  if (status === 'loading') {
+  const renderMessageItem = useCallback(
+    ({ item }) => (
+      <TouchableWithoutFeedback onPress={() => handleViewDetails(item)}>
+        <View style={[styles.messageItem, !item.read && styles.unreadMessage]}>
+          <Text style={styles.messageName}>{item.name}</Text>
+          <Text style={styles.messageEmail}>{item.email}</Text>
+          <Text style={styles.messageText} numberOfLines={3}>
+            {item.message}
+          </Text>
+          <View style={styles.messageDetailButton}>
+            <IconButton
+              icon="arrow-forward"
+              color={theme.colors.textSecondary}
+              size={24}
+              onPress={() => handleViewDetails(item)}
+            />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    ),
+    [handleViewDetails]
+  );
+
+  if (isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la încărcarea mesajelor" />;
+  if (error) {
+    return <Error message={error.message} />;
   }
-
-  const renderMessageItem = ({ item }) => (
-    <TouchableWithoutFeedback onPress={() => handleViewDetails(item)}>
-      <View style={[styles.messageItem, !item.read && styles.unreadMessage]}>
-        <Text style={styles.messageName}>{item.name}</Text>
-        <Text style={styles.messageEmail}>{item.email}</Text>
-        <Text style={styles.messageText} numberOfLines={3}>
-          {item.message}
-        </Text>
-        <View style={styles.messageDetailButton}>
-          <IconButton
-            icon="arrow-forward"
-            color={theme.colors.textSecondary}
-            size={24}
-            onPress={() => handleViewDetails(item)}
-          />
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
-  );
 
   return (
     <View style={styles.container}>
@@ -94,6 +99,12 @@ export default function MessageListScreen({ navigation, route }) {
         data={messages}
         keyExtractor={(item) => item._id.toString()}
         ListEmptyComponent={ListEmptyComponent}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingByUser}
+            onRefresh={refetchByUser}
+          />
+        }
         renderItem={renderMessageItem}
       />
     </View>

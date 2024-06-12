@@ -1,17 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { WEEKDAY_TRANSLATIONS } from '../../constants';
 import theme from '../../styles/theme';
 
 export default function RecyclingScheduleView({ schedule }) {
-  const weekdayTranslations = {
-    monday: 'Luni',
-    tuesday: 'Marți',
-    wednesday: 'Miercuri',
-    thursday: 'Joi',
-    friday: 'Vineri',
-    saturday: 'Sâmbătă',
-    sunday: 'Duminică',
-  };
-
   return (
     <View>
       {Object.entries(schedule)
@@ -19,7 +10,7 @@ export default function RecyclingScheduleView({ schedule }) {
         .map(([day, scheduleItem]) => (
           <View key={day} style={styles.container}>
             <Text style={[styles.minWidth, styles.text]}>
-              {`${weekdayTranslations[day]}:`}
+              {`${WEEKDAY_TRANSLATIONS[day]}:`}
             </Text>
             <Text style={styles.text}>
               {scheduleItem === 'Closed' ? 'Închis' : scheduleItem}

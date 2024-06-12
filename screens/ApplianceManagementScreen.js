@@ -124,9 +124,8 @@ export default function ApplianceManagementScreen({ navigation, route }) {
                   <FlatButton
                     extraStyles={{ buttonText: styles.buttonTextDelete }}
                     onPress={() => handleDelete(item._id)}
-                  >
-                    Șterge
-                  </FlatButton>
+                    title="Șterge"
+                  />
                 </View>
               </View>
             </View>
