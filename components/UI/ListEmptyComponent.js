@@ -28,5 +28,6 @@ const styles = StyleSheet.create({
   text: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
 });

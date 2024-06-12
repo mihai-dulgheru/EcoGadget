@@ -281,11 +281,6 @@ const styles = StyleSheet.create({
     gap: theme.spacing['4'],
     padding: theme.spacing['4'],
   },
-  header: {
-    ...theme.fontSize.base,
-    color: theme.colors.textPrimary,
-    fontWeight: 'bold',
-  },
   buttonContainer: {
     marginTop: theme.spacing['4'],
   },

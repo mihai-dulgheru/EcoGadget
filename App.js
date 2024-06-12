@@ -4,6 +4,7 @@ import {
   QueryClientProvider,
   focusManager,
 } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
@@ -19,6 +20,10 @@ SplashScreen.preventAutoHideAsync();
 
 function Root() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [fontsLoaded, fontError] = useFonts({
+    'Outfit-Bold': require('./assets/fonts/Outfit-Bold.ttf'),
+    'ZillaSlab-Regular': require('./assets/fonts/ZillaSlab-Regular.ttf'),
+  });
   const auth = useContext(AuthContext);
 
   useEffect(() => {
@@ -39,12 +44,12 @@ function Root() {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
+    if (appIsReady && (fontsLoaded || fontError)) {
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady]);
+  }, [appIsReady, fontsLoaded, fontError]);
 
-  if (!appIsReady) {
+  if (!appIsReady || (!fontsLoaded && !fontError)) {
     return null;
   }
 

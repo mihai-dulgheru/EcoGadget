@@ -112,10 +112,11 @@ const styles = StyleSheet.create({
   label: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.heading,
   },
   value: {
     ...theme.fontSize.base,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
 });

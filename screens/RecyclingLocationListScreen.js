@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   locationTitle: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
   },
   addressContainer: {
     alignItems: 'center',
@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   addressText: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   locationDeleteButton: {
     alignItems: 'center',

@@ -25,5 +25,6 @@ const styles = StyleSheet.create({
   errorText: {
     ...theme.fontSize.sm,
     color: theme.colors.error,
+    fontFamily: theme.fontFamily.body,
   },
 });

@@ -7,6 +7,7 @@ const global = StyleSheet.create({
     backgroundColor: '#F9D6D5',
     borderRadius: theme.borderRadius.default,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
     padding: theme.spacing['2'],
   },
   spacingSmall: {

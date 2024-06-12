@@ -54,5 +54,6 @@ const styles = StyleSheet.create({
   buttonText: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
 });

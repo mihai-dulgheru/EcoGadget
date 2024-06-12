@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
   },
   message: {
     ...theme.fontSize.base,
+    fontFamily: theme.fontFamily.body,
     marginBottom: theme.spacing['4'],
   },
 });

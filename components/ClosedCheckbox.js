@@ -37,5 +37,6 @@ const styles = StyleSheet.create({
   label: {
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
 });

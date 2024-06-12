@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...theme.fontSize['2xl'],
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
   },
   card: {
     backgroundColor: theme.colors.backgroundSecondary,
@@ -147,5 +147,6 @@ const styles = StyleSheet.create({
   stat: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
 });

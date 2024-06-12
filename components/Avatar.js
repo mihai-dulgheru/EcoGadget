@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import theme from '../styles/theme';
 
 const getColorFromInitials = (initials) => {
   const colors = [
@@ -49,7 +50,7 @@ export default function Avatar({ accountInfo, size = 'md' }) {
     <View
       style={[styles.avatar, avatarSizeStyle, { backgroundColor: avatarColor }]}
     >
-      <Text style={{ color: 'white', fontSize: getSize(size) * 0.4 }}>
+      <Text style={[styles.avatarText, { fontSize: getSize(size) * 0.4 }]}>
         {initials}
       </Text>
     </View>
@@ -60,5 +61,9 @@ const styles = StyleSheet.create({
   avatar: {
     overflow: 'hidden',
     backgroundColor: '#ccc',
+  },
+  avatarText: {
+    color: 'white',
+    fontFamily: theme.fontFamily.heading,
   },
 });

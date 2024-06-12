@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   buttonText: {
     ...theme.fontSize.base,
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
     textAlign: 'center',
   },
   primary: {

@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   },
   text: {
     ...theme.fontSize.xl,
+    fontFamily: theme.fontFamily.heading,
     marginBottom: theme.spacing['6'],
   },
 });

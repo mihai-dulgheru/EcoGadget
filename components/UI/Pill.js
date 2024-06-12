@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import theme from '../../styles/theme';
 
 export default function Pill({ color, icon, children }) {
   return (
@@ -37,9 +38,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#000000',
+    fontFamily: theme.fontFamily.body,
     fontSize: 14,
     lineHeight: 23,
-    fontWeight: 'bold',
   },
   green: {
     backgroundColor: '#D4EDE4',

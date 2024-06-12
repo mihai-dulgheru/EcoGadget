@@ -60,11 +60,12 @@ const styles = StyleSheet.create({
   title: {
     ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
   },
   subtitle: {
     ...theme.fontSize.lg,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   mapContainer: {
     borderRadius: theme.borderRadius.md,

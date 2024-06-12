@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   header: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
     marginBottom: theme.spacing['2'],
   },
   detailContainer: {
@@ -137,11 +137,13 @@ const styles = StyleSheet.create({
   label: {
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
     marginBottom: theme.spacing['1'],
   },
   text: {
     ...theme.fontSize.base,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
     marginBottom: theme.spacing['2'],
   },
   formContainer: {

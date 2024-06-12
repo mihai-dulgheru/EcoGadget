@@ -37,11 +37,12 @@ const styles = StyleSheet.create({
   heading: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.heading,
   },
   linkContainer: {},
   link: {
     ...theme.fontSize.sm,
     color: theme.colors.primary,
+    fontFamily: theme.fontFamily.body,
   },
 });

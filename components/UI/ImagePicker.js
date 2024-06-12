@@ -27,7 +27,7 @@ export default function ImagePicker({ onImagePicked, initialImage, style }) {
     <View style={[styles.container, style]}>
       {image && <Image source={{ uri: image }} style={styles.image} />}
       <FlatButton
-        extraStyles={{ button: styles.button, buttonText: styles.buttonText }}
+        extraStyles={{ button: styles.button }}
         onPress={pickImage}
         title="Alege o imagine"
       />
@@ -54,8 +54,5 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.primary,
-  },
-  buttonText: {
-    fontWeight: 'bold',
   },
 });

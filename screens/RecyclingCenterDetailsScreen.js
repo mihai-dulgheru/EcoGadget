@@ -123,24 +123,27 @@ const styles = StyleSheet.create({
   title: {
     ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
     marginTop: theme.spacing['2'],
   },
   description: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
   info: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
   heading: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.heading,
   },
   schedule: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
 });

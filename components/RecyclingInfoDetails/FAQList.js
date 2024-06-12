@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   heading: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.heading,
   },
   faq: {
     gap: theme.spacing['2'],
@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
   question: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.body,
   },
   answer: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
 });

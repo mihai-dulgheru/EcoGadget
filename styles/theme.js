@@ -27,6 +27,10 @@ const theme = {
     textPrimary: '#030303',
     textSecondary: '#70706E',
   },
+  fontFamily: {
+    body: 'ZillaSlab-Regular',
+    heading: 'Outfit-Bold',
+  },
   fontSize: {
     xs: {
       fontSize: 12,

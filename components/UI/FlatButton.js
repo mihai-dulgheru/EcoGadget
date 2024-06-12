@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   buttonText: {
     ...theme.fontSize.base,
     color: theme.colors.primary,
+    fontFamily: theme.fontFamily.heading,
     textAlign: 'center',
   },
 });

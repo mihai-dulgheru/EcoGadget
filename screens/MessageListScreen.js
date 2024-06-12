@@ -137,15 +137,17 @@ const styles = StyleSheet.create({
   messageName: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.body,
   },
   messageEmail: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   messageText: {
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
   messageDetailButton: {
     position: 'absolute',

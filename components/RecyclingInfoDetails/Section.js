@@ -83,11 +83,12 @@ const styles = StyleSheet.create({
   heading: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.heading,
   },
   content: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
   image: {
     borderRadius: theme.borderRadius.md,

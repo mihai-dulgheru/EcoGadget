@@ -54,7 +54,7 @@ export default function RecyclingInfoScreen({ navigation }) {
             size={24}
             color={theme.colors.textSecondary}
           />
-          <Text>{formatDate(item.date)}</Text>
+          <Text style={styles.text}>{formatDate(item.date)}</Text>
         </View>
         <View style={styles.row}>
           <Ionicons
@@ -62,7 +62,7 @@ export default function RecyclingInfoScreen({ navigation }) {
             size={24}
             color={theme.colors.textSecondary}
           />
-          <Text>{item.location.name}</Text>
+          <Text style={styles.text}>{item.location.name}</Text>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -109,15 +109,21 @@ const styles = StyleSheet.create({
   title: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
   },
   subtitle: {
     ...theme.fontSize.base,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   row: {
     alignItems: 'center',
     flexDirection: 'row',
     gap: theme.spacing['2'],
+  },
+  text: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
 });

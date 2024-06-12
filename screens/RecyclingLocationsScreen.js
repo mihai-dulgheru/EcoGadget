@@ -306,7 +306,11 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   contentContainer: { flex: 1, padding: theme.spacing[4] },
   listContainer: { flexGrow: 1 },
-  locationAddress: { ...theme.fontSize.sm, color: theme.colors.textSecondary },
+  locationAddress: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
+  },
   locationContainer: {
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
@@ -314,7 +318,11 @@ const styles = StyleSheet.create({
     gap: theme.spacing[2],
     padding: theme.spacing[2],
   },
-  locationDistance: { ...theme.fontSize.sm, color: theme.colors.textSecondary },
+  locationDistance: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
+  },
   locationImage: {
     borderRadius: theme.borderRadius.md,
     width: theme.spacing[32],
@@ -330,12 +338,12 @@ const styles = StyleSheet.create({
   locationName: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
   },
   locationSchedule: {
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.body,
   },
   map: { flex: 1 },
   searchContainer: {
@@ -349,6 +357,7 @@ const styles = StyleSheet.create({
   selectedLocationAddress: {
     ...theme.fontSize.md,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   selectedLocationContainer: {
     gap: theme.spacing[4],
@@ -357,6 +366,7 @@ const styles = StyleSheet.create({
   selectedLocationDistance: {
     ...theme.fontSize.md,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   selectedLocationImage: {
     borderRadius: theme.borderRadius.md,
@@ -366,12 +376,13 @@ const styles = StyleSheet.create({
   selectedLocationName: {
     ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
     marginBottom: theme.spacing[2],
   },
   selectedLocationPhone: {
     ...theme.fontSize.md,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   switchContainer: {
     alignItems: 'center',
@@ -382,5 +393,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing[2],
     paddingVertical: theme.spacing[1],
   },
-  switchLabel: { color: theme.colors.textPrimary },
+  switchLabel: {
+    ...theme.fontSize.md,
+    color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
+  },
 });

@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   error: {
     ...theme.fontSize.base,
     color: theme.colors.error,
+    fontFamily: theme.fontFamily.body,
     padding: theme.spacing['4'],
   },
 });

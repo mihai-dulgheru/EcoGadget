@@ -175,11 +175,12 @@ const styles = StyleSheet.create({
   title: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: 'bold',
+    fontFamily: theme.fontFamily.heading,
   },
   text: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
+    fontFamily: theme.fontFamily.body,
   },
   actionButtons: {
     flexDirection: 'row',

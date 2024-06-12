@@ -310,6 +310,6 @@ const styles = StyleSheet.create({
   scheduleLabel: {
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
-    fontWeight: '500',
+    fontFamily: theme.fontFamily.heading,
   },
 });
