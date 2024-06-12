@@ -8,6 +8,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useAppState } from './hooks/useAppState';
 import { useOnlineManager } from './hooks/useOnlineManager';
 import { RoleBasedNavigation } from './navigation';
@@ -72,10 +73,12 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <Root />
-      </AuthContextProvider>
-      <StatusBar style="auto" />
+      <GestureHandlerRootView style={styles.container}>
+        <AuthContextProvider>
+          <Root />
+        </AuthContextProvider>
+        <StatusBar style="auto" />
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }

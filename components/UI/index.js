@@ -8,4 +8,5 @@ export { default as ListEmptyComponent } from './ListEmptyComponent';
 export { default as Loading } from './Loading';
 export { default as LoadingOverlay } from './LoadingOverlay';
 export { default as Pill } from './Pill';
+export { default as SearchBar } from './SearchBar';
 export { default as Select } from './Select';

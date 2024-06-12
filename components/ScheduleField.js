@@ -2,12 +2,11 @@ import { set } from 'date-fns';
 import { useField } from 'formik';
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { DEFAULT_TIME_RANGE } from '../constants';
 import theme from '../styles/theme';
 import { convertTo24HourFormat } from '../utils/DateUtils';
 import ClosedCheckbox from './ClosedCheckbox';
 import TimePickerButton from './TimePickerButton';
-
-const DEFAULT_TIME_RANGE = '12:00 AM - 12:00 AM';
 
 export default function ScheduleField({ label, formikProps, name }) {
   const [field] = useField(name);

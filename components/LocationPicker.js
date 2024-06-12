@@ -3,10 +3,8 @@ import { debounce, isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { DEFAULT_LATITUDE, DEFAULT_LONGITUDE } from '../constants';
 import theme from '../styles/theme';
-
-const DEFAULT_LATITUDE = 44.4268;
-const DEFAULT_LONGITUDE = 26.1025;
 
 class Geocoder {
   static apiKey = Constants.expoConfig.android.config.googleMaps.apiKey;
