@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
-import { useCallback } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
-import { Button, Loading } from '../components/UI';
+import { Button, CustomAlert, Loading } from '../components/UI';
 import RecyclingManagerService from '../services/RecyclingManagerService';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
@@ -21,6 +21,18 @@ export default function MessageDetailScreen({ route, navigation }) {
   const { message } = route.params || {};
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
+
+  const showAlert = (title, msg, confirmText, onConfirm) => {
+    setAlertProps({
+      title,
+      message: msg,
+      confirmText,
+      onConfirm,
+    });
+    setAlertVisible(true);
+  };
 
   const sendMessageResponse = useCallback(
     async (response) => {
@@ -36,14 +48,18 @@ export default function MessageDetailScreen({ route, navigation }) {
   const mutation = useMutation({
     mutationFn: sendMessageResponse,
     onSuccess: () => {
-      Alert.alert('Succes', 'Răspunsul a fost trimis cu succes');
-      queryClient.invalidateQueries(['messages']);
-      navigation.navigate('MessageList', { dataUpdatedAt: Date.now() });
+      showAlert('Succes', 'Răspunsul a fost trimis cu succes', 'OK', () => {
+        setAlertVisible(false);
+        queryClient.invalidateQueries(['messages']);
+        navigation.navigate('MessageList', { dataUpdatedAt: Date.now() });
+      });
     },
     onError: (error) => {
-      Alert.alert(
+      showAlert(
         'Eroare',
-        error.message || 'A apărut o eroare la trimiterea răspunsului'
+        error.message || 'A apărut o eroare la trimiterea răspunsului',
+        'OK',
+        () => setAlertVisible(false)
       );
     },
   });
@@ -65,7 +81,6 @@ export default function MessageDetailScreen({ route, navigation }) {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <Text style={styles.header}>Detalii Mesaj</Text>
       <View style={styles.detailContainer}>
         <Text style={styles.label}>Nume:</Text>
         <Text style={styles.text}>{message.name}</Text>
@@ -112,6 +127,7 @@ export default function MessageDetailScreen({ route, navigation }) {
           </Formik>
         )}
       </View>
+      <CustomAlert visible={alertVisible} {...alertProps} />
     </ScrollView>
   );
 }
@@ -122,44 +138,38 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: theme.spacing['4'],
-    gap: theme.spacing['4'],
-  },
-  header: {
-    ...theme.fontSize.lg,
-    color: theme.colors.textPrimary,
-    fontFamily: theme.fontFamily.heading,
-    marginBottom: theme.spacing['2'],
+    padding: theme.spacing[4],
+    gap: theme.spacing[4],
   },
   detailContainer: {
-    marginBottom: theme.spacing['2'],
+    marginBottom: theme.spacing[2],
   },
   label: {
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
-    marginBottom: theme.spacing['1'],
+    marginBottom: theme.spacing[1],
   },
   text: {
     ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
-    marginBottom: theme.spacing['2'],
+    marginBottom: theme.spacing[2],
   },
   formContainer: {
-    gap: theme.spacing['8'],
+    gap: theme.spacing[8],
   },
   textInput: {
     ...theme.fontSize.base,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.md,
     color: theme.colors.textPrimary,
-    padding: theme.spacing['2'],
+    padding: theme.spacing[2],
     textAlignVertical: 'top',
-    minHeight: theme.spacing['24'],
-    maxHeight: theme.spacing['48'],
+    minHeight: theme.spacing[24],
+    maxHeight: theme.spacing[48],
   },
   buttonContainer: {
-    marginTop: theme.spacing['4'],
+    marginTop: theme.spacing[4],
   },
 });

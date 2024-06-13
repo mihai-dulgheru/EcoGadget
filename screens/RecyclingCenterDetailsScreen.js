@@ -9,6 +9,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import { ContactForm } from '../components/Forms';
 import { Button } from '../components/UI';
+import { WEEKDAY_TRANSLATIONS } from '../constants';
 import theme from '../styles/theme';
 
 export default function RecyclingCenterDetailsScreen({ route }) {
@@ -56,16 +57,10 @@ export default function RecyclingCenterDetailsScreen({ route }) {
               latitude: center.latitude,
               longitude: center.longitude,
             }}
-            scrollEnabled={false}
-            zoomEnabled={false}
-            rotateEnabled={false}
-            pitchEnabled={false}
-            title={center.name}
-            description={center.address}
           />
         </MapView>
       </View>
-      <Button title="Deschide in Maps" onPress={openInMaps} />
+      <Button title="Deschide în Maps" onPress={openInMaps} />
       <Text style={styles.title}>{center.name}</Text>
       <Text style={styles.description}>{center.description}</Text>
       <Text style={styles.info}>
@@ -74,9 +69,9 @@ export default function RecyclingCenterDetailsScreen({ route }) {
       </Text>
       <Text style={styles.heading}>Program</Text>
       <View>
-        {Object.entries(center.schedule).map(([day, hours]) => (
+        {Object.entries(center.schedule).map(([day, timeSchedule]) => (
           <Text style={styles.schedule} key={day}>
-            {`${day.charAt(0).toUpperCase() + day.slice(1)}: ${hours}`}
+            {`${WEEKDAY_TRANSLATIONS[day]}: ${timeSchedule === 'Closed' ? 'Închis' : timeSchedule}`}
           </Text>
         ))}
       </View>
@@ -108,12 +103,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   mapContainer: {
     borderRadius: theme.borderRadius.md,
-    height: theme.spacing['48'],
+    height: theme.spacing[48],
     overflow: 'hidden',
   },
   map: {
@@ -124,7 +119,7 @@ const styles = StyleSheet.create({
     ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
-    marginTop: theme.spacing['2'],
+    marginTop: theme.spacing[2],
   },
   description: {
     ...theme.fontSize.base,

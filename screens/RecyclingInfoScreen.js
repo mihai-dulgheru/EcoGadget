@@ -92,18 +92,18 @@ const styles = StyleSheet.create({
   listContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   infoBlock: {
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing['2'],
-    gap: theme.spacing['2'],
+    padding: theme.spacing[2],
+    gap: theme.spacing[2],
   },
   image: {
     borderRadius: theme.borderRadius.md,
-    height: theme.spacing['40'],
+    height: theme.spacing[40],
     width: '100%',
   },
   title: {
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   row: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   text: {
     ...theme.fontSize.sm,

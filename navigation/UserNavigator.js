@@ -1,6 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getHeaderTitle } from '@react-navigation/elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { isEmpty } from 'lodash';
+import { Header, TabBar } from '../components/UI';
 import {
   ApplianceEditScreen,
   ApplianceManagementScreen,
@@ -10,32 +12,28 @@ import {
   RecyclingLocationsScreen,
   UserAccountScreen,
 } from '../screens';
-import theme from '../styles/theme';
-
-function getTabIcon(route) {
-  return function ({ focused, color, size }) {
-    let iconName;
-
-    if (route.name === 'RecyclingInfoTab') {
-      iconName = focused ? 'information-circle' : 'information-circle-outline';
-    } else if (route.name === 'RecyclingLocationsTab') {
-      iconName = focused ? 'map' : 'map-outline';
-    } else if (route.name === 'ApplianceManagementTab') {
-      iconName = focused ? 'power' : 'power-outline';
-    } else if (route.name === 'UserAccount') {
-      iconName = focused ? 'person' : 'person-outline';
-    }
-
-    return <Ionicons name={iconName} size={size} color={color} />;
-  };
-}
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const noBackScreens = new Set([
+  'RecyclingInfo',
+  'RecyclingLocations',
+  'ApplianceManagement',
+  'UserAccount',
+]);
+
+const renderHeader = ({ route, options, navigation }) => {
+  const title = getHeaderTitle(options, route.name);
+  const canGoBack = !noBackScreens.has(route.name) && navigation.canGoBack();
+  return <Header title={title} canGoBack={canGoBack} />;
+};
+
+const renderTabBar = (props) => <TabBar {...props} />;
+
 function RecyclingInfoStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
         name="RecyclingInfo"
         component={RecyclingInfoScreen}
@@ -52,7 +50,7 @@ function RecyclingInfoStackNavigator() {
 
 function RecyclingLocationsStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
         name="RecyclingLocations"
         component={RecyclingLocationsScreen}
@@ -69,7 +67,7 @@ function RecyclingLocationsStackNavigator() {
 
 function ApplianceManagementStackNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
         name="ApplianceManagement"
         component={ApplianceManagementScreen}
@@ -78,7 +76,12 @@ function ApplianceManagementStackNavigator() {
       <Stack.Screen
         name="ApplianceEdit"
         component={ApplianceEditScreen}
-        options={{ title: '' }}
+        options={({ route }) => ({
+          title:
+            route.params.appliance && !isEmpty(route.params.appliance)
+              ? 'Editare electrocasnic'
+              : 'Adăugare electrocasnic',
+        })}
       />
     </Stack.Navigator>
   );
@@ -87,11 +90,8 @@ function ApplianceManagementStackNavigator() {
 export default function UserNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: getTabIcon(route),
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.textSecondary,
-      })}
+      screenOptions={{ header: renderHeader }}
+      tabBar={renderTabBar}
     >
       <Tab.Screen
         name="RecyclingInfoTab"

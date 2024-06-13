@@ -1,11 +1,11 @@
 import { Formik } from 'formik';
 import { useRef, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
 import theme from '../../styles/theme';
 import { Debug, ErrorMessage, Field } from '../Formik';
-import { Button } from '../UI';
+import { Button, CustomAlert } from '../UI';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Numele este obligatoriu'),
@@ -23,6 +23,8 @@ const initialValues = {
 
 export default function ContactForm({ debug = false, locationId }) {
   const [status, setStatus] = useState('idle');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
 
   const inputRefs = {
     name: useRef(null),
@@ -30,17 +32,31 @@ export default function ContactForm({ debug = false, locationId }) {
     message: useRef(null),
   };
 
+  const showAlert = (title, message, confirmText, onConfirm) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+    });
+    setAlertVisible(true);
+  };
+
   const onSubmit = async (values, { resetForm }) => {
     try {
       setStatus('loading');
       await ContactService.sendContactMessage({ ...values, locationId });
-      Alert.alert('Succes', 'Mesajul a fost trimis cu succes');
-      resetForm();
-      setStatus('success');
+      showAlert('Succes', 'Mesajul a fost trimis cu succes', 'OK', () => {
+        setAlertVisible(false);
+        resetForm();
+        setStatus('success');
+      });
     } catch (error) {
-      Alert.alert(
+      showAlert(
         'Eroare',
-        error.message || 'A apărut o eroare la trimiterea mesajului'
+        error.message || 'A apărut o eroare la trimiterea mesajului',
+        'OK',
+        () => setAlertVisible(false)
       );
       console.error('Submission error', error);
       setStatus('error');
@@ -97,6 +113,7 @@ export default function ContactForm({ debug = false, locationId }) {
             onPress={props.handleSubmit}
           />
           <Debug debug={debug} formikProps={props} />
+          <CustomAlert visible={alertVisible} {...alertProps} />
         </View>
       )}
     </Formik>
@@ -105,6 +122,6 @@ export default function ContactForm({ debug = false, locationId }) {
 
 const styles = StyleSheet.create({
   formContainer: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing[4],
   },
 });

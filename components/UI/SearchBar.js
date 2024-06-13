@@ -27,10 +27,11 @@ export default function SearchBar({
     <View style={styles.container}>
       <Ionicons name="search" size={24} color="gray" style={styles.icon} />
       <TextInput
-        style={styles.input}
-        placeholder={placeholder}
-        value={text}
         onChangeText={handleTextChange}
+        placeholder={placeholder}
+        placeholderTextColor={theme.colors.textSecondary}
+        style={styles.input}
+        value={text}
       />
       {text.length > 0 && (
         <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
   input: {
     ...theme.fontSize.base,
     flex: 1,
+    fontFamily: theme.fontFamily.body,
     height: theme.spacing[10],
   },
   clearButton: {

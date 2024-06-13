@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   },
   title: {
     ...theme.fontSize['2xl'],
+    color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
   },
   card: {

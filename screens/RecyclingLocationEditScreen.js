@@ -1,12 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
-import { useCallback, useMemo, useRef } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { LocationPicker, ScheduleField } from '../components';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
-import { Button, ImagePicker, LoadingOverlay } from '../components/UI';
+import {
+  Button,
+  CustomAlert,
+  ImagePicker,
+  LoadingOverlay,
+} from '../components/UI';
 import { WEEKDAY_TRANSLATIONS } from '../constants';
 import RecyclingService from '../services/RecyclingService';
 import global from '../styles/global';
@@ -64,6 +69,8 @@ const defaultLocation = {
 export default function RecyclingLocationEditScreen({ navigation, route }) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
 
   const inputRefs = {
     address: useRef(null),
@@ -92,6 +99,16 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
     return defaultLocation;
   }, [route.params.location]);
 
+  const showAlert = (title, message, confirmText, onConfirm) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+    });
+    setAlertVisible(true);
+  };
+
   const saveLocation = useCallback(
     async (values) => {
       if (values._id) {
@@ -110,18 +127,18 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
   const mutation = useMutation({
     mutationFn: saveLocation,
     onSuccess: () => {
-      Alert.alert('Succes', 'Locația a fost salvată cu succes', [
-        { text: 'OK' },
-      ]);
-      queryClient.invalidateQueries({ queryKey: ['locations'] });
-      navigation.goBack();
+      showAlert('Succes', 'Locația a fost salvată cu succes', 'OK', () => {
+        setAlertVisible(false);
+        queryClient.invalidateQueries({ queryKey: ['locations'] });
+        navigation.goBack();
+      });
     },
-    onError: (error) => {
-      console.error('Error saving location:', error);
-      Alert.alert(
+    onError: () => {
+      showAlert(
         'Eroare',
         'A apărut o eroare la salvarea locației. Vă rugăm să încercați din nou.',
-        [{ text: 'OK' }]
+        'OK',
+        () => setAlertVisible(false)
       );
     },
   });
@@ -278,6 +295,7 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
           <View style={styles.buttonContainer}>
             <Button title="Salvează locația" onPress={props.handleSubmit} />
           </View>
+          <CustomAlert visible={alertVisible} {...alertProps} />
           <Debug formikProps={props} />
         </ScrollView>
       )}
@@ -291,21 +309,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   imagePicker: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing[4],
   },
   buttonContainer: {
-    marginTop: theme.spacing['4'],
+    marginTop: theme.spacing[4],
   },
   map: {
-    height: theme.spacing['80'],
+    height: theme.spacing[80],
     width: '100%',
   },
   scheduleContainer: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing[4],
   },
   scheduleLabel: {
     ...theme.fontSize.lg,

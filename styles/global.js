@@ -8,13 +8,13 @@ const global = StyleSheet.create({
     borderRadius: theme.borderRadius.default,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
-    padding: theme.spacing['2'],
+    padding: theme.spacing[2],
   },
   spacingSmall: {
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   spacingMedium: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing[4],
   },
 });
 

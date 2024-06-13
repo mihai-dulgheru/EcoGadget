@@ -1,14 +1,14 @@
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import { useRef, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import {
   ErrorMessage,
   Field,
   MaterialCompositionField,
 } from '../components/Formik';
-import { Button, Error, Loading, Select } from '../components/UI';
+import { Button, CustomAlert, Error, Loading, Select } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
 import theme from '../styles/theme';
@@ -56,23 +56,25 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultAppliance = {
-  name: '',
-  description: '',
-  productionYear: '',
-  energyUsage: '',
-  CO2Emissions: '',
-  expectedLifespan: '',
+  name: 'Frigider',
+  description: 'Frigider cu congelator, capacitate 200 litri',
+  productionYear: 2019,
+  energyUsage: 200,
+  CO2Emissions: 100,
+  expectedLifespan: 10,
   disposalOptions: DisposalOptions.RECYCLABLE,
   efficiencyRating: EfficiencyRatings.A_PLUS_PLUS_PLUS,
   materialComposition: {
-    metal: '',
-    plastic: '',
-    other: '',
+    metal: 20,
+    plastic: 60,
+    other: 20,
   },
 };
 
 export default function ApplianceEditScreen({ navigation, route }) {
   const [status, setStatus] = useState('idle');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
   const AxiosAuth = useAxiosAuth();
 
   const inputRefs = {
@@ -88,9 +90,20 @@ export default function ApplianceEditScreen({ navigation, route }) {
     },
   };
 
-  const initialValues = !isEmpty(route.params.appliance)
-    ? route.params.appliance
-    : defaultAppliance;
+  const initialValues =
+    route.params.appliance && !isEmpty(route.params.appliance)
+      ? route.params.appliance
+      : defaultAppliance;
+
+  const showAlert = (title, message, confirmText, onConfirm) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+    });
+    setAlertVisible(true);
+  };
 
   const handleSave = async (values) => {
     try {
@@ -103,10 +116,11 @@ export default function ApplianceEditScreen({ navigation, route }) {
       navigation.navigate('ApplianceManagement', { dataUpdatedAt: Date.now() });
     } catch (error) {
       console.error('Error saving appliance:', error);
-      Alert.alert(
+      showAlert(
         'Eroare',
         'A apărut o eroare la salvarea electrocasnicului. Vă rugăm să încercați din nou.',
-        [{ text: 'OK' }]
+        'OK',
+        () => setAlertVisible(false)
       );
       setStatus('error');
     }
@@ -266,6 +280,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
               onPress={props.handleSubmit}
             />
           </View>
+          <CustomAlert visible={alertVisible} {...alertProps} />
         </ScrollView>
       )}
     </Formik>
@@ -278,10 +293,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   buttonContainer: {
-    marginTop: theme.spacing['4'],
+    marginTop: theme.spacing[4],
   },
 });

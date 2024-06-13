@@ -16,7 +16,7 @@ export default function IconButton({ icon, color, size, onPress }) {
 const styles = StyleSheet.create({
   button: {
     borderRadius: theme.borderRadius['3xl'],
-    margin: theme.spacing['2'],
+    margin: theme.spacing[2],
     opacity: 1,
   },
   pressed: {

@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: theme.spacing['4'],
+    padding: theme.spacing[4],
   },
   image: {
-    width: theme.spacing['56'],
-    height: theme.spacing['56'],
-    marginBottom: theme.spacing['4'],
+    width: theme.spacing[56],
+    height: theme.spacing[56],
+    marginBottom: theme.spacing[4],
   },
   text: {
     ...theme.fontSize.lg,

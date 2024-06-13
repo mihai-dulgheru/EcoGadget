@@ -1,13 +1,24 @@
 import { useContext, useState } from 'react';
-import { Alert } from 'react-native';
 import { AuthView } from '../components/Auth';
-import { LoadingOverlay } from '../components/UI';
+import { CustomAlert, LoadingOverlay } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
 import { signInWithPassword } from '../utils/Auth';
 
 export default function SignInScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
   const auth = useContext(AuthContext);
+
+  const showAlert = (title, message, confirmText, onConfirm) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+    });
+    setAlertVisible(true);
+  };
 
   async function handleSignIn(credentials) {
     setIsAuthenticating(true);
@@ -15,7 +26,9 @@ export default function SignInScreen() {
       const user = await signInWithPassword(credentials);
       await auth.authenticate(user);
     } catch (error) {
-      Alert.alert('Autentificare eșuată', error.message);
+      showAlert('Autentificare eșuată', error.message, 'OK', () =>
+        setAlertVisible(false)
+      );
       setIsAuthenticating(false);
     }
   }
@@ -25,9 +38,12 @@ export default function SignInScreen() {
   }
 
   return (
-    <AuthView
-      authType="signIn"
-      onAuthenticate={(credentials) => handleSignIn(credentials)}
-    />
+    <>
+      <AuthView
+        authType="signIn"
+        onAuthenticate={(credentials) => handleSignIn(credentials)}
+      />
+      <CustomAlert visible={alertVisible} {...alertProps} />
+    </>
   );
 }

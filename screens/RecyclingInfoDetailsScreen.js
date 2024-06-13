@@ -33,10 +33,6 @@ export default function RecyclingInfoDetailsScreen({ route }) {
                 latitude: recyclingInfo.location.latitude,
                 longitude: recyclingInfo.location.longitude,
               }}
-              scrollEnabled={false}
-              zoomEnabled={false}
-              rotateEnabled={false}
-              pitchEnabled={false}
             />
           </MapView>
         </View>
@@ -54,23 +50,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    padding: theme.spacing[4],
+    gap: theme.spacing[4],
   },
   title: {
-    ...theme.fontSize.xl,
+    ...theme.fontSize['2xl'],
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
+    marginBottom: theme.spacing[2],
   },
   subtitle: {
     ...theme.fontSize.lg,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
+    marginBottom: theme.spacing[4],
   },
   mapContainer: {
     borderRadius: theme.borderRadius.md,
-    height: theme.spacing['48'],
+    height: theme.spacing[48],
     overflow: 'hidden',
+    marginBottom: theme.spacing[4],
   },
   map: {
     height: '100%',

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     alignItems: 'center',
-    padding: theme.spacing['2'],
+    padding: theme.spacing[2],
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.md,
   },

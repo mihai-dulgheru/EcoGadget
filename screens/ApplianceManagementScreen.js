@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -9,6 +8,7 @@ import {
 } from 'react-native';
 import {
   Button,
+  CustomAlert,
   Error,
   FlatButton,
   IconButton,
@@ -24,6 +24,8 @@ export default function ApplianceManagementScreen({ navigation, route }) {
   const { dataUpdatedAt } = route.params || {};
   const [appliances, setAppliances] = useState([]);
   const [status, setStatus] = useState('loading');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
   const AxiosAuth = useAxiosAuth();
 
   async function fetchAppliances() {
@@ -50,27 +52,44 @@ export default function ApplianceManagementScreen({ navigation, route }) {
     navigation.navigate('ApplianceEdit', { appliance });
   };
 
+  const showAlert = (
+    title,
+    message,
+    confirmText,
+    onConfirm,
+    cancelText,
+    onCancel
+  ) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+      cancelText,
+      onCancel,
+    });
+    setAlertVisible(true);
+  };
+
   const handleDelete = async (id) => {
-    Alert.alert(
+    showAlert(
       'Confirmă ștergerea',
       'Ești sigur că vrei să ștergi acest aparat?',
-      [
-        { text: 'Anulează', style: 'cancel' },
-        {
-          text: 'Șterge',
-          onPress: async () => {
-            try {
-              setStatus('loading');
-              await ApplianceService.deleteAppliance(AxiosAuth, id);
-              await fetchAppliances();
-              setStatus('success');
-            } catch (error) {
-              console.error('Error deleting appliance:', error);
-              setStatus('error');
-            }
-          },
-        },
-      ]
+      'Șterge',
+      async () => {
+        try {
+          setAlertVisible(false);
+          setStatus('loading');
+          await ApplianceService.deleteAppliance(AxiosAuth, id);
+          await fetchAppliances();
+          setStatus('success');
+        } catch (error) {
+          console.error('Error deleting appliance:', error);
+          setStatus('error');
+        }
+      },
+      'Anulează',
+      () => setAlertVisible(false)
     );
   };
 
@@ -132,6 +151,7 @@ export default function ApplianceManagementScreen({ navigation, route }) {
           </TouchableWithoutFeedback>
         )}
       />
+      <CustomAlert visible={alertVisible} {...alertProps} />
     </View>
   );
 }
@@ -146,31 +166,31 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     borderWidth: theme.borderWidth.default,
-    bottom: theme.spacing['4'],
-    height: theme.spacing['14'],
+    bottom: theme.spacing[4],
+    height: theme.spacing[14],
     justifyContent: 'center',
-    padding: theme.spacing['1'],
+    padding: theme.spacing[1],
     position: 'absolute',
-    right: theme.spacing['4'],
-    width: theme.spacing['14'],
+    right: theme.spacing[4],
+    width: theme.spacing[14],
     zIndex: 1,
   },
   listContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   item: {
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
-    gap: theme.spacing['2'],
-    padding: theme.spacing['2'],
+    gap: theme.spacing[2],
+    padding: theme.spacing[2],
   },
   row: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   title: {
     ...theme.fontSize.lg,
@@ -185,15 +205,13 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: theme.spacing['2'],
-    gap: theme.spacing['2'],
+    marginTop: theme.spacing[2],
+    gap: theme.spacing[2],
   },
   buttonContainer: {
     width: '48%',
   },
   buttonTextDelete: {
-    ...theme.fontSize.sm,
     color: theme.colors.error,
-    textAlign: 'center',
   },
 });

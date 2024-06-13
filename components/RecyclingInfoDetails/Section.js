@@ -78,7 +78,7 @@ export default function Section({ section }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing[4],
   },
   heading: {
     ...theme.fontSize.lg,
@@ -92,12 +92,12 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: theme.borderRadius.md,
-    height: theme.spacing['48'],
+    height: theme.spacing[48],
     width: '100%',
   },
   videoContainer: {
     borderRadius: theme.borderRadius.md,
-    height: theme.spacing['48'],
+    height: theme.spacing[48],
     overflow: 'hidden',
   },
   video: {

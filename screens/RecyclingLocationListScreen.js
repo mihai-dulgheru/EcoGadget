@@ -1,8 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
-  Alert,
   FlatList,
   Image,
   RefreshControl,
@@ -13,6 +12,7 @@ import {
 } from 'react-native';
 import { RecyclingScheduleView } from '../components/RecyclingLocationList';
 import {
+  CustomAlert,
   Error,
   IconButton,
   ListEmptyComponent,
@@ -27,6 +27,8 @@ import { useAxiosAuth } from '../utils/Axios';
 export default function RecyclingLocationListScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
 
   const fetchLocations = useCallback(async () => {
     const locations =
@@ -61,6 +63,25 @@ export default function RecyclingLocationListScreen({ navigation }) {
     },
   });
 
+  const showAlert = (
+    title,
+    message,
+    confirmText,
+    onConfirm,
+    cancelText,
+    onCancel
+  ) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+      cancelText,
+      onCancel,
+    });
+    setAlertVisible(true);
+  };
+
   const handleAddButtonPress = useCallback(() => {
     navigation.navigate('RecyclingLocationEdit', { location: {} });
   }, [navigation]);
@@ -74,16 +95,16 @@ export default function RecyclingLocationListScreen({ navigation }) {
 
   const handleDelete = useCallback(
     (id) => {
-      Alert.alert(
+      showAlert(
         'Confirmă ștergerea',
         'Ești sigur că vrei să ștergi această locație?',
-        [
-          { text: 'Anulează', style: 'cancel' },
-          {
-            text: 'Șterge',
-            onPress: () => mutation.mutateAsync(id),
-          },
-        ]
+        'Șterge',
+        () => {
+          mutation.mutateAsync(id);
+          setAlertVisible(false);
+        },
+        'Anulează',
+        () => setAlertVisible(false)
       );
     },
     [mutation]
@@ -153,6 +174,7 @@ export default function RecyclingLocationListScreen({ navigation }) {
         }
         renderItem={renderItem}
       />
+      <CustomAlert visible={alertVisible} {...alertProps} />
     </View>
   );
 }
@@ -167,25 +189,25 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     borderRadius: theme.borderRadius.full,
     borderWidth: theme.borderWidth.default,
-    bottom: theme.spacing['4'],
-    height: theme.spacing['14'],
+    bottom: theme.spacing[4],
+    height: theme.spacing[14],
     justifyContent: 'center',
     position: 'absolute',
-    right: theme.spacing['4'],
-    width: theme.spacing['14'],
+    right: theme.spacing[4],
+    width: theme.spacing[14],
     zIndex: 1,
   },
   listContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing['4'],
-    padding: theme.spacing['4'],
+    gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   locationItem: {
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
-    gap: theme.spacing['2'],
-    padding: theme.spacing['2'],
+    gap: theme.spacing[2],
+    padding: theme.spacing[2],
   },
   locationImage: {
     aspectRatio: 4 / 3,
@@ -199,7 +221,7 @@ const styles = StyleSheet.create({
   addressContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing['1'],
+    gap: theme.spacing[1],
   },
   addressText: {
     ...theme.fontSize.sm,
@@ -211,10 +233,10 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: theme.borderRadius.full,
-    height: theme.spacing['10'],
+    height: theme.spacing[10],
     justifyContent: 'center',
     position: 'absolute',
-    right: theme.spacing['4'],
-    top: theme.spacing['4'],
+    right: theme.spacing[4],
+    top: theme.spacing[4],
   },
 });

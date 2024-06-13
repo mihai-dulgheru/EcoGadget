@@ -1,6 +1,8 @@
 export { default as Button } from './Button';
+export { default as CustomAlert } from './CustomAlert';
 export { default as Error } from './Error';
 export { default as FlatButton } from './FlatButton';
+export { default as Header } from './Header';
 export { default as IconButton } from './IconButton';
 export { default as ImagePicker } from './ImagePicker';
 export { default as Input } from './Input';
@@ -10,3 +12,4 @@ export { default as LoadingOverlay } from './LoadingOverlay';
 export { default as Pill } from './Pill';
 export { default as SearchBar } from './SearchBar';
 export { default as Select } from './Select';
+export { default as TabBar } from './TabBar';

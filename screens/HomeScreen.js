@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    gap: theme.spacing['6'],
+    gap: theme.spacing[6],
     justifyContent: 'center',
   },
   text: {
     ...theme.fontSize.xl,
     fontFamily: theme.fontFamily.heading,
-    marginBottom: theme.spacing['6'],
+    marginBottom: theme.spacing[6],
   },
 });

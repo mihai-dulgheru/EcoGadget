@@ -22,8 +22,8 @@ export default function FlatButton({ extraStyles, onPress, title }) {
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: theme.spacing['4'],
-    paddingVertical: theme.spacing['2'],
+    paddingHorizontal: theme.spacing[4],
+    paddingVertical: theme.spacing[2],
   },
   pressed: {
     opacity: 0.7,

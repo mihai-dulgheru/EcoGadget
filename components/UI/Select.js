@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
-    marginBottom: theme.spacing['1'],
+    marginBottom: theme.spacing[1],
   },
   pickerContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.border,
     borderRadius: theme.borderRadius.md,
     borderWidth: theme.borderWidth.default,
-    height: theme.spacing['12'],
+    height: theme.spacing[12],
     justifyContent: 'center',
     overflow: 'hidden',
   },
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   invalid: {
     borderColor: theme.colors.error,
-    marginBottom: theme.spacing['1'],
+    marginBottom: theme.spacing[1],
   },
   errorText: {
     ...theme.fontSize.sm,

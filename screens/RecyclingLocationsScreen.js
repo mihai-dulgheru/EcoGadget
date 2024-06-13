@@ -18,30 +18,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import markerIcon from '../assets/location-dot.png';
+import { MapScreen } from '../components';
 import { RecyclingScheduleView } from '../components/RecyclingLocationList';
 import { Button, Error, Loading, SearchBar } from '../components/UI';
-import {
-  DAYS_OF_WEEK,
-  DEFAULT_LATITUDE,
-  DEFAULT_LONGITUDE,
-} from '../constants';
+import { DAYS_OF_WEEK } from '../constants';
 import RecyclingService from '../services/RecyclingService';
 import theme from '../styles/theme';
-
-function CustomMarker({ isSelected }) {
-  return (
-    <Image
-      source={markerIcon}
-      style={{
-        height: Math.floor(2132 / 48),
-        tintColor: isSelected ? theme.colors.primary : theme.colors.secondary,
-        width: Math.floor(1604 / 48),
-      }}
-    />
-  );
-}
 
 export default function RecyclingLocationsScreen({ navigation }) {
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -230,37 +212,13 @@ export default function RecyclingLocationsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: currentPosition?.coords.latitude || DEFAULT_LATITUDE,
-          longitude: currentPosition?.coords.longitude || DEFAULT_LONGITUDE,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        onPress={() => {
-          setSelectedLocation(null);
-          bottomSheetRef.current?.snapToIndex(0);
-        }}
-      >
-        {filteredLocations.map((location) => (
-          <Marker
-            key={location._id}
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-            title={location.name}
-            description={location.address}
-            onPress={() => {
-              setSelectedLocation(location);
-              bottomSheetRef.current?.snapToIndex(1);
-            }}
-          >
-            <CustomMarker isSelected={selectedLocation?._id === location._id} />
-          </Marker>
-        ))}
-      </MapView>
+      <MapScreen
+        currentPosition={currentPosition}
+        filteredLocations={filteredLocations}
+        setSelectedLocation={setSelectedLocation}
+        bottomSheetRef={bottomSheetRef}
+        selectedLocation={selectedLocation}
+      />
       <View style={styles.searchContainer}>
         <SearchBar
           onChangeText={handleSearchChange}
@@ -303,9 +261,16 @@ export default function RecyclingLocationsScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  contentContainer: { flex: 1, padding: theme.spacing[4] },
-  listContainer: { flexGrow: 1 },
+  container: {
+    flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    padding: theme.spacing[4],
+  },
+  listContainer: {
+    flexGrow: 1,
+  },
   locationAddress: {
     ...theme.fontSize.sm,
     color: theme.colors.textSecondary,
@@ -327,7 +292,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius.md,
     width: theme.spacing[32],
   },
-  locationInfo: { flex: 1 },
+  locationInfo: {
+    flex: 1,
+  },
   locationInfoRow: {
     borderBottomColor: theme.colors.border,
     borderBottomWidth: theme.borderWidth.default,
@@ -345,7 +312,6 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
   },
-  map: { flex: 1 },
   searchContainer: {
     backgroundColor: 'transparent',
     gap: theme.spacing[2],

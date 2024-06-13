@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkbox: {
-    marginRight: theme.spacing['2'],
+    marginRight: theme.spacing[2],
   },
   labelContainer: {
     width: '100%',

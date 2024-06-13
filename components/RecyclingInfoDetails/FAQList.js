@@ -23,7 +23,7 @@ export default function FAQList({ faqs }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing['4'],
+    gap: theme.spacing[4],
   },
   heading: {
     ...theme.fontSize.lg,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   faq: {
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   question: {
     ...theme.fontSize.base,

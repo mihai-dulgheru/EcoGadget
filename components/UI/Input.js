@@ -33,6 +33,7 @@ const Input = forwardRef(
           <TextInput
             autoCapitalize="none"
             multiline={multiline}
+            placeholderTextColor={theme.colors.textSecondary}
             ref={ref}
             secureTextEntry={secureTextEntry}
             style={[styles.input, multiline && styles.textArea]}
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
-    marginBottom: theme.spacing['1'],
+    marginBottom: theme.spacing[1],
   },
   labelInvalid: {
     color: theme.colors.error,
@@ -78,10 +79,11 @@ const styles = StyleSheet.create({
   input: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
     justifyContent: 'center',
-    minHeight: theme.spacing['12'],
-    paddingHorizontal: theme.spacing['4'],
-    paddingVertical: theme.spacing['2'],
+    minHeight: theme.spacing[12],
+    paddingHorizontal: theme.spacing[4],
+    paddingVertical: theme.spacing[2],
     textAlignVertical: 'center',
   },
   inputInvalid: {
@@ -89,16 +91,16 @@ const styles = StyleSheet.create({
   },
   textArea: {
     justifyContent: 'flex-start',
-    maxHeight: theme.spacing['48'],
-    minHeight: theme.spacing['24'],
+    maxHeight: theme.spacing[48],
+    minHeight: theme.spacing[24],
     textAlignVertical: 'top',
   },
   icon: {
     alignItems: 'center',
     height: '100%',
     justifyContent: 'center',
-    paddingHorizontal: theme.spacing['4'],
-    paddingVertical: theme.spacing['2'],
+    paddingHorizontal: theme.spacing[4],
+    paddingVertical: theme.spacing[2],
     position: 'absolute',
     right: 0,
     top: 0,

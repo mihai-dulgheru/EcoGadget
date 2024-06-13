@@ -96,7 +96,7 @@ export default function ScheduleField({ label, formikProps, name }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   label: {
     ...theme.fontSize.sm,
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   timePickers: {
     flexDirection: 'row',
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
     justifyContent: 'space-between',
   },
 });

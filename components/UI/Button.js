@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: theme.borderRadius.md,
     borderWidth: theme.borderWidth.default,
-    paddingHorizontal: theme.spacing['4'],
-    paddingVertical: theme.spacing['2'],
+    paddingHorizontal: theme.spacing[4],
+    paddingVertical: theme.spacing[2],
     width: '100%',
     // elevation: 2,
     // shadowColor: 'black',

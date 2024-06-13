@@ -118,14 +118,14 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flexGrow: 1,
-    padding: theme.spacing['4'],
-    gap: theme.spacing['4'],
+    padding: theme.spacing[4],
+    gap: theme.spacing[4],
   },
   messageItem: {
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing['4'],
-    gap: theme.spacing['2'],
+    padding: theme.spacing[4],
+    gap: theme.spacing[2],
     position: 'relative',
     opacity: 0.7,
   },
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   messageDetailButton: {
     position: 'absolute',
-    top: theme.spacing['2'],
-    right: theme.spacing['2'],
+    top: theme.spacing[2],
+    right: theme.spacing[2],
   },
 });

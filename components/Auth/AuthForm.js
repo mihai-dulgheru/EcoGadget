@@ -1,10 +1,10 @@
 import { Formik } from 'formik';
-import { useRef } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import theme from '../../styles/theme';
 import { Debug, ErrorMessage, Field } from '../Formik';
-import { Button } from '../UI';
+import { Button, CustomAlert } from '../UI';
 
 const validationSchema = Yup.object().shape({
   lastName: Yup.string().when('isSigningIn', {
@@ -46,6 +46,9 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
     password: useRef(null),
   };
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertProps, setAlertProps] = useState({});
+
   const initialValues = {
     isSigningIn,
     lastName: 'Dulgheru',
@@ -55,13 +58,34 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
     password: 'Password123!',
   };
 
+  const showAlert = (
+    title,
+    message,
+    confirmText,
+    onConfirm,
+    cancelText,
+    onCancel
+  ) => {
+    setAlertProps({
+      title,
+      message,
+      confirmText,
+      onConfirm,
+      cancelText,
+      onCancel,
+    });
+    setAlertVisible(true);
+  };
+
   const handleFormSubmit = async (values) => {
     try {
       onSubmit(values);
     } catch (error) {
-      Alert.alert(
+      showAlert(
         'Eroare',
-        error.message || 'A apărut o eroare la trimiterea formularului'
+        error.message || 'A apărut o eroare la trimiterea formularului',
+        'OK',
+        () => setAlertVisible(false)
       );
       console.error('Submission error', error);
     }
@@ -159,6 +183,7 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
             />
           </View>
           <Debug debug={debug} formikProps={props} />
+          <CustomAlert visible={alertVisible} {...alertProps} />
         </View>
       )}
     </Formik>
@@ -167,9 +192,9 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   buttonContainer: {
-    marginTop: theme.spacing['4'],
+    marginTop: theme.spacing[4],
   },
 });

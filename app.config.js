@@ -33,6 +33,11 @@ export default {
     supportsRTL: true,
   },
   plugins: [
+    'expo-localization',
+    [
+      'expo-image-picker',
+      { photosPermission: 'Allow $(PRODUCT_NAME) to access your photos.' },
+    ],
     [
       'expo-location',
       {
@@ -40,12 +45,5 @@ export default {
           'Allow $(PRODUCT_NAME) to use your location.',
       },
     ],
-    [
-      'expo-image-picker',
-      {
-        photosPermission: 'Allow $(PRODUCT_NAME) to access your photos.',
-      },
-    ],
-    'expo-localization',
   ],
 };

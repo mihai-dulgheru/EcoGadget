@@ -20,7 +20,7 @@ export default function ErrorMessage({ name }) {
 
 const styles = StyleSheet.create({
   errorContainer: {
-    marginTop: theme.spacing['1'],
+    marginTop: theme.spacing[1],
   },
   errorText: {
     ...theme.fontSize.sm,

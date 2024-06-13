@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppState } from './hooks/useAppState';
 import { useOnlineManager } from './hooks/useOnlineManager';
 import { RoleBasedNavigation } from './navigation';
@@ -27,7 +28,7 @@ function Root() {
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    async function prepare() {
+    const prepare = async () => {
       try {
         const user = await AsyncStorage.getItem('user');
         if (user) {
@@ -38,7 +39,7 @@ function Root() {
       } finally {
         setAppIsReady(true);
       }
-    }
+    };
 
     prepare();
   }, []);
@@ -54,18 +55,17 @@ function Root() {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    <View style={styles.flexContainer} onLayout={onLayoutRootView}>
       <RoleBasedNavigation />
     </View>
   );
 }
 
-function onAppStateChange(status) {
-  // React Query already supports in web browser refetch on window focus by default
+const onAppStateChange = (status) => {
   if (Platform.OS !== 'web') {
     focusManager.setFocused(status === 'active');
   }
-}
+};
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -78,18 +78,20 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={styles.container}>
-        <AuthContextProvider>
-          <Root />
-        </AuthContextProvider>
-        <StatusBar style="auto" />
+      <GestureHandlerRootView style={styles.flexContainer}>
+        <SafeAreaView style={styles.flexContainer}>
+          <StatusBar style="auto" />
+          <AuthContextProvider>
+            <Root />
+          </AuthContextProvider>
+        </SafeAreaView>
       </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  flexContainer: {
     flex: 1,
   },
 });

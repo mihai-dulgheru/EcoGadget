@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    padding: theme.spacing['8'],
+    padding: theme.spacing[8],
   },
   message: {
     ...theme.fontSize.base,
     fontFamily: theme.fontFamily.body,
-    marginBottom: theme.spacing['4'],
+    marginBottom: theme.spacing[4],
   },
 });

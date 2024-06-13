@@ -24,10 +24,10 @@ export default function RecyclingScheduleView({ schedule }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    gap: theme.spacing['2'],
+    gap: theme.spacing[2],
   },
   minWidth: {
-    minWidth: theme.spacing['16'],
+    minWidth: theme.spacing[16],
   },
   text: {
     ...theme.fontSize.sm,

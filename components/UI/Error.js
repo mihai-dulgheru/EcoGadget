@@ -18,6 +18,6 @@ const styles = StyleSheet.create({
     ...theme.fontSize.base,
     color: theme.colors.error,
     fontFamily: theme.fontFamily.body,
-    padding: theme.spacing['4'],
+    padding: theme.spacing[4],
   },
 });
