@@ -10,6 +10,7 @@ function CustomMarker({ isSelected }) {
       source={markerIcon}
       style={{
         height: Math.floor(2132 / 48),
+        marginBottom: theme.spacing[0.5],
         tintColor: isSelected ? theme.colors.primary : theme.colors.secondary,
         width: Math.floor(1604 / 48),
       }}

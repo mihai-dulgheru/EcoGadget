@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import * as Location from 'expo-location';
 import React, {
   useCallback,
@@ -9,11 +9,9 @@ import React, {
   useState,
 } from 'react';
 import {
-  FlatList,
   Image,
   Keyboard,
   StyleSheet,
-  // Switch,
   Text,
   TouchableWithoutFeedback,
   View,
@@ -21,7 +19,6 @@ import {
 import { MapScreen } from '../components';
 import { RecyclingScheduleView } from '../components/RecyclingLocationList';
 import { Button, Error, Loading, SearchBar } from '../components/UI';
-import { DAYS_OF_WEEK } from '../constants';
 import RecyclingService from '../services/RecyclingService';
 import theme from '../styles/theme';
 
@@ -31,10 +28,8 @@ export default function RecyclingLocationsScreen({ navigation }) {
   const [locations, setLocations] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
-  // const [showOpenNow, setShowOpenNow] = useState(false);
   const [status, setStatus] = useState('loading');
 
-  // BottomSheet ref and snap points
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ['25%', '50%', '100%'], []);
 
@@ -90,20 +85,6 @@ export default function RecyclingLocationsScreen({ navigation }) {
     };
   }, []);
 
-  // TODO: Implement filtering by open now
-  // const filteredLocations = useMemo(() => {
-  //   const currentDay = DAYS_OF_WEEK[new Date().getDay()];
-  //   return locations.filter((location) => {
-  //     const todaySchedule =
-  //       location.schedule[currentDay.toLowerCase()] || 'Closed';
-  //     const isOpenNow = todaySchedule !== 'Closed';
-  //     return (
-  //       location.name.toLowerCase().includes(searchText.toLowerCase()) &&
-  //       (!showOpenNow || isOpenNow)
-  //     );
-  //   });
-  // }, [locations, searchText, showOpenNow]);
-
   const filteredLocations = useMemo(
     () =>
       locations.filter((location) =>
@@ -126,10 +107,6 @@ export default function RecyclingLocationsScreen({ navigation }) {
             style={styles.locationImage}
           />
           <View style={styles.locationInfo}>
-            <Text style={styles.locationSchedule}>
-              {item.schedule[DAYS_OF_WEEK[new Date().getDay()].toLowerCase()] ||
-                'Închis'}
-            </Text>
             <Text style={styles.locationName}>{item.name}</Text>
             <Text style={styles.locationAddress}>{item.address}</Text>
             <Text style={styles.locationDistance}>{item.distance}</Text>
@@ -225,35 +202,19 @@ export default function RecyclingLocationsScreen({ navigation }) {
           onClear={handleSearchClear}
           placeholder="Caută după nume"
         />
-        {/* <View style={styles.switchContainer}>
-          <Text style={styles.switchLabel}>Deschise acum</Text>
-          <Switch
-            value={showOpenNow}
-            onValueChange={setShowOpenNow}
-            thumbColor={
-              showOpenNow ? theme.colors.primary : theme.colors.border
-            }
-            trackColor={{
-              false: theme.colors.border,
-              true: theme.colors.primary,
-            }}
-          />
-        </View> */}
       </View>
       {!isKeyboardVisible && (
         <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
-          <BottomSheetView style={styles.contentContainer}>
-            {selectedLocation ? (
-              renderSelectedLocation(selectedLocation)
-            ) : (
-              <FlatList
-                contentContainerStyle={styles.listContainer}
-                data={filteredLocations}
-                keyExtractor={(item) => item._id.toString()}
-                renderItem={renderLocation}
-              />
-            )}
-          </BottomSheetView>
+          <BottomSheetFlatList
+            contentContainerStyle={styles.contentContainer}
+            data={filteredLocations}
+            keyExtractor={(item) => item._id.toString()}
+            renderItem={
+              selectedLocation
+                ? () => renderSelectedLocation(selectedLocation)
+                : renderLocation
+            }
+          />
         </BottomSheet>
       )}
     </View>
@@ -265,7 +226,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    flex: 1,
+    flexGrow: 1,
     padding: theme.spacing[4],
   },
   listContainer: {
@@ -290,6 +251,7 @@ const styles = StyleSheet.create({
   },
   locationImage: {
     borderRadius: theme.borderRadius.md,
+    objectFit: 'cover',
     width: theme.spacing[32],
   },
   locationInfo: {
@@ -306,11 +268,6 @@ const styles = StyleSheet.create({
     ...theme.fontSize.lg,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
-  },
-  locationSchedule: {
-    ...theme.fontSize.sm,
-    color: theme.colors.textPrimary,
-    fontFamily: theme.fontFamily.body,
   },
   searchContainer: {
     backgroundColor: 'transparent',
