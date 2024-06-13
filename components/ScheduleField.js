@@ -1,6 +1,6 @@
 import { set } from 'date-fns';
 import { useField } from 'formik';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { DEFAULT_TIME_RANGE } from '../constants';
 import theme from '../styles/theme';
@@ -8,57 +8,57 @@ import { convertTo24HourFormat } from '../utils/DateUtils';
 import ClosedCheckbox from './ClosedCheckbox';
 import TimePickerButton from './TimePickerButton';
 
-export default function ScheduleField({ label, formikProps, name }) {
-  const [field] = useField(name);
+const formatTime = (date) =>
+  date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
 
-  const isClosed = useMemo(() => field.value === 'Closed', [field.value]);
-  const schedule = useMemo(() => {
-    if (isClosed) return { start: '', end: '' };
-    let times = field.value?.split(' - ');
-    if (times.length !== 2) times = DEFAULT_TIME_RANGE.split(' - ');
-    return {
-      start: convertTo24HourFormat(times[0]),
-      end: convertTo24HourFormat(times[1]),
-    };
-  }, [field.value]);
+const getDateTime = (time) => {
+  const [hours, minutes] = time.split(':').map(Number);
+  return set(new Date(), { hours, minutes });
+};
 
-  const initialStartTime = useMemo(() => {
-    const [hours, minutes] = schedule.start.split(':').map(Number);
-    return set(new Date(), { hours, minutes });
-  }, [schedule.start]);
+export default function ScheduleField({ label, name }) {
+  const [field, , helpers] = useField(name);
 
-  const initialEndTime = useMemo(() => {
-    const [hours, minutes] = schedule.end.split(':').map(Number);
-    return set(new Date(), { hours, minutes });
-  }, [schedule.end]);
+  const initialValue =
+    field.value === 'Closed' ? DEFAULT_TIME_RANGE : field.value;
+  const initialTimes = initialValue.split(' - ').map(convertTo24HourFormat);
 
-  const [startTime, setStartTime] = useState(initialStartTime);
-  const [endTime, setEndTime] = useState(initialEndTime);
+  const [startTime, setStartTime] = useState(getDateTime(initialTimes[0]));
+  const [endTime, setEndTime] = useState(getDateTime(initialTimes[1]));
+  const [isClosed, setIsClosed] = useState(field.value === 'Closed');
 
   const handleConfirmStart = (selectedDate) => {
     setStartTime(selectedDate);
-    const formattedDate = selectedDate.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    });
-    formikProps.setFieldValue(
-      name,
+    const formattedDate = formatTime(selectedDate);
+    helpers.setValue(
       `${formattedDate} - ${field.value?.split(' - ')[1] || ''}`
     );
   };
 
   const handleConfirmEnd = (selectedDate) => {
     setEndTime(selectedDate);
-    const formattedDate = selectedDate.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    });
-    formikProps.setFieldValue(
-      name,
+    const formattedDate = formatTime(selectedDate);
+    helpers.setValue(
       `${field.value?.split(' - ')[0] || ''} - ${formattedDate}`
     );
+  };
+
+  const handleClosedChange = (value) => {
+    setIsClosed(value);
+    if (value) {
+      helpers.setValue('Closed');
+    } else {
+      helpers.setValue(DEFAULT_TIME_RANGE);
+      const defaultTimes = DEFAULT_TIME_RANGE.split(' - ').map(
+        convertTo24HourFormat
+      );
+      setStartTime(getDateTime(defaultTimes[0]));
+      setEndTime(getDateTime(defaultTimes[1]));
+    }
   };
 
   return (
@@ -67,28 +67,21 @@ export default function ScheduleField({ label, formikProps, name }) {
       {!isClosed && (
         <View style={styles.timePickers}>
           <TimePickerButton
-            key={`start-${field.value}`}
             label={field.value?.split(' - ')[0] || 'Ora de începere'}
-            time={startTime}
             onConfirm={handleConfirmStart}
+            time={startTime}
           />
           <TimePickerButton
-            key={`end-${field.value}`}
             label={field.value?.split(' - ')[1] || 'Ora de încheiere'}
-            time={endTime}
             onConfirm={handleConfirmEnd}
+            time={endTime}
           />
         </View>
       )}
       <ClosedCheckbox
         isClosed={isClosed}
-        setIsClosed={(newValue) =>
-          formikProps.setFieldValue(
-            name,
-            newValue ? 'Closed' : DEFAULT_TIME_RANGE
-          )
-        }
         label="Închis"
+        setIsClosed={handleClosedChange}
       />
     </View>
   );

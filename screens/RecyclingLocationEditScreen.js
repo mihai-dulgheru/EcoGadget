@@ -246,7 +246,6 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
               {Object.keys(props.values.schedule).map((day) => (
                 <View key={day}>
                   <ScheduleField
-                    formikProps={props}
                     label={WEEKDAY_TRANSLATIONS[day]}
                     name={`schedule.${day}`}
                   />

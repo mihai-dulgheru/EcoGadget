@@ -3,13 +3,13 @@ import { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import theme from '../styles/theme';
 
-function ClosedCheckbox({ isClosed, setIsClosed, label }) {
+function ClosedCheckbox({ isClosed, label, setIsClosed }) {
   return (
     <View style={styles.row}>
       <Checkbox
+        onValueChange={setIsClosed}
         style={styles.checkbox}
         value={isClosed}
-        onValueChange={setIsClosed}
       />
       <TouchableOpacity
         onPress={() => setIsClosed(!isClosed)}
@@ -25,8 +25,8 @@ export default memo(ClosedCheckbox);
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   checkbox: {
     marginRight: theme.spacing[2],

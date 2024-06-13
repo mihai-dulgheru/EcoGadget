@@ -3,7 +3,11 @@ import { memo, useCallback, useState } from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import theme from '../styles/theme';
 
-function TimePickerButton({ label, time, onConfirm }) {
+function TimePickerButton({
+  label = '',
+  time = new Date(),
+  onConfirm = () => {},
+}) {
   const [isPickerVisible, setPickerVisibility] = useState(false);
 
   const showPicker = useCallback(() => setPickerVisibility(true), []);
@@ -11,16 +15,15 @@ function TimePickerButton({ label, time, onConfirm }) {
 
   const handleConfirm = useCallback(
     (event, selectedDate) => {
+      hidePicker();
       if (event.type === 'dismissed') {
-        hidePicker();
         return;
       }
-      hidePicker();
-      if (selectedDate) {
+      if (selectedDate && typeof onConfirm === 'function') {
         onConfirm(selectedDate);
       }
     },
-    [onConfirm, hidePicker]
+    [hidePicker, onConfirm]
   );
 
   return (
@@ -30,11 +33,11 @@ function TimePickerButton({ label, time, onConfirm }) {
       </TouchableOpacity>
       {isPickerVisible && (
         <DateTimePicker
-          value={time}
-          mode="time"
-          is24Hour={false}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          is24Hour={false}
+          mode="time"
           onChange={handleConfirm}
+          value={time}
         />
       )}
     </>
