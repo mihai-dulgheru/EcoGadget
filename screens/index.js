@@ -1,5 +1,6 @@
 export { default as ApplianceEditScreen } from './ApplianceEditScreen';
 export { default as ApplianceManagementScreen } from './ApplianceManagementScreen';
+export { default as ApplianceStatisticsScreen } from './ApplianceStatisticsScreen';
 export { default as HomeScreen } from './HomeScreen';
 export { default as InfoScreen } from './InfoScreen';
 export { default as MessageDetailScreen } from './MessageDetailScreen';

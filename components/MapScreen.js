@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
 import markerIcon from '../assets/location-dot.png';
@@ -18,16 +19,18 @@ function CustomMarker({ isSelected }) {
   );
 }
 
-export default function MapScreen({
-  currentPosition,
-  filteredLocations,
-  setSelectedLocation,
-  bottomSheetRef,
-  selectedLocation,
-}) {
-  return (
+const MapScreen = forwardRef(
+  (
+    {
+      currentPosition,
+      filteredLocations,
+      setSelectedLocation,
+      bottomSheetRef,
+      selectedLocation,
+    },
+    ref
+  ) => (
     <MapView
-      style={styles.map}
       initialRegion={{
         latitude: currentPosition?.coords.latitude || DEFAULT_LATITUDE,
         longitude: currentPosition?.coords.longitude || DEFAULT_LONGITUDE,
@@ -38,6 +41,8 @@ export default function MapScreen({
         setSelectedLocation(null);
         bottomSheetRef.current?.snapToIndex(0);
       }}
+      ref={ref}
+      style={styles.map}
     >
       {filteredLocations.map((location) => (
         <Marker
@@ -61,8 +66,8 @@ export default function MapScreen({
         </Marker>
       ))}
     </MapView>
-  );
-}
+  )
+);
 
 const styles = StyleSheet.create({
   map: {
@@ -81,3 +86,5 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
   },
 });
+
+export default MapScreen;

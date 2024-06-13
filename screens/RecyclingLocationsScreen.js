@@ -13,12 +13,19 @@ import {
   Keyboard,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { MapScreen } from '../components';
 import { RecyclingScheduleView } from '../components/RecyclingLocationList';
-import { Button, Error, Loading, SearchBar } from '../components/UI';
+import {
+  Button,
+  Error,
+  IconButton,
+  Loading,
+  SearchBar,
+} from '../components/UI';
 import RecyclingService from '../services/RecyclingService';
 import theme from '../styles/theme';
 
@@ -31,6 +38,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
   const [status, setStatus] = useState('loading');
 
   const bottomSheetRef = useRef(null);
+  const mapRef = useRef(null);
   const snapPoints = useMemo(() => ['25%', '50%', '100%'], []);
 
   const handleSearchChange = useCallback((text) => {
@@ -84,6 +92,17 @@ export default function RecyclingLocationsScreen({ navigation }) {
       keyboardDidShowListener.remove();
     };
   }, []);
+
+  const handleCenterMap = () => {
+    if (mapRef.current && currentPosition) {
+      mapRef.current.animateToRegion({
+        latitude: currentPosition.coords.latitude,
+        longitude: currentPosition.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      });
+    }
+  };
 
   const filteredLocations = useMemo(
     () =>
@@ -190,11 +209,12 @@ export default function RecyclingLocationsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <MapScreen
+        bottomSheetRef={bottomSheetRef}
         currentPosition={currentPosition}
         filteredLocations={filteredLocations}
-        setSelectedLocation={setSelectedLocation}
-        bottomSheetRef={bottomSheetRef}
+        ref={mapRef}
         selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
       />
       <View style={styles.searchContainer}>
         <SearchBar
@@ -203,11 +223,19 @@ export default function RecyclingLocationsScreen({ navigation }) {
           placeholder="Caută după nume"
         />
       </View>
+      <TouchableOpacity style={styles.centerButton} onPress={handleCenterMap}>
+        <IconButton
+          color={theme.colors.primary}
+          icon="locate"
+          onPress={handleCenterMap}
+          size={24}
+        />
+      </TouchableOpacity>
       {!isKeyboardVisible && (
         <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
           <BottomSheetFlatList
             contentContainerStyle={styles.contentContainer}
-            data={filteredLocations}
+            data={selectedLocation ? [selectedLocation] : filteredLocations}
             keyExtractor={(item) => item._id.toString()}
             renderItem={
               selectedLocation
@@ -227,6 +255,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexGrow: 1,
+    gap: theme.spacing[4],
     padding: theme.spacing[4],
   },
   listContainer: {
@@ -271,11 +300,30 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     backgroundColor: 'transparent',
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: theme.spacing[2],
     padding: theme.spacing[4],
     position: 'absolute',
     top: 0,
     width: '100%',
+  },
+  centerButton: {
+    position: 'absolute',
+    bottom: '27.5%',
+    right: theme.spacing[4],
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: theme.spacing[2],
+    backgroundColor: theme.colors.backgroundPrimary,
+    borderColor: theme.colors.border,
+    borderWidth: theme.borderWidth.default,
+    borderRadius: theme.borderRadius.full,
+    elevation: 2,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   selectedLocationAddress: {
     ...theme.fontSize.md,

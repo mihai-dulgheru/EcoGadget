@@ -43,6 +43,23 @@ async function getAppliances(axiosInstance) {
   }
 }
 
+async function getRecommendations(axiosInstance, location) {
+  try {
+    const response = await axiosInstance.post('/appliances/recommendations', {
+      coordinates: [location.latitude, location.longitude],
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
 async function updateAppliance(axiosInstance, id, applianceData) {
   try {
     const response = await axiosInstance.put(
@@ -65,5 +82,6 @@ export default {
   addAppliance,
   deleteAppliance,
   getAppliances,
+  getRecommendations,
   updateAppliance,
 };

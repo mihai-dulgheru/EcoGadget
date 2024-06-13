@@ -7,7 +7,7 @@ const Axios = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 5000,
+  timeout: 60000,
 });
 
 function useAxiosAuth() {
@@ -19,7 +19,7 @@ function useAxiosAuth() {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    timeout: 5000,
+    timeout: 60000,
     withCredentials: true,
   });
 

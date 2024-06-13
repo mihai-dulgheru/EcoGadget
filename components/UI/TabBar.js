@@ -99,7 +99,7 @@ export default function TabBar({ state, descriptors, navigation }) {
               <View style={isFocused ? styles.tabIconFocused : styles.tabIcon}>
                 <Ionicons
                   name={iconName}
-                  size={25}
+                  size={24}
                   color={
                     isFocused ? theme.colors.primary : theme.colors.textPrimary
                   }

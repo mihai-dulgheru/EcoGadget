@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: theme.spacing[4],
     gap: theme.spacing[4],
+    padding: theme.spacing[4],
   },
   title: {
     ...theme.fontSize['2xl'],

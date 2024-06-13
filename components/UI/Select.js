@@ -18,12 +18,14 @@ export default function Select({
           selectedValue={selectedValue}
           onValueChange={onValueChange}
           style={styles.picker}
+          itemStyle={styles.pickerItem}
         >
           {items.map((item) => (
             <Picker.Item
               key={item.value}
               label={item.label}
               value={item.value}
+              style={styles.pickerItem}
             />
           ))}
         </Picker>
@@ -51,6 +53,11 @@ const styles = StyleSheet.create({
   },
   picker: {
     color: theme.colors.textPrimary,
+  },
+  pickerItem: {
+    ...theme.fontSize.sm,
+    color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.body,
   },
   invalid: {
     borderColor: theme.colors.error,

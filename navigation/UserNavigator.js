@@ -6,6 +6,7 @@ import { Header, TabBar } from '../components/UI';
 import {
   ApplianceEditScreen,
   ApplianceManagementScreen,
+  ApplianceStatisticsScreen,
   RecyclingCenterDetailsScreen,
   RecyclingInfoDetailsScreen,
   RecyclingInfoScreen,
@@ -82,6 +83,11 @@ function ApplianceManagementStackNavigator() {
               ? 'Editare electrocasnic'
               : 'Adăugare electrocasnic',
         })}
+      />
+      <Stack.Screen
+        name="ApplianceStatistics"
+        component={ApplianceStatisticsScreen}
+        options={{ title: 'Statistici și recomandări' }}
       />
     </Stack.Navigator>
   );

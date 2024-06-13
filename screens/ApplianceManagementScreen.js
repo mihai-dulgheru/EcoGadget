@@ -1,6 +1,9 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
 import {
   FlatList,
+  Pressable,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -93,6 +96,10 @@ export default function ApplianceManagementScreen({ navigation, route }) {
     );
   };
 
+  const handleStatistics = async () => {
+    navigation.navigate('ApplianceStatistics');
+  };
+
   if (status === 'loading') {
     return <Loading />;
   }
@@ -113,6 +120,28 @@ export default function ApplianceManagementScreen({ navigation, route }) {
           size={28}
         />
       </View>
+      {appliances && !isEmpty(appliances) && (
+        <View style={styles.toolbar}>
+          <Pressable
+            onPress={handleStatistics}
+            style={({ pressed }) => [
+              styles.statisticsButton,
+              pressed && styles.opacity70,
+            ]}
+          >
+            <View style={styles.statisticsContainer}>
+              <Ionicons
+                name="sparkles"
+                size={24}
+                color={theme.colors.primary}
+              />
+              <Text style={styles.primaryButtonText}>
+                Generează statistici și recomandări
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+      )}
       <FlatList
         contentContainerStyle={styles.listContainer}
         data={appliances}
@@ -174,6 +203,31 @@ const styles = StyleSheet.create({
     right: theme.spacing[4],
     width: theme.spacing[14],
     zIndex: 1,
+  },
+  toolbar: {
+    backgroundColor: theme.colors.backgroundPrimary,
+    paddingHorizontal: theme.spacing[4],
+    paddingTop: theme.spacing[4],
+  },
+  statisticsButton: {
+    backgroundColor: theme.colors.backgroundSecondary,
+    borderRadius: theme.borderRadius.md,
+    paddingHorizontal: theme.spacing[4],
+    paddingVertical: theme.spacing[2],
+  },
+  opacity70: {
+    opacity: 0.7,
+  },
+  statisticsContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: theme.spacing[2],
+    justifyContent: 'center',
+  },
+  primaryButtonText: {
+    ...theme.fontSize.base,
+    color: theme.colors.primary,
+    fontFamily: theme.fontFamily.heading,
   },
   listContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
