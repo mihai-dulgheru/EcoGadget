@@ -13,7 +13,11 @@ import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
-import { DisposalOptions, EfficiencyRatings } from '../utils/Enums';
+import {
+  DisposalOptions,
+  DisposalOptionsTranslations,
+  EfficiencyRatings,
+} from '../utils/Enums';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Numele este obligatoriu'),
@@ -236,7 +240,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
                 selectedValue={props.values.disposalOptions}
                 onValueChange={props.handleChange('disposalOptions')}
                 items={Object.keys(DisposalOptions).map((key) => ({
-                  label: DisposalOptions[key],
+                  label: DisposalOptionsTranslations[key],
                   value: DisposalOptions[key],
                 }))}
                 errorText={

@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useContext, useEffect, useMemo } from 'react';
 import {
@@ -7,9 +6,9 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import { DashboardCard, MessageDistributionChart } from '../components';
 import { Error, IconButton, Loading } from '../components/UI';
 import { useRefreshByUser } from '../hooks/useRefreshByUser';
 import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
@@ -17,20 +16,6 @@ import RecyclingManagerService from '../services/RecyclingManagerService';
 import { AuthContext } from '../store/AuthContext';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
-
-function DashboardCard({ icon, title, count, onPress, fadeAnim }) {
-  return (
-    <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
-      <TouchableOpacity style={styles.rowSpaceBetween} onPress={onPress}>
-        <View style={styles.statRowContainer}>
-          <Ionicons name={icon} color={theme.colors.textPrimary} size={20} />
-          <Text style={styles.stat}>{title}</Text>
-        </View>
-        <Text style={styles.stat}>{count}</Text>
-      </TouchableOpacity>
-    </Animated.View>
-  );
-}
 
 export default function RecyclingManagerDashboardScreen({ navigation }) {
   const auth = useContext(AuthContext);
@@ -77,6 +62,7 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
   return (
     <ScrollView
       style={styles.container}
+      contentContainerStyle={styles.contentContainer}
       refreshControl={
         <RefreshControl
           refreshing={isRefetchingByUser}
@@ -107,6 +93,10 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
         onPress={() => navigation.navigate('MessageList')}
         fadeAnim={fadeAnim}
       />
+      <MessageDistributionChart
+        fadeAnim={fadeAnim}
+        messageAggregation={stats?.messageAggregation}
+      />
     </ScrollView>
   );
 }
@@ -115,6 +105,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.backgroundPrimary,
     flex: 1,
+  },
+  contentContainer: {
     padding: theme.spacing[4],
   },
   header: {
@@ -127,27 +119,5 @@ const styles = StyleSheet.create({
     ...theme.fontSize['2xl'],
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
-  },
-  card: {
-    backgroundColor: theme.colors.backgroundSecondary,
-    borderRadius: theme.borderRadius.lg,
-    padding: theme.spacing[4],
-    marginBottom: theme.spacing[4],
-    justifyContent: 'center',
-  },
-  rowSpaceBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statRowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing[2],
-  },
-  stat: {
-    ...theme.fontSize.lg,
-    color: theme.colors.textPrimary,
-    fontFamily: theme.fontFamily.body,
   },
 });

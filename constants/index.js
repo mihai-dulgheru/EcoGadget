@@ -10,6 +10,20 @@ const DAYS_OF_WEEK = [
 const DEFAULT_LATITUDE = 44.4268;
 const DEFAULT_LONGITUDE = 26.1025;
 const DEFAULT_TIME_RANGE = '12:00 AM - 12:00 AM';
+const MONTHS = [
+  'Ian',
+  'Feb',
+  'Mar',
+  'Apr',
+  'Mai',
+  'Iun',
+  'Iul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Noi',
+  'Dec',
+];
 const WEEKDAY_TRANSLATIONS = {
   monday: 'Luni',
   tuesday: 'Marți',
@@ -25,5 +39,6 @@ export {
   DEFAULT_LATITUDE,
   DEFAULT_LONGITUDE,
   DEFAULT_TIME_RANGE,
+  MONTHS,
   WEEKDAY_TRANSLATIONS,
 };

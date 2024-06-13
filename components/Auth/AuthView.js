@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     gap: theme.spacing[2],
     justifyContent: 'center',
-    padding: theme.spacing[8],
+    padding: theme.spacing[4],
   },
   buttonText: {
     ...theme.fontSize.sm,
