@@ -45,25 +45,25 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultLocation = {
-  name: 'Test',
-  address: 'Bulevardul 1 Decembrie 1918, nr. 12, Cluj-Napoca',
+  name: 'Milatex Trade',
+  address: 'Bulevardul Iuliu Maniu 7b, București 061072, Romania',
   image: '',
-  phone: '0723456789',
-  description: 'Descriere test',
+  phone: '0213191632',
+  description: 'Deseuri electrice, electronice si electrocasnice mici',
   schedule: {
-    monday: '9:00 AM - 5:00 PM',
-    tuesday: '9:00 AM - 5:00 PM',
-    wednesday: '9:00 AM - 5:00 PM',
-    thursday: '9:00 AM - 5:00 PM',
-    friday: '9:00 AM - 5:00 PM',
+    monday: '8:00 AM - 4:00 PM',
+    tuesday: '8:00 AM - 4:00 PM',
+    wednesday: '8:00 AM - 4:00 PM',
+    thursday: '8:00 AM - 4:00 PM',
+    friday: '8:00 AM - 4:00 PM',
     saturday: 'Closed',
     sunday: 'Closed',
   },
-  company: 'Test Company',
-  cui: '12345678',
-  regCom: 'J12/1234/2021',
-  latitude: 46.770807,
-  longitude: 23.5720542,
+  company: 'MILATEX TRADE S.R.L.',
+  cui: '18537237',
+  regCom: 'J40/5321/2006',
+  latitude: 44.4335339,
+  longitude: 26.0512812,
 };
 
 export default function RecyclingLocationEditScreen({ navigation, route }) {

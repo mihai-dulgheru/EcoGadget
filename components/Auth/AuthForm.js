@@ -55,7 +55,7 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
     firstName: 'Mihai-Nicolae',
     email: 'dulgherumihai19@stud.ase.ro',
     phone: '0757949057',
-    password: 'Password123!',
+    password: 'Parola123!',
   };
 
   const showAlert = (
