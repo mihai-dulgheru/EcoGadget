@@ -120,11 +120,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
         }}
       >
         <View style={styles.locationContainer}>
-          <Image
-            defaultSource={require('../assets/images/placeholder.jpg')}
-            source={{ uri: item.image }}
-            style={styles.locationImage}
-          />
+          <Image source={{ uri: item.image }} style={styles.locationImage} />
           <View style={styles.locationInfo}>
             <Text style={styles.locationName}>{item.name}</Text>
             <Text style={styles.locationAddress}>{item.address}</Text>
@@ -140,7 +136,6 @@ export default function RecyclingLocationsScreen({ navigation }) {
     (location) => (
       <View style={styles.selectedLocationContainer}>
         <Image
-          defaultSource={require('../assets/images/placeholder.jpg')}
           source={{ uri: location.image }}
           style={styles.selectedLocationImage}
         />

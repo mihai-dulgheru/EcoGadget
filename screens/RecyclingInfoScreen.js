@@ -41,11 +41,7 @@ export default function RecyclingInfoScreen({ navigation }) {
       }}
     >
       <View key={`recycling-info-${item._id}`} style={styles.infoBlock}>
-        <Image
-          defaultSource={require('../assets/images/placeholder.jpg')}
-          source={{ uri: item.picture.url }}
-          style={styles.image}
-        />
+        <Image source={{ uri: item.picture.url }} style={styles.image} />
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.subtitle}>{item.subtitle}</Text>
         <View style={styles.row}>

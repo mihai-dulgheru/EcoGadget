@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Image, ScrollView, StyleSheet } from 'react-native';
 import theme from '../../styles/theme';
 import { FlatButton } from '../UI';
 import AuthForm from './AuthForm';
@@ -21,7 +21,12 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
+      keyboardShouldPersistTaps="handled"
     >
+      <Image
+        source={require('../../assets/images/logo-primary.png')}
+        style={styles.image}
+      />
       <AuthForm
         isSigningIn={isSigningIn}
         onSubmit={(credentials) => onAuthenticate(credentials)}
@@ -47,6 +52,12 @@ const styles = StyleSheet.create({
     gap: theme.spacing[2],
     justifyContent: 'center',
     padding: theme.spacing[4],
+  },
+  image: {
+    alignSelf: 'center',
+    height: theme.spacing[32],
+    marginBottom: theme.spacing[2],
+    width: theme.spacing[32],
   },
   buttonText: {
     ...theme.fontSize.sm,

@@ -167,12 +167,15 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
           )}
           <View>
             <Field
+              autoComplete={isSigningIn ? 'current-password' : 'new-password'}
+              autoCorrect={false}
               formikProps={props}
               label="Parolă"
               name="password"
               placeholder="Parolă"
               ref={inputRefs.password}
               secure
+              textContentType={isSigningIn ? 'password' : 'newPassword'}
             />
             <ErrorMessage name="password" />
           </View>
@@ -195,6 +198,6 @@ const styles = StyleSheet.create({
     gap: theme.spacing[2],
   },
   buttonContainer: {
-    marginTop: theme.spacing[4],
+    marginTop: theme.spacing[8],
   },
 });

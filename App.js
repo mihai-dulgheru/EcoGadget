@@ -77,16 +77,16 @@ export default function App() {
   useReactQueryDevTools(queryClient);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView style={styles.flexContainer}>
+    <GestureHandlerRootView style={styles.flexContainer}>
+      <QueryClientProvider client={queryClient}>
         <SafeAreaView style={styles.flexContainer}>
           <StatusBar style="auto" />
           <AuthContextProvider>
             <Root />
           </AuthContextProvider>
         </SafeAreaView>
-      </GestureHandlerRootView>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
 

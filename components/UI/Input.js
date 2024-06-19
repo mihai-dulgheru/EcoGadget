@@ -22,6 +22,12 @@ const Input = forwardRef(
   ) => {
     const [secureTextEntry, setSecureTextEntry] = useState(secure);
 
+    const handleSecureTextEntryToggle = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setSecureTextEntry((prev) => !prev);
+    };
+
     return (
       <View>
         {label && (
@@ -41,7 +47,7 @@ const Input = forwardRef(
           />
           {secure && (
             <TouchableOpacity
-              onPress={() => setSecureTextEntry((prev) => !prev)}
+              onPress={handleSecureTextEntryToggle}
               style={styles.icon}
             >
               <Ionicons

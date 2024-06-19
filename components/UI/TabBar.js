@@ -121,6 +121,8 @@ export default function TabBar({ state, descriptors, navigation }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.backgroundPrimary,
+    // borderTopColor: theme.colors.border,
+    // borderTopWidth: theme.borderWidth.default,
   },
   tabBar: {
     alignItems: 'center',

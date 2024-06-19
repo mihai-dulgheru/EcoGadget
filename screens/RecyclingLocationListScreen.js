@@ -114,11 +114,7 @@ export default function RecyclingLocationListScreen({ navigation }) {
     ({ item }) => (
       <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
         <View style={styles.locationItem}>
-          <Image
-            defaultSource={require('../assets/images/placeholder.jpg')}
-            source={{ uri: item.image }}
-            style={styles.locationImage}
-          />
+          <Image source={{ uri: item.image }} style={styles.locationImage} />
           <Text style={styles.locationTitle}>{item.name}</Text>
           <RecyclingScheduleView schedule={item.schedule} />
           <View style={styles.addressContainer}>
