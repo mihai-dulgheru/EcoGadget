@@ -11,7 +11,12 @@ import {
   RecyclingInfoDetailsScreen,
   RecyclingInfoScreen,
   RecyclingLocationsScreen,
+  UserAccountChangePasswordScreen,
+  UserAccountChangePhoneNumberScreen,
+  UserAccountPersonalInfoScreen,
   UserAccountScreen,
+  UserAccountSettingsScreen,
+  UserAccountUpdateNameScreen,
 } from '../screens';
 
 const Tab = createBottomTabNavigator();
@@ -93,6 +98,43 @@ function ApplianceManagementStackNavigator() {
   );
 }
 
+function UserAccountStackNavigator() {
+  return (
+    <Stack.Navigator screenOptions={{ header: renderHeader }}>
+      <Tab.Screen
+        name="UserAccount"
+        component={UserAccountScreen}
+        options={{ title: 'Cont' }}
+      />
+      <Tab.Screen
+        name="UserAccountPersonalInfo"
+        component={UserAccountPersonalInfoScreen}
+        options={{ title: '' }}
+      />
+      <Tab.Screen
+        name="UserAccountUpdateName"
+        component={UserAccountUpdateNameScreen}
+        options={{ title: '' }}
+      />
+      <Tab.Screen
+        name="UserAccountChangePhoneNumber"
+        component={UserAccountChangePhoneNumberScreen}
+        options={{ title: '' }}
+      />
+      <Tab.Screen
+        name="UserAccountChangePassword"
+        component={UserAccountChangePasswordScreen}
+        options={{ title: 'Schimbare parolă' }}
+      />
+      <Tab.Screen
+        name="UserAccountSettings"
+        component={UserAccountSettingsScreen}
+        options={{ title: 'Setări cont' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 export default function UserNavigator() {
   return (
     <Tab.Navigator
@@ -115,9 +157,9 @@ export default function UserNavigator() {
         options={{ headerShown: false, title: 'Electrocasnice' }}
       />
       <Tab.Screen
-        name="UserAccount"
-        component={UserAccountScreen}
-        options={{ title: 'Cont' }}
+        name="UserAccountTab"
+        component={UserAccountStackNavigator}
+        options={{ headerShown: false, title: 'Cont' }}
       />
     </Tab.Navigator>
   );

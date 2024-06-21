@@ -1,8 +1,14 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useCallback, useContext, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RefreshControl } from 'react-native-gesture-handler';
+import {
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Avatar } from '../components';
 import { CustomAlert, Divider, Error, Loading } from '../components/UI';
 import { RIPPLE_CONFIG } from '../constants';
@@ -14,16 +20,56 @@ import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function UserAccountScreen() {
+const showAlert = (
+  setAlertProps,
+  setAlertVisible,
+  title,
+  message,
+  confirmText,
+  onConfirm,
+  cancelText,
+  onCancel
+) => {
+  setAlertProps({
+    title,
+    message,
+    confirmText,
+    onConfirm,
+    cancelText,
+    onCancel,
+  });
+  setAlertVisible(true);
+};
+
+const renderInfoItem = (iconName, text, onPress, isError) => (
+  <Pressable
+    android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+    onPress={onPress}
+    style={styles.button}
+  >
+    <View style={styles.row}>
+      <Ionicons
+        name={iconName}
+        color={isError ? theme.colors.error : theme.colors.textSecondary}
+        size={24}
+      />
+      <Text style={[styles.buttonText, isError && styles.errorText]}>
+        {text}
+      </Text>
+    </View>
+  </Pressable>
+);
+
+export default function UserAccountScreen({ navigation }) {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
   const auth = useContext(AuthContext);
   const AxiosAuth = useAxiosAuth();
 
-  const fetchAccountInfo = useCallback(async () => {
-    const accountInfo = await UserService.getAccountInfo(AxiosAuth);
-    return accountInfo;
-  }, [AxiosAuth]);
+  const fetchAccountInfo = useCallback(
+    async () => UserService.getAccountInfo(AxiosAuth),
+    [AxiosAuth]
+  );
 
   const {
     data: accountInfo,
@@ -31,7 +77,7 @@ export default function UserAccountScreen() {
     isPending,
     refetch,
   } = useQuery({
-    queryKey: ['statistics'],
+    queryKey: ['accountInfo'],
     queryFn: fetchAccountInfo,
   });
 
@@ -45,13 +91,22 @@ export default function UserAccountScreen() {
   const mutation = useMutation({
     mutationFn: deleteAccount,
     onSuccess: () => {
-      showAlert('Succes', 'Contul a fost șters cu succes', 'OK', () => {
-        setAlertVisible(false);
-        auth.signOut();
-      });
+      showAlert(
+        setAlertProps,
+        setAlertVisible,
+        'Succes',
+        'Contul a fost șters cu succes',
+        'OK',
+        () => {
+          setAlertVisible(false);
+          auth.signOut();
+        }
+      );
     },
     onError: (mutationError) => {
       showAlert(
+        setAlertProps,
+        setAlertVisible,
         'Eroare',
         mutationError.message || 'A apărut o eroare',
         'OK',
@@ -60,27 +115,10 @@ export default function UserAccountScreen() {
     },
   });
 
-  const showAlert = (
-    title,
-    message,
-    confirmText,
-    onConfirm,
-    cancelText,
-    onCancel
-  ) => {
-    setAlertProps({
-      title,
-      message,
-      confirmText,
-      onConfirm,
-      cancelText,
-      onCancel,
-    });
-    setAlertVisible(true);
-  };
-
   const handleLogout = () => {
     showAlert(
+      setAlertProps,
+      setAlertVisible,
       'Deconectare',
       'Ești sigur că vrei să te deconectezi?',
       'Deconectare',
@@ -95,6 +133,8 @@ export default function UserAccountScreen() {
 
   const handleDeleteAccount = () => {
     showAlert(
+      setAlertProps,
+      setAlertVisible,
       'Ștergere cont',
       'Ești sigur că vrei să ștergi contul? Această acțiune este ireversibilă.',
       'Ștergere cont',
@@ -132,83 +172,27 @@ export default function UserAccountScreen() {
             {`${accountInfo.firstName} ${accountInfo.lastName}`}
           </Text>
         </View>
-        <Pressable
-          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
-          style={styles.button}
-        >
-          <View style={styles.row}>
-            <Ionicons
-              name="person-outline"
-              color={theme.colors.textSecondary}
-              size={24}
-            />
-            <Text style={styles.buttonText}>Informații personale</Text>
-          </View>
-        </Pressable>
+        {renderInfoItem('person-outline', 'Informații personale', () =>
+          navigation.navigate('UserAccountPersonalInfo')
+        )}
         <Divider />
-        <Pressable
-          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
-          style={styles.button}
-        >
-          <View style={styles.row}>
-            <Ionicons
-              name="key-outline"
-              color={theme.colors.textSecondary}
-              size={24}
-            />
-            <Text style={styles.buttonText}>Schimbare parolă</Text>
-          </View>
-        </Pressable>
+        {renderInfoItem('key-outline', 'Schimbare parolă', () =>
+          navigation.navigate('UserAccountChangePassword')
+        )}
         <Divider />
-        <Pressable
-          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
-          style={styles.button}
-        >
-          <View style={styles.row}>
-            <Ionicons
-              name="settings-outline"
-              color={theme.colors.textSecondary}
-              size={24}
-            />
-            <Text style={styles.buttonText}>Setări cont</Text>
-          </View>
-        </Pressable>
+        {renderInfoItem('settings-outline', 'Setări cont', () =>
+          navigation.navigate('UserAccountSettings')
+        )}
       </View>
       <View style={styles.additionalOptionsContainer}>
-        <Pressable
-          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
-          onPress={handleLogout}
-          style={styles.button}
-        >
-          <View style={styles.row}>
-            <Ionicons
-              name="log-out-outline"
-              color={theme.colors.error}
-              size={24}
-            />
-            <Text style={[styles.buttonText, styles.errorText]}>
-              Deconectare
-            </Text>
-          </View>
-        </Pressable>
+        {renderInfoItem('log-out-outline', 'Deconectare', handleLogout, true)}
         <Divider />
-        <Pressable
-          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
-          disabled={mutation.isPending}
-          onPress={handleDeleteAccount}
-          style={styles.button}
-        >
-          <View style={styles.row}>
-            <Ionicons
-              name="trash-outline"
-              color={theme.colors.error}
-              size={24}
-            />
-            <Text style={[styles.buttonText, styles.errorText]}>
-              Ștergere cont
-            </Text>
-          </View>
-        </Pressable>
+        {renderInfoItem(
+          'trash-outline',
+          'Ștergere cont',
+          handleDeleteAccount,
+          true
+        )}
       </View>
       <CustomAlert visible={alertVisible} {...alertProps} />
     </ScrollView>

@@ -14,4 +14,9 @@ export { default as RecyclingLocationsScreen } from './RecyclingLocationsScreen'
 export { default as RecyclingManagerDashboardScreen } from './RecyclingManagerDashboardScreen';
 export { default as SignInScreen } from './SignInScreen';
 export { default as SignUpScreen } from './SignUpScreen';
+export { default as UserAccountChangePasswordScreen } from './UserAccountChangePasswordScreen';
+export { default as UserAccountChangePhoneNumberScreen } from './UserAccountChangePhoneNumberScreen';
+export { default as UserAccountPersonalInfoScreen } from './UserAccountPersonalInfoScreen';
 export { default as UserAccountScreen } from './UserAccountScreen';
+export { default as UserAccountSettingsScreen } from './UserAccountSettingsScreen';
+export { default as UserAccountUpdateNameScreen } from './UserAccountUpdateNameScreen';

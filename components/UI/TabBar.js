@@ -45,7 +45,7 @@ export default function TabBar({ state, descriptors, navigation }) {
         return isFocused ? 'map' : 'map-outline';
       case 'ApplianceManagementTab':
         return isFocused ? 'power' : 'power-outline';
-      case 'UserAccount':
+      case 'UserAccountTab':
         return isFocused ? 'person' : 'person-outline';
       default:
         return '';
