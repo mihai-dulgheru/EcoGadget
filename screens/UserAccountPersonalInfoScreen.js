@@ -21,7 +21,9 @@ const maskText = (text, isMasked) => {
 
 const renderInfoItem = (iconName, text, onPress, isMasked) => (
   <Pressable
-    android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+    android_ripple={
+      onPress ? { ...RIPPLE_CONFIG, radius: theme.spacing[48] } : null
+    }
     onPress={onPress}
     style={styles.button}
   >
