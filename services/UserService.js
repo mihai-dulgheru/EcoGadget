@@ -56,9 +56,24 @@ async function updateName(axiosInstance, { firstName, lastName }) {
   }
 }
 
+async function updatePhoneNumber(axiosInstance, { phone }) {
+  try {
+    await axiosInstance.put('/users/phone', { phone });
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
 export default {
   deleteAccount,
   getAccountInfo,
   getPersonalInfo,
   updateName,
+  updatePhoneNumber,
 };

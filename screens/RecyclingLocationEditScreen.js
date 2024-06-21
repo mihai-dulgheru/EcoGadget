@@ -22,7 +22,10 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required('Numele este obligatoriu'),
   address: Yup.string().required('Adresa este obligatorie'),
   image: Yup.string().required('Imaginea este obligatorie'),
-  phone: Yup.string().required('Telefonul este obligatoriu'),
+  phone: Yup.string()
+    .matches(/^[0-9]+$/, 'Telefonul trebuie să conțină doar cifre')
+    .min(10, 'Telefonul trebuie să aibă cel puțin 10 cifre')
+    .required('Telefonul este obligatoriu'),
   description: Yup.string().required('Descrierea este obligatorie'),
   schedule: Yup.object().shape({
     monday: Yup.string().required('Programul de luni este obligatoriu'),

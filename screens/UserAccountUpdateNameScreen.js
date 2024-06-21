@@ -41,8 +41,13 @@ const handleMutationSuccess = (
   queryClient,
   navigation,
   setAlertProps,
-  setAlertVisible
+  setAlertVisible,
+  variables,
+  personalInfo
 ) => {
+  navigation.setParams({
+    personalInfo: { ...personalInfo, ...variables },
+  });
   showAlert(
     setAlertProps,
     setAlertVisible,
@@ -91,12 +96,14 @@ export default function UserAccountUpdateNameScreen({ navigation, route }) {
 
   const mutation = useMutation({
     mutationFn: sendMessageResponse,
-    onSuccess: () =>
+    onSuccess: (_, variables) =>
       handleMutationSuccess(
         queryClient,
         navigation,
         setAlertProps,
-        setAlertVisible
+        setAlertVisible,
+        variables,
+        personalInfo
       ),
     onError: (error) =>
       handleMutationError(setAlertProps, setAlertVisible, error),
@@ -178,8 +185,8 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   formDescription: {
-    ...theme.fontSize.base,
-    color: theme.colors.textPrimary,
+    ...theme.fontSize.lg,
+    color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
   },
   buttonContainer: {
