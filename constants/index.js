@@ -1,3 +1,5 @@
+import theme from '../styles/theme';
+
 const DAYS_OF_WEEK = [
   'sunday',
   'monday',
@@ -24,6 +26,12 @@ const MONTHS = [
   'Noi',
   'Dec',
 ];
+const RIPPLE_CONFIG = {
+  color: theme.colors.ripple,
+  borderless: false,
+  radius: theme.spacing[4],
+  foreground: false,
+};
 const WEEKDAY_TRANSLATIONS = {
   monday: 'Luni',
   tuesday: 'Marți',
@@ -40,5 +48,6 @@ export {
   DEFAULT_LONGITUDE,
   DEFAULT_TIME_RANGE,
   MONTHS,
+  RIPPLE_CONFIG,
   WEEKDAY_TRANSLATIONS,
 };

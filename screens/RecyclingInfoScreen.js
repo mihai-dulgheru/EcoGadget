@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
+  Pressable,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { Error, Loading } from '../components/UI';
 import RecyclingInfoService from '../services/RecyclingInfoService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { formatDate } from '../utils/DateUtils';
 
@@ -33,7 +34,7 @@ export default function RecyclingInfoScreen({ navigation }) {
   }, []);
 
   const renderRecyclingInfo = ({ item }) => (
-    <TouchableWithoutFeedback
+    <Pressable
       onPress={() => {
         navigation.navigate('RecyclingInfoDetails', {
           recyclingInfo: item,
@@ -61,7 +62,7 @@ export default function RecyclingInfoScreen({ navigation }) {
           <Text style={styles.text}>{item.location.name}</Text>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 
   if (status === 'loading') {
@@ -86,16 +87,16 @@ export default function RecyclingInfoScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   listContainer: {
+    ...global.spacingMedium,
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing[4],
     padding: theme.spacing[4],
   },
   infoBlock: {
+    ...global.spacingSmall,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
     padding: theme.spacing[2],
-    gap: theme.spacing[2],
   },
   image: {
     borderRadius: theme.borderRadius.md,
@@ -113,9 +114,9 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
   },
   row: {
+    ...global.spacingSmall,
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing[2],
   },
   text: {
     ...theme.fontSize.sm,

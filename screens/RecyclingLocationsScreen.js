@@ -11,10 +11,9 @@ import React, {
 import {
   Image,
   Keyboard,
+  Pressable,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { MapScreen } from '../components';
@@ -26,7 +25,9 @@ import {
   Loading,
   SearchBar,
 } from '../components/UI';
+import { RIPPLE_CONFIG } from '../constants';
 import RecyclingService from '../services/RecyclingService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 export default function RecyclingLocationsScreen({ navigation }) {
@@ -114,7 +115,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
 
   const renderLocation = useCallback(
     ({ item }) => (
-      <TouchableWithoutFeedback
+      <Pressable
         onPress={() => {
           navigation.navigate('RecyclingCenterDetails', { center: item });
         }}
@@ -127,7 +128,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
             <Text style={styles.locationDistance}>{item.distance}</Text>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     ),
     [navigation]
   );
@@ -218,14 +219,17 @@ export default function RecyclingLocationsScreen({ navigation }) {
           placeholder="Caută după nume"
         />
       </View>
-      <TouchableOpacity style={styles.centerButton} onPress={handleCenterMap}>
-        <IconButton
-          color={theme.colors.primary}
-          icon="locate"
-          onPress={handleCenterMap}
-          size={24}
-        />
-      </TouchableOpacity>
+      <IconButton
+        android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[7] }}
+        color={theme.colors.primary}
+        extraStyles={{
+          button: styles.mapCenterButton,
+          pressed: styles.mapCenterButtonPressed,
+        }}
+        icon="locate"
+        onPress={handleCenterMap}
+        size={24}
+      />
       {!isKeyboardVisible && (
         <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
           <BottomSheetFlatList
@@ -249,8 +253,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
+    ...global.spacingMedium,
     flexGrow: 1,
-    gap: theme.spacing[4],
     padding: theme.spacing[4],
   },
   listContainer: {
@@ -262,10 +266,10 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
   },
   locationContainer: {
+    ...global.spacingSmall,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
     flexDirection: 'row',
-    gap: theme.spacing[2],
     padding: theme.spacing[2],
   },
   locationDistance: {
@@ -282,10 +286,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   locationInfoRow: {
+    ...global.spacingSmall,
     borderBottomColor: theme.colors.border,
     borderBottomWidth: theme.borderWidth.default,
     flexDirection: 'row',
-    gap: theme.spacing[2],
     paddingVertical: theme.spacing[2],
   },
   locationName: {
@@ -294,31 +298,30 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   searchContainer: {
+    ...global.spacingSmall,
+    alignItems: 'center',
     backgroundColor: 'transparent',
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: theme.spacing[2],
     padding: theme.spacing[4],
     position: 'absolute',
     top: 0,
     width: '100%',
   },
-  centerButton: {
-    position: 'absolute',
-    bottom: '27.5%',
-    right: theme.spacing[4],
+  mapCenterButton: {
+    ...theme.shadow.md,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing[2],
     backgroundColor: theme.colors.backgroundPrimary,
     borderColor: theme.colors.border,
-    borderWidth: theme.borderWidth.default,
     borderRadius: theme.borderRadius.full,
-    elevation: 2,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    borderWidth: theme.borderWidth.default,
+    bottom: '27.5%',
+    justifyContent: 'center',
+    padding: theme.spacing[4],
+    position: 'absolute',
+    right: theme.spacing[4],
+  },
+  mapCenterButtonPressed: {
+    opacity: theme.opacity.default,
   },
   selectedLocationAddress: {
     ...theme.fontSize.md,
@@ -326,7 +329,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
   },
   selectedLocationContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
     padding: theme.spacing[2],
   },
   selectedLocationDistance: {

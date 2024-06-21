@@ -1,10 +1,5 @@
-import {
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function SocialLinks({ links }) {
@@ -17,13 +12,16 @@ export default function SocialLinks({ links }) {
       <Text style={styles.heading}>Linkuri rețele de socializare</Text>
       <View>
         {Object.entries(links).map(([key, url]) => (
-          <TouchableOpacity
+          <Pressable
             key={key}
-            style={styles.linkContainer}
             onPress={() => Linking.openURL(url)}
+            style={({ pressed }) => [
+              styles.linkContainer,
+              pressed && global.pressed,
+            ]}
           >
             <Text style={styles.link}>{key.toUpperCase()}</Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
     </View>
@@ -32,7 +30,7 @@ export default function SocialLinks({ links }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
   },
   heading: {
     ...theme.fontSize.lg,

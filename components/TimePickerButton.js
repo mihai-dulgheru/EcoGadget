@@ -1,6 +1,7 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { memo, useCallback, useState } from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text } from 'react-native';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 function TimePickerButton({
@@ -28,9 +29,12 @@ function TimePickerButton({
 
   return (
     <>
-      <TouchableOpacity onPress={showPicker} style={styles.button}>
+      <Pressable
+        onPress={showPicker}
+        style={({ pressed }) => [styles.button, pressed && global.pressed]}
+      >
         <Text style={styles.buttonText}>{label}</Text>
-      </TouchableOpacity>
+      </Pressable>
       {isPickerVisible && (
         <DateTimePicker
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
@@ -48,11 +52,11 @@ export default memo(TimePickerButton);
 
 const styles = StyleSheet.create({
   button: {
-    flex: 1,
     alignItems: 'center',
-    padding: theme.spacing[2],
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.md,
+    flex: 1,
+    padding: theme.spacing[2],
   },
   buttonText: {
     ...theme.fontSize.base,

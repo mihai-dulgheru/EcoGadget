@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function Button({
@@ -14,7 +15,7 @@ export default function Button({
       style={({ pressed }) => [
         styles.button,
         styles[color],
-        pressed && styles.pressed,
+        pressed && global.pressed,
       ]}
     >
       <View>
@@ -26,19 +27,12 @@ export default function Button({
 
 const styles = StyleSheet.create({
   button: {
+    // ...theme.shadow.md,
     borderRadius: theme.borderRadius.md,
     borderWidth: theme.borderWidth.default,
     paddingHorizontal: theme.spacing[4],
     paddingVertical: theme.spacing[2],
     width: '100%',
-    // elevation: 2,
-    // shadowColor: 'black',
-    // shadowOffset: { width: 1, height: 1 },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 4,
-  },
-  pressed: {
-    opacity: 0.7,
   },
   buttonText: {
     ...theme.fontSize.base,

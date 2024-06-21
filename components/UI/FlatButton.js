@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function FlatButton({ extraStyles, onPress, title }) {
@@ -7,7 +8,7 @@ export default function FlatButton({ extraStyles, onPress, title }) {
       style={({ pressed }) => [
         styles.button,
         extraStyles?.button,
-        pressed && styles.pressed,
+        pressed && global.pressed,
       ]}
       onPress={onPress}
     >
@@ -24,9 +25,6 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: theme.spacing[4],
     paddingVertical: theme.spacing[2],
-  },
-  pressed: {
-    opacity: 0.7,
   },
   buttonText: {
     ...theme.fontSize.base,

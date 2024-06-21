@@ -4,10 +4,10 @@ import { useCallback, useState } from 'react';
 import {
   FlatList,
   Image,
+  Pressable,
   RefreshControl,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { RecyclingScheduleView } from '../components/RecyclingLocationList';
@@ -21,6 +21,7 @@ import {
 import { useRefreshByUser } from '../hooks/useRefreshByUser';
 import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import RecyclingManagerService from '../services/RecyclingManagerService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
@@ -112,7 +113,7 @@ export default function RecyclingLocationListScreen({ navigation }) {
 
   const renderItem = useCallback(
     ({ item }) => (
-      <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
+      <Pressable onPress={() => handleEdit(item)}>
         <View style={styles.locationItem}>
           <Image source={{ uri: item.image }} style={styles.locationImage} />
           <Text style={styles.locationTitle}>{item.name}</Text>
@@ -134,7 +135,7 @@ export default function RecyclingLocationListScreen({ navigation }) {
             />
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     ),
     [handleDelete, handleEdit]
   );
@@ -194,15 +195,15 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   listContainer: {
+    ...global.spacingMedium,
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing[4],
     padding: theme.spacing[4],
   },
   locationItem: {
+    ...global.spacingSmall,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
-    gap: theme.spacing[2],
     padding: theme.spacing[2],
   },
   locationImage: {
@@ -215,9 +216,9 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   addressContainer: {
+    ...global.spacingSmall,
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing[1],
   },
   addressText: {
     ...theme.fontSize.sm,

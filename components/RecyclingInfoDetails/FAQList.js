@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function FAQList({ faqs }) {
@@ -23,7 +24,7 @@ export default function FAQList({ faqs }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
   },
   heading: {
     ...theme.fontSize.lg,
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   faq: {
-    gap: theme.spacing[2],
+    ...global.spacingSmall,
   },
   question: {
     ...theme.fontSize.base,

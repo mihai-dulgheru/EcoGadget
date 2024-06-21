@@ -1,12 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { forwardRef, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 const Input = forwardRef(
@@ -46,16 +41,16 @@ const Input = forwardRef(
             {...props}
           />
           {secure && (
-            <TouchableOpacity
+            <Pressable
               onPress={handleSecureTextEntryToggle}
-              style={styles.icon}
+              style={({ pressed }) => [styles.icon, pressed && global.pressed]}
             >
               <Ionicons
                 color={theme.colors.textPrimary}
                 name={secureTextEntry ? 'eye-off' : 'eye'}
                 size={24}
               />
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       </View>

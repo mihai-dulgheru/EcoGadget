@@ -1,9 +1,12 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Avatar } from '../components';
-import { Button, CustomAlert, Error, Loading } from '../components/UI';
+import { CustomAlert, Divider, Error, Loading } from '../components/UI';
+import { RIPPLE_CONFIG } from '../constants';
 import UserService from '../services/UserService';
 import { AuthContext } from '../store/AuthContext';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
@@ -76,29 +79,88 @@ export default function UserAccountScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Avatar accountInfo={accountInfo} size="xl" />
-      </View>
-      <View style={styles.content}>
-        <View>
-          <View style={styles.infoBlock}>
-            <Text style={styles.label}>Nume</Text>
-            <Text style={styles.value}>{accountInfo.lastName}</Text>
-          </View>
-          <View style={styles.infoBlock}>
-            <Text style={styles.label}>Prenume</Text>
-            <Text style={styles.value}>{accountInfo.firstName}</Text>
-          </View>
-          <View style={styles.infoBlock}>
-            <Text style={styles.label}>E-mail</Text>
-            <Text style={styles.value}>{accountInfo.email}</Text>
-          </View>
-          <View style={[styles.infoBlock, styles.infoBlockLast]}>
-            <Text style={styles.label}>Telefon</Text>
-            <Text style={styles.value}>{accountInfo.phone}</Text>
-          </View>
+      <View style={styles.accountDetailsContainer}>
+        <View style={styles.avatarContainer}>
+          <Avatar accountInfo={accountInfo} size="lg" />
+          <Text style={styles.title}>
+            {`${accountInfo.firstName} ${accountInfo.lastName}`}
+          </Text>
         </View>
-        <Button title="Deconectare" color="error" onPress={handleLogout} />
+        <Pressable
+          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+          style={styles.button}
+        >
+          <View style={styles.row}>
+            <Ionicons
+              name="person-outline"
+              color={theme.colors.textSecondary}
+              size={24}
+            />
+            <Text style={styles.buttonText}>Informații personale</Text>
+          </View>
+        </Pressable>
+        <Divider />
+        <Pressable
+          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+          style={styles.button}
+        >
+          <View style={styles.row}>
+            <Ionicons
+              name="key-outline"
+              color={theme.colors.textSecondary}
+              size={24}
+            />
+            <Text style={styles.buttonText}>Schimbare parolă</Text>
+          </View>
+        </Pressable>
+        <Divider />
+        <Pressable
+          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+          style={styles.button}
+        >
+          <View style={styles.row}>
+            <Ionicons
+              name="settings-outline"
+              color={theme.colors.textSecondary}
+              size={24}
+            />
+            <Text style={styles.buttonText}>Setări cont</Text>
+          </View>
+        </Pressable>
+      </View>
+      <View style={styles.additionalOptionsContainer}>
+        <Pressable
+          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+          onPress={handleLogout}
+          style={styles.button}
+        >
+          <View style={styles.row}>
+            <Ionicons
+              name="log-out-outline"
+              color={theme.colors.error}
+              size={24}
+            />
+            <Text style={[styles.buttonText, styles.errorText]}>
+              Deconectare
+            </Text>
+          </View>
+        </Pressable>
+        <Divider />
+        <Pressable
+          android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
+          style={styles.button}
+        >
+          <View style={styles.row}>
+            <Ionicons
+              name="trash-outline"
+              color={theme.colors.error}
+              size={24}
+            />
+            <Text style={[styles.buttonText, styles.errorText]}>
+              Ștergere cont
+            </Text>
+          </View>
+        </Pressable>
       </View>
       <CustomAlert visible={alertVisible} {...alertProps} />
     </View>
@@ -107,39 +169,49 @@ export default function UserAccountScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    ...global.spacingSmall,
+    backgroundColor: theme.colors.backgroundSecondary,
+    flex: 1,
+  },
+  accountDetailsContainer: {
     backgroundColor: theme.colors.backgroundPrimary,
+    borderBottomLeftRadius: theme.borderRadius.xl,
+    borderBottomRightRadius: theme.borderRadius.xl,
+    padding: theme.spacing[4],
+    paddingBottom: theme.spacing[2],
+  },
+  additionalOptionsContainer: {
+    backgroundColor: theme.colors.backgroundPrimary,
+    borderTopLeftRadius: theme.borderRadius.xl,
+    borderTopRightRadius: theme.borderRadius.xl,
     flex: 1,
     padding: theme.spacing[4],
+    paddingTop: theme.spacing[2],
   },
   avatarContainer: {
     alignItems: 'center',
     marginBottom: theme.spacing[6],
   },
-  content: {
-    backgroundColor: theme.colors.backgroundSecondary,
-    borderRadius: theme.borderRadius.lg,
-    gap: theme.spacing[2],
-    padding: theme.spacing[2],
-  },
-  infoBlock: {
-    borderBottomColor: theme.colors.textSecondary,
-    borderBottomWidth: theme.spacing.px,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing[2],
-    paddingBottom: theme.spacing[2],
-  },
-  infoBlockLast: {
-    borderBottomWidth: theme.spacing[0],
-  },
-  label: {
-    ...theme.fontSize.lg,
+  title: {
+    ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
+    marginTop: theme.spacing[2],
   },
-  value: {
+  button: {
+    marginHorizontal: -theme.spacing[4],
+    padding: theme.spacing[4],
+  },
+  row: {
+    ...global.spacingMedium,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
     ...theme.fontSize.base,
-    color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
+  },
+  errorText: {
+    color: theme.colors.error,
   },
 });

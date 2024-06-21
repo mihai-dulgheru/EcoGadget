@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Section } from '../components/RecyclingInfoDetails';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 export default function RecyclingInfoDetailsScreen({ route }) {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
     padding: theme.spacing[4],
   },
   title: {

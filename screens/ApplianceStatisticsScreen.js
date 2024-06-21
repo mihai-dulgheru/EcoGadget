@@ -146,14 +146,10 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   card: {
+    ...theme.shadow.md,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.md,
-    padding: theme.spacing[3],
     marginBottom: theme.spacing[3],
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 1,
+    padding: theme.spacing[3],
   },
 });

@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
     padding: theme.spacing[4],
   },
   buttonContainer: {

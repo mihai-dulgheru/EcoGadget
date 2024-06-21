@@ -1,5 +1,6 @@
 export { default as Button } from './Button';
 export { default as CustomAlert } from './CustomAlert';
+export { default as Divider } from './Divider';
 export { default as Error } from './Error';
 export { default as FlatButton } from './FlatButton';
 export { default as Header } from './Header';

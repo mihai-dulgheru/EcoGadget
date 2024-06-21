@@ -1,6 +1,7 @@
 import Checkbox from 'expo-checkbox';
 import { memo } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 function ClosedCheckbox({ isClosed, label, setIsClosed }) {
@@ -11,12 +12,15 @@ function ClosedCheckbox({ isClosed, label, setIsClosed }) {
         style={styles.checkbox}
         value={isClosed}
       />
-      <TouchableOpacity
+      <Pressable
         onPress={() => setIsClosed(!isClosed)}
-        style={styles.labelContainer}
+        style={({ pressed }) => [
+          styles.labelContainer,
+          pressed && global.pressed,
+        ]}
       >
         <Text style={styles.label}>{label}</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

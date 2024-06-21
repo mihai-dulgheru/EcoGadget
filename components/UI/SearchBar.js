@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function SearchBar({
@@ -34,9 +35,15 @@ export default function SearchBar({
         value={text}
       />
       {text.length > 0 && (
-        <TouchableOpacity onPress={handleClear} style={styles.clearButton}>
+        <Pressable
+          onPress={handleClear}
+          style={({ pressed }) => [
+            styles.clearButton,
+            pressed && global.pressed,
+          ]}
+        >
           <Ionicons name="close-circle" size={24} color="gray" />
-        </TouchableOpacity>
+        </Pressable>
       )}
     </View>
   );
@@ -44,17 +51,13 @@ export default function SearchBar({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    ...theme.shadow.md,
     alignItems: 'center',
     backgroundColor: theme.colors.backgroundPrimary,
     borderRadius: theme.borderRadius.full,
+    flexDirection: 'row',
     paddingHorizontal: theme.spacing[3],
     paddingVertical: theme.spacing[1],
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
   },
   icon: {
     marginRight: theme.spacing[2],

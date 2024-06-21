@@ -2,6 +2,7 @@ import { Formik } from 'formik';
 import { useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 import { Debug, ErrorMessage, Field } from '../Formik';
 import { Button, CustomAlert } from '../UI';
@@ -195,9 +196,9 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing[2],
+    ...global.spacingSmall,
   },
   buttonContainer: {
-    marginTop: theme.spacing[8],
+    marginTop: theme.spacing[6],
   },
 });

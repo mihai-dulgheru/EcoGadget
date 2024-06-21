@@ -10,6 +10,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { ContactForm } from '../components/Forms';
 import { Button } from '../components/UI';
 import { WEEKDAY_TRANSLATIONS } from '../constants';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 export default function RecyclingCenterDetailsScreen({ route }) {
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
     padding: theme.spacing[4],
   },
   mapContainer: {

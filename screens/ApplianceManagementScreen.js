@@ -1,14 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { isEmpty } from 'lodash';
 import { useEffect, useState } from 'react';
-import {
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import {
   Button,
   CustomAlert,
@@ -20,6 +13,7 @@ import {
   Pill,
 } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
@@ -126,7 +120,7 @@ export default function ApplianceManagementScreen({ navigation, route }) {
             onPress={handleStatistics}
             style={({ pressed }) => [
               styles.statisticsButton,
-              pressed && styles.opacity70,
+              pressed && global.pressed,
             ]}
           >
             <View style={styles.statisticsContainer}>
@@ -148,7 +142,7 @@ export default function ApplianceManagementScreen({ navigation, route }) {
         keyExtractor={(item) => item._id.toString()}
         ListEmptyComponent={ListEmptyComponent}
         renderItem={({ item }) => (
-          <TouchableWithoutFeedback onPress={() => handleEdit(item)}>
+          <Pressable onPress={() => handleEdit(item)}>
             <View style={styles.item}>
               <View style={styles.row}>
                 <Text style={styles.title}>{item.name}</Text>
@@ -177,7 +171,7 @@ export default function ApplianceManagementScreen({ navigation, route }) {
                 </View>
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          </Pressable>
         )}
       />
       <CustomAlert visible={alertVisible} {...alertProps} />
@@ -215,13 +209,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing[4],
     paddingVertical: theme.spacing[2],
   },
-  opacity70: {
-    opacity: 0.7,
-  },
   statisticsContainer: {
+    ...global.spacingSmall,
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing[2],
     justifyContent: 'center',
   },
   primaryButtonText: {
@@ -230,21 +221,21 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   listContainer: {
+    ...global.spacingMedium,
     backgroundColor: theme.colors.backgroundPrimary,
     flexGrow: 1,
-    gap: theme.spacing[4],
     padding: theme.spacing[4],
   },
   item: {
+    ...global.spacingSmall,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
-    gap: theme.spacing[2],
     padding: theme.spacing[2],
   },
   row: {
+    ...global.spacingSmall,
     alignItems: 'center',
     flexDirection: 'row',
-    gap: theme.spacing[2],
   },
   title: {
     ...theme.fontSize.lg,
@@ -257,10 +248,10 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
   },
   actionButtons: {
+    ...global.spacingSmall,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: theme.spacing[2],
-    gap: theme.spacing[2],
   },
   buttonContainer: {
     width: '48%',

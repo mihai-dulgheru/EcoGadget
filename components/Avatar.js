@@ -65,5 +65,6 @@ const styles = StyleSheet.create({
   avatarText: {
     color: 'white',
     fontFamily: theme.fontFamily.heading,
+    marginTop: theme.spacing[1],
   },
 });

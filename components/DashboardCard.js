@@ -1,11 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {
-  Animated,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 export default function DashboardCard({
@@ -17,13 +12,19 @@ export default function DashboardCard({
 }) {
   return (
     <Animated.View style={[styles.card, { opacity: fadeAnim }]}>
-      <TouchableOpacity style={styles.rowSpaceBetween} onPress={onPress}>
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.rowSpaceBetween,
+          pressed && global.pressed,
+        ]}
+      >
         <View style={styles.statRowContainer}>
           <Ionicons name={icon} color={theme.colors.textPrimary} size={20} />
           <Text style={styles.stat}>{title}</Text>
         </View>
         <Text style={styles.stat}>{count}</Text>
-      </TouchableOpacity>
+      </Pressable>
     </Animated.View>
   );
 }
@@ -42,9 +43,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statRowContainer: {
-    flexDirection: 'row',
+    ...global.spacingSmall,
     alignItems: 'center',
-    gap: theme.spacing[2],
+    flexDirection: 'row',
   },
   stat: {
     ...theme.fontSize.lg,

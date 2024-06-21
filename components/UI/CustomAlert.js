@@ -1,4 +1,5 @@
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function CustomAlert({
@@ -23,24 +24,32 @@ export default function CustomAlert({
           <Text style={styles.alertMessage}>{message}</Text>
           <View style={styles.buttonContainer}>
             {cancelText && (
-              <TouchableOpacity
+              <Pressable
                 onPress={onCancel}
-                style={[styles.button, styles.buttonCancel]}
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.buttonCancel,
+                  pressed && global.pressed,
+                ]}
               >
                 <Text style={[styles.buttonText, styles.buttonTextCancel]}>
                   {cancelText}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             )}
             {confirmText && (
-              <TouchableOpacity
+              <Pressable
                 onPress={onConfirm}
-                style={[styles.button, styles.buttonConfirm]}
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.buttonConfirm,
+                  pressed && global.pressed,
+                ]}
               >
                 <Text style={[styles.buttonText, styles.buttonTextConfirm]}>
                   {confirmText}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             )}
           </View>
         </View>

@@ -1,6 +1,7 @@
 import { ResizeMode, Video } from 'expo-av';
 import * as React from 'react';
 import { Image, Linking, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 import FAQList from './FAQList';
 import SocialLinks from './SocialLinks';
@@ -78,7 +79,7 @@ export default function Section({ section }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
   },
   heading: {
     ...theme.fontSize.lg,

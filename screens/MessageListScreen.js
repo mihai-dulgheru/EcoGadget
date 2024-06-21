@@ -2,10 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import {
   FlatList,
+  Pressable,
   RefreshControl,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {
@@ -17,6 +17,7 @@ import {
 import { useRefreshByUser } from '../hooks/useRefreshByUser';
 import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import RecyclingManagerService from '../services/RecyclingManagerService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
@@ -63,7 +64,7 @@ export default function MessageListScreen({ navigation }) {
 
   const renderMessageItem = useCallback(
     ({ item }) => (
-      <TouchableWithoutFeedback onPress={() => handleViewDetails(item)}>
+      <Pressable onPress={() => handleViewDetails(item)}>
         <View style={[styles.messageItem, !item.read && styles.unreadMessage]}>
           <Text style={styles.messageName}>{item.name}</Text>
           <Text style={styles.messageEmail}>{item.email}</Text>
@@ -79,7 +80,7 @@ export default function MessageListScreen({ navigation }) {
             />
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     ),
     [handleViewDetails]
   );
@@ -117,22 +118,22 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.backgroundPrimary,
   },
   listContainer: {
+    ...global.spacingMedium,
     flexGrow: 1,
     padding: theme.spacing[4],
-    gap: theme.spacing[4],
   },
   messageItem: {
+    ...global.spacingSmall,
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.lg,
+    opacity: theme.opacity.pressed,
     padding: theme.spacing[4],
-    gap: theme.spacing[2],
     position: 'relative',
-    opacity: 0.7,
   },
   unreadMessage: {
     borderColor: theme.colors.border,
     borderWidth: theme.borderWidth[2],
-    opacity: 1,
+    opacity: theme.opacity.default,
   },
   messageName: {
     ...theme.fontSize.lg,

@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function Header({ title, canGoBack }) {
@@ -9,16 +10,19 @@ export default function Header({ title, canGoBack }) {
   return (
     <View style={[styles.container, canGoBack && styles.containerWithBack]}>
       {canGoBack && (
-        <TouchableOpacity
+        <Pressable
           onPress={() => navigation.goBack()}
-          style={styles.backButton}
+          style={({ pressed }) => [
+            styles.backButton,
+            pressed && global.pressed,
+          ]}
         >
           <Ionicons
             name="arrow-back"
             size={24}
             color={theme.colors.textPrimary}
           />
-        </TouchableOpacity>
+        </Pressable>
       )}
       <Text style={styles.title}>{title}</Text>
     </View>
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
     paddingTop: theme.spacing[2],
   },
   containerWithBack: {
-    gap: theme.spacing[1.5],
+    ...global.spacingSmall,
     paddingLeft: theme.spacing[1.5],
   },
   backButton: {

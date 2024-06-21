@@ -1,9 +1,10 @@
 import { Formik } from 'formik';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import ContactService from '../../services/ContactService';
-import theme from '../../styles/theme';
+import { AuthContext } from '../../store/AuthContext';
+import global from '../../styles/global';
 import { Debug, ErrorMessage, Field } from '../Formik';
 import { Button, CustomAlert } from '../UI';
 
@@ -15,16 +16,17 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required('Mesajul este obligatoriu'),
 });
 
-const initialValues = {
-  name: '',
-  email: '',
-  message: '',
-};
-
 export default function ContactForm({ debug = false, locationId }) {
   const [status, setStatus] = useState('idle');
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
+  const auth = useContext(AuthContext);
+
+  const initialValues = {
+    name: '',
+    email: auth.user?.email || '',
+    message: '',
+  };
 
   const inputRefs = {
     name: useRef(null),
@@ -122,6 +124,6 @@ export default function ContactForm({ debug = false, locationId }) {
 
 const styles = StyleSheet.create({
   formContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
   },
 });

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { WEEKDAY_TRANSLATIONS } from '../../constants';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function RecyclingScheduleView({ schedule }) {
@@ -23,8 +24,8 @@ export default function RecyclingScheduleView({ schedule }) {
 
 const styles = StyleSheet.create({
   container: {
+    ...global.spacingSmall,
     flexDirection: 'row',
-    gap: theme.spacing[2],
   },
   minWidth: {
     minWidth: theme.spacing[16],

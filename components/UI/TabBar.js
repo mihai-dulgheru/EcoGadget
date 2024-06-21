@@ -1,12 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState } from 'react';
-import {
-  Keyboard,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Keyboard, Pressable, StyleSheet, Text, View } from 'react-native';
+import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function TabBar({ state, descriptors, navigation }) {
@@ -86,7 +81,7 @@ export default function TabBar({ state, descriptors, navigation }) {
           };
 
           return (
-            <TouchableOpacity
+            <Pressable
               key={route.key}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
@@ -94,7 +89,7 @@ export default function TabBar({ state, descriptors, navigation }) {
               testID={options.tabBarTestID}
               onPress={onPress}
               onLongPress={onLongPress}
-              style={styles.tab}
+              style={({ pressed }) => [styles.tab, pressed && global.pressed]}
             >
               <View style={isFocused ? styles.tabIconFocused : styles.tabIcon}>
                 <Ionicons
@@ -110,7 +105,7 @@ export default function TabBar({ state, descriptors, navigation }) {
               >
                 {label}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           );
         })}
       </View>

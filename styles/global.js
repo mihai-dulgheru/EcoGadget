@@ -2,6 +2,15 @@ import { StyleSheet } from 'react-native';
 import theme from './theme';
 
 const global = StyleSheet.create({
+  border0: {
+    borderBottomWidth: theme.borderWidth[0],
+    borderEndWidth: theme.borderWidth[0],
+    borderLeftWidth: theme.borderWidth[0],
+    borderRightWidth: theme.borderWidth[0],
+    borderStartWidth: theme.borderWidth[0],
+    borderTopWidth: theme.borderWidth[0],
+    borderWidth: theme.borderWidth[0],
+  },
   debugContainer: {
     ...theme.fontSize.sm,
     backgroundColor: '#F9D6D5',
@@ -10,12 +19,11 @@ const global = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
     padding: theme.spacing[2],
   },
-  spacingSmall: {
-    gap: theme.spacing[2],
-  },
-  spacingMedium: {
-    gap: theme.spacing[4],
-  },
+  pressed: { opacity: theme.opacity.pressed },
+  spacingSmall: { gap: theme.spacing[2] },
+  spacingMedium: { gap: theme.spacing[4] },
+  spacingLarge: { gap: theme.spacing[6] },
+  spacingXLarge: { gap: theme.spacing[8] },
 });
 
 export default global;

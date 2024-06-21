@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
 import { Button, CustomAlert, Loading } from '../components/UI';
 import RecyclingManagerService from '../services/RecyclingManagerService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
     padding: theme.spacing[4],
   },
   detailContainer: {
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing[2],
   },
   formContainer: {
-    gap: theme.spacing[8],
+    ...global.spacingXLarge,
   },
   textInput: {
     ...theme.fontSize.base,

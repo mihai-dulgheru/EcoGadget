@@ -308,11 +308,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
     padding: theme.spacing[4],
   },
   imagePicker: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
   },
   buttonContainer: {
     marginTop: theme.spacing[4],
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   scheduleContainer: {
-    gap: theme.spacing[4],
+    ...global.spacingMedium,
   },
   scheduleLabel: {
     ...theme.fontSize.lg,

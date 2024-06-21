@@ -3,6 +3,7 @@ import { useField } from 'formik';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { DEFAULT_TIME_RANGE } from '../constants';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { convertTo24HourFormat } from '../utils/DateUtils';
 import ClosedCheckbox from './ClosedCheckbox';
@@ -89,7 +90,7 @@ export default function ScheduleField({ label, name }) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: theme.spacing[2],
+    ...global.spacingSmall,
   },
   label: {
     ...theme.fontSize.sm,
@@ -97,8 +98,8 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
   },
   timePickers: {
+    ...global.spacingSmall,
     flexDirection: 'row',
-    gap: theme.spacing[2],
     justifyContent: 'space-between',
   },
 });
