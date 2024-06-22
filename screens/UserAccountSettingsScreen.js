@@ -25,7 +25,14 @@ const showAlert = (
   setAlertVisible(true);
 };
 
-const handleMutationError = (setAlertProps, setAlertVisible, error) => {
+const handleMutationError = (
+  setAlertProps,
+  setAlertVisible,
+  error,
+  setTempValue,
+  originalValue
+) => {
+  setTempValue(originalValue); // Reset switch value on error
   showAlert(
     setAlertProps,
     setAlertVisible,
@@ -40,6 +47,7 @@ export default function UserAccountSettingsScreen() {
   const AxiosAuth = useAxiosAuth();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
+  const [tempValue, setTempValue] = useState(null);
 
   const {
     data: aiSettings,
@@ -48,7 +56,11 @@ export default function UserAccountSettingsScreen() {
     refetch,
   } = useQuery({
     queryKey: ['aiSettings'],
-    queryFn: async () => UserService.getAISettings(AxiosAuth),
+    queryFn: async () => {
+      const data = await UserService.getAISettings(AxiosAuth);
+      setTempValue(data.notificationsEnabled);
+      return data;
+    },
   });
 
   const mutation = useMutation({
@@ -56,12 +68,20 @@ export default function UserAccountSettingsScreen() {
       UserService.updateAISettings(AxiosAuth, newSettings),
     onSuccess: () => refetch(),
     onError: (mutationError) =>
-      handleMutationError(setAlertProps, setAlertVisible, mutationError),
+      handleMutationError(
+        setAlertProps,
+        setAlertVisible,
+        mutationError,
+        setTempValue,
+        aiSettings.notificationsEnabled
+      ),
   });
 
   const toggleSwitch = useCallback(() => {
-    mutation.mutate({ notificationsEnabled: !aiSettings.notificationsEnabled });
-  }, [aiSettings, mutation]);
+    const newValue = !tempValue;
+    setTempValue(newValue);
+    mutation.mutate({ notificationsEnabled: newValue });
+  }, [tempValue, mutation]);
 
   if (isPending) {
     return <Loading />;
@@ -78,7 +98,7 @@ export default function UserAccountSettingsScreen() {
           android_ripple={{ ...RIPPLE_CONFIG, radius: theme.spacing[48] }}
           disabled={mutation.isPending}
           onPress={toggleSwitch}
-          style={styles.button}
+          style={[styles.button, mutation.isPending && styles.disabledButton]}
         >
           <View style={styles.settingsRow}>
             <Text style={styles.label}>
@@ -92,13 +112,13 @@ export default function UserAccountSettingsScreen() {
                   true: theme.colors.primary,
                 }}
                 thumbColor={
-                  aiSettings.notificationsEnabled
+                  tempValue
                     ? theme.colors.textPrimary
                     : theme.colors.textSecondary
                 }
                 ios_backgroundColor={theme.colors.textSecondary}
                 onValueChange={toggleSwitch}
-                value={aiSettings.notificationsEnabled}
+                value={tempValue}
                 style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
                 disabled={mutation.isPending}
               />
@@ -124,6 +144,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: theme.colors.backgroundSecondary,
     borderRadius: theme.borderRadius.full,
+  },
+  disabledButton: {
+    backgroundColor: theme.colors.backgroundDisabled,
   },
   settingsRow: {
     alignItems: 'center',

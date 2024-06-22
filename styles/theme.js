@@ -18,6 +18,7 @@ const theme = {
     default: 1,
   },
   colors: {
+    backgroundDisabled: 'rgba(242, 242, 242, 0.7)',
     backgroundPrimary: '#FFFFFF',
     backgroundSecondary: '#F2F2F2',
     border: '#CFCFD4',
