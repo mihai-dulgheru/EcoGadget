@@ -85,6 +85,20 @@ async function updateName(axiosInstance, { firstName, lastName }) {
   }
 }
 
+async function updatePassword(axiosInstance, { password, confirmPassword }) {
+  try {
+    await axiosInstance.put('/users/password', { password, confirmPassword });
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
 async function updatePhoneNumber(axiosInstance, { phone }) {
   try {
     await axiosInstance.put('/users/phone', { phone });
@@ -106,5 +120,6 @@ export default {
   getPersonalInfo,
   updateAISettings,
   updateName,
+  updatePassword,
   updatePhoneNumber,
 };

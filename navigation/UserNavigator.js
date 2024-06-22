@@ -124,7 +124,7 @@ function UserAccountStackNavigator() {
       <Tab.Screen
         name="UserAccountChangePassword"
         component={UserAccountChangePasswordScreen}
-        options={{ title: 'Schimbare parolă' }}
+        options={{ title: '' }}
       />
       <Tab.Screen
         name="UserAccountSettings"
