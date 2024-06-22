@@ -27,10 +27,39 @@ async function getAccountInfo(axiosInstance) {
   }
 }
 
+async function getAISettings(axiosInstance) {
+  try {
+    const response = await axiosInstance.get('/users/ai-settings');
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
 async function getPersonalInfo(axiosInstance) {
   try {
     const response = await axiosInstance.get('/users/personal-info');
     return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
+async function updateAISettings(axiosInstance, { notificationsEnabled }) {
+  try {
+    await axiosInstance.put('/users/ai-settings', { notificationsEnabled });
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message);
@@ -73,7 +102,9 @@ async function updatePhoneNumber(axiosInstance, { phone }) {
 export default {
   deleteAccount,
   getAccountInfo,
+  getAISettings,
   getPersonalInfo,
+  updateAISettings,
   updateName,
   updatePhoneNumber,
 };
