@@ -24,6 +24,21 @@ const global = StyleSheet.create({
   spacingMedium: { gap: theme.spacing[4] },
   spacingLarge: { gap: theme.spacing[6] },
   spacingXLarge: { gap: theme.spacing[8] },
+  // Font Weight
+  fontThin: { fontWeight: '100' },
+  fontExtraLight: { fontWeight: '200' },
+  fontLight: { fontWeight: '300' },
+  fontNormal: { fontWeight: '400' },
+  fontMedium: { fontWeight: '500' },
+  fontSemibold: { fontWeight: '600' },
+  fontBold: { fontWeight: '700' },
+  fontExtraBold: { fontWeight: '800' },
+  fontBlack: { fontWeight: '900' },
+  // Text Transform
+  uppercase: { textTransform: 'uppercase' },
+  lowercase: { textTransform: 'lowercase' },
+  capitalize: { textTransform: 'capitalize' },
+  normalCase: { textTransform: 'none' },
 });
 
 export default global;

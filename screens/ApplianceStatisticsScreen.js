@@ -1,68 +1,114 @@
+import { useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location';
-import { useCallback, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback } from 'react';
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Button, Error, Loading } from '../components/UI';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
+import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import ApplianceService from '../services/ApplianceService';
+import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
 export default function ApplianceStatisticsScreen() {
-  const [location, setLocation] = useState(null);
-  const [status, setStatus] = useState('loading');
-  const [statistics, setStatistics] = useState(null);
-  const [recommendations, setRecommendations] = useState([]);
   const AxiosAuth = useAxiosAuth();
 
-  const fetchLocation = useCallback(async () => {
-    try {
-      setStatus('loading');
-      const permissionResponse =
-        await Location.requestForegroundPermissionsAsync();
-      if (permissionResponse?.status !== 'granted') {
-        throw new Error('Permission to access location was denied');
-      }
-      const loc = await Location.getCurrentPositionAsync({});
-      setLocation(loc.coords);
-    } catch (error) {
-      console.error('Error fetching location:', error);
-      setStatus('error');
+  const fetchApplianceRecommendations = useCallback(async () => {
+    const permissionResponse =
+      await Location.requestForegroundPermissionsAsync();
+    if (permissionResponse?.status !== 'granted') {
+      throw new Error('Permission to access location was denied');
     }
-  }, []);
+    const location = await Location.getCurrentPositionAsync({});
+    const data = await ApplianceService.getRecommendations(
+      AxiosAuth,
+      location.coords
+    );
+    return data;
+  }, [AxiosAuth]);
 
-  const fetchRecommendations = useCallback(async () => {
-    try {
-      if (location) {
-        const data = await ApplianceService.getRecommendations(
-          AxiosAuth,
-          location
-        );
-        setStatistics(data.statistics);
-        setRecommendations(data.recommendations);
-        setStatus('success');
-      }
-    } catch (error) {
-      console.error('Error fetching recommendations:', error);
-      setStatus('error');
+  const { data, error, isPending, refetch } = useQuery({
+    queryKey: ['applianceRecommendations'],
+    queryFn: fetchApplianceRecommendations,
+  });
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  useRefreshOnFocus(refetch);
+
+  const typeTranslationMap = {
+    donation: 'donare',
+    recycling: 'reciclare',
+    swap: 'schimb',
+  };
+
+  const renderRecyclingDonationSwap = () => {
+    const { recyclingDonationSwap } = data;
+
+    if (!recyclingDonationSwap) {
+      return null;
     }
-  }, [location, AxiosAuth]);
 
-  useEffect(() => {
-    fetchLocation();
-  }, []);
+    const { type, recommendation, recyclingCenter, appliance } =
+      recyclingDonationSwap;
 
-  useEffect(() => {
-    fetchRecommendations();
-  }, [location]);
+    return (
+      <>
+        <Text style={styles.heading}>
+          Reciclare, donare și schimb de electrocasnice
+        </Text>
+        <Text style={styles.subheading}>
+          <Text>Recomandare de </Text>
+          <Text style={global.fontBold}>{typeTranslationMap[type]}</Text>
+          <Text>: </Text>
+          <Text>{recommendation}</Text>
+        </Text>
+        <Text style={styles.subheading}>
+          <Text>Centru de reciclare: </Text>
+          <Text style={global.fontBold}>{recyclingCenter.name}</Text>
+        </Text>
+        <Text style={styles.subheading}>
+          <Text>Dispozitiv: </Text>
+          <Text style={global.fontBold}>{appliance.name}</Text>
+        </Text>
+      </>
+    );
+  };
 
-  if (status === 'loading') {
+  const renderRecommendations = () => {
+    const { recommendations, aiNotificationsEnabled } = data;
+
+    if (!aiNotificationsEnabled) {
+      return <Text style={styles.text}>Notificările AI sunt dezactivate.</Text>;
+    }
+
+    if (recommendations.length === 0) {
+      return (
+        <Text style={styles.text}>Nu există recomandări disponibile.</Text>
+      );
+    }
+
+    return recommendations.map((recommendation) => (
+      <View key={recommendation} style={styles.card}>
+        <Text style={styles.text}>{recommendation}</Text>
+      </View>
+    ));
+  };
+
+  if (isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
+  if (error) {
     return (
       <View style={styles.container}>
-        <Error message="A apărut o eroare la încărcarea recomandărilor și statisticilor" />
-        <Button title="Reîncearcă" onPress={fetchLocation} />
+        <Error message={error.message || 'A apărut o eroare'} />
+        <Button title="Reîncearcă" onPress={refetch} />
       </View>
     );
   }
@@ -71,37 +117,38 @@ export default function ApplianceStatisticsScreen() {
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefetchingByUser}
+          onRefresh={refetchByUser}
+        />
+      }
     >
       <Text style={styles.heading}>Statistici</Text>
       <Text style={styles.subheading}>
         Impact energetic și de mediu al electrocasnicelor:
       </Text>
-      <View style={styles.statisticsContainer}>
+      <View style={styles.dataSection}>
         <View style={styles.card}>
           <Text style={styles.statisticsLabel}>Consum total de energie:</Text>
           <Text style={styles.statisticsValue}>
-            {`${statistics.totalEnergyUsage} kWh/an`}
+            {`${data.statistics.totalEnergyUsage} kWh/an`}
           </Text>
         </View>
         <View style={styles.card}>
           <Text style={styles.statisticsLabel}>Emisii totale de CO2:</Text>
           <Text style={styles.statisticsValue}>
-            {`${statistics.totalCO2Emissions} kg/an`}
+            {`${data.statistics.totalCO2Emissions} kg/an`}
           </Text>
         </View>
       </View>
-      <Text style={styles.heading}>
-        Recomandări de îmbunătățire a eficienței energetice
-      </Text>
-      {recommendations.length === 0 ? (
-        <Text style={styles.text}>Nu există recomandări disponibile.</Text>
-      ) : (
-        recommendations.map((recommendation) => (
-          <View key={recommendation} style={styles.card}>
-            <Text style={styles.text}>{recommendation}</Text>
-          </View>
-        ))
-      )}
+      <View style={styles.dataSection}>
+        <Text style={styles.heading}>
+          Recomandări de îmbunătățire a eficienței energetice
+        </Text>
+        {renderRecommendations()}
+      </View>
+      {renderRecyclingDonationSwap()}
     </ScrollView>
   );
 }
@@ -132,7 +179,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.body,
     marginBottom: theme.spacing[2],
   },
-  statisticsContainer: {
+  dataSection: {
     marginBottom: theme.spacing[4],
   },
   statisticsLabel: {

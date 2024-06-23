@@ -46,7 +46,7 @@ async function getAppliances(axiosInstance) {
 async function getRecommendations(axiosInstance, location) {
   try {
     const response = await axiosInstance.post('/appliances/recommendations', {
-      coordinates: [location.latitude, location.longitude],
+      coordinates: [location.longitude, location.latitude],
     });
     return response.data;
   } catch (error) {
