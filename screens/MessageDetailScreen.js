@@ -35,25 +35,24 @@ export default function MessageDetailScreen({ route, navigation }) {
     setAlertVisible(true);
   };
 
-  const sendMessageResponse = useCallback(
-    async (response) => {
-      await RecyclingManagerService.sendMessageResponse(
+  const mutation = useMutation({
+    mutationFn: async (response) =>
+      RecyclingManagerService.sendMessageResponse(
         AxiosAuth,
         message._id,
         response
-      );
-    },
-    [AxiosAuth, message._id]
-  );
-
-  const mutation = useMutation({
-    mutationFn: sendMessageResponse,
+      ),
     onSuccess: () => {
-      showAlert('Succes', 'Răspunsul a fost trimis cu succes', 'OK', () => {
-        setAlertVisible(false);
-        queryClient.invalidateQueries(['messages']);
-        navigation.navigate('MessageList', { dataUpdatedAt: Date.now() });
-      });
+      showAlert(
+        'Succes',
+        'Răspunsul a fost trimis cu succes',
+        'OK',
+        async () => {
+          setAlertVisible(false);
+          await queryClient.invalidateQueries(['messages']);
+          navigation.navigate('MessageList');
+        }
+      );
     },
     onError: (error) => {
       showAlert(

@@ -77,10 +77,10 @@ export default function UserAccountSettingsScreen() {
       ),
   });
 
-  const toggleSwitch = useCallback(() => {
+  const toggleSwitch = useCallback(async () => {
     const newValue = !tempValue;
     setTempValue(newValue);
-    mutation.mutate({ notificationsEnabled: newValue });
+    await mutation.mutateAsync({ notificationsEnabled: newValue });
   }, [tempValue, mutation]);
 
   if (isPending) {

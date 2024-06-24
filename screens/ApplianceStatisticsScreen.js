@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location';
-import { useCallback } from 'react';
 import {
   RefreshControl,
   ScrollView,
@@ -19,23 +18,17 @@ import { useAxiosAuth } from '../utils/Axios';
 export default function ApplianceStatisticsScreen() {
   const AxiosAuth = useAxiosAuth();
 
-  const fetchApplianceRecommendations = useCallback(async () => {
-    const permissionResponse =
-      await Location.requestForegroundPermissionsAsync();
-    if (permissionResponse?.status !== 'granted') {
-      throw new Error('Permission to access location was denied');
-    }
-    const location = await Location.getCurrentPositionAsync({});
-    const data = await ApplianceService.getRecommendations(
-      AxiosAuth,
-      location.coords
-    );
-    return data;
-  }, [AxiosAuth]);
-
   const { data, error, isPending, refetch } = useQuery({
     queryKey: ['applianceRecommendations'],
-    queryFn: fetchApplianceRecommendations,
+    queryFn: async () => {
+      const permissionResponse =
+        await Location.requestForegroundPermissionsAsync();
+      if (permissionResponse?.status !== 'granted') {
+        throw new Error('Permission to access location was denied');
+      }
+      const location = await Location.getCurrentPositionAsync({});
+      return ApplianceService.getRecommendations(AxiosAuth, location.coords);
+    },
   });
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);

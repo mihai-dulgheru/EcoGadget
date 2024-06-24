@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useCallback, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   Pressable,
   RefreshControl,
@@ -66,11 +66,6 @@ export default function UserAccountScreen({ navigation }) {
   const auth = useContext(AuthContext);
   const AxiosAuth = useAxiosAuth();
 
-  const fetchAccountInfo = useCallback(
-    async () => UserService.getAccountInfo(AxiosAuth),
-    [AxiosAuth]
-  );
-
   const {
     data: accountInfo,
     error,
@@ -78,18 +73,14 @@ export default function UserAccountScreen({ navigation }) {
     refetch,
   } = useQuery({
     queryKey: ['accountInfo'],
-    queryFn: fetchAccountInfo,
+    queryFn: async () => UserService.getAccountInfo(AxiosAuth),
   });
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
   useRefreshOnFocus(refetch);
 
-  const deleteAccount = useCallback(async () => {
-    await UserService.deleteAccount(AxiosAuth);
-  }, [AxiosAuth]);
-
   const mutation = useMutation({
-    mutationFn: deleteAccount,
+    mutationFn: async () => UserService.deleteAccount(AxiosAuth),
     onSuccess: () => {
       showAlert(
         setAlertProps,

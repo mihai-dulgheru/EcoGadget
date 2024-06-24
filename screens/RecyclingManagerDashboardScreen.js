@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import {
   Animated,
   RefreshControl,
@@ -22,11 +22,6 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
   const fadeAnim = useMemo(() => new Animated.Value(0), []);
 
-  const fetchStatistics = useCallback(async () => {
-    const statistics = await RecyclingManagerService.getStatistics(AxiosAuth);
-    return statistics;
-  }, [AxiosAuth]);
-
   const {
     data: stats,
     error,
@@ -35,7 +30,7 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
     refetch,
   } = useQuery({
     queryKey: ['statistics'],
-    queryFn: fetchStatistics,
+    queryFn: async () => RecyclingManagerService.getStatistics(AxiosAuth),
   });
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);

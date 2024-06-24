@@ -1,6 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Divider, Error, Loading } from '../components/UI';
 import { RIPPLE_CONFIG } from '../constants';
@@ -40,18 +39,13 @@ const renderInfoItem = (iconName, text, onPress, isMasked) => (
 export default function UserAccountPersonalInfoScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
 
-  const fetchPersonalInfo = useCallback(
-    async () => UserService.getPersonalInfo(AxiosAuth),
-    [AxiosAuth]
-  );
-
   const {
     data: personalInfo,
     error,
     isPending,
   } = useQuery({
     queryKey: ['personalInfo'],
-    queryFn: fetchPersonalInfo,
+    queryFn: async () => UserService.getPersonalInfo(AxiosAuth),
   });
 
   if (isPending) {

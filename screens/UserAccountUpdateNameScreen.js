@@ -54,9 +54,9 @@ const handleMutationSuccess = (
     'Succes',
     'Numele a fost actualizat cu succes',
     'OK',
-    () => {
+    async () => {
       setAlertVisible(false);
-      queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
+      await queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
       navigation.goBack();
     }
   );
@@ -87,15 +87,9 @@ export default function UserAccountUpdateNameScreen({ navigation, route }) {
     firstName: useRef(null),
   };
 
-  const sendMessageResponse = useCallback(
-    async ({ firstName, lastName }) => {
-      await UserService.updateName(AxiosAuth, { firstName, lastName });
-    },
-    [AxiosAuth]
-  );
-
   const mutation = useMutation({
-    mutationFn: sendMessageResponse,
+    mutationFn: async ({ firstName, lastName }) =>
+      UserService.updateName(AxiosAuth, { firstName, lastName }),
     onSuccess: (_, variables) =>
       handleMutationSuccess(
         queryClient,

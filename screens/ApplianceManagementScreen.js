@@ -1,9 +1,16 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
-import { useEffect, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
 import {
-  Button,
+  FlatList,
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {
   CustomAlert,
   Error,
   FlatButton,
@@ -12,42 +19,17 @@ import {
   Loading,
   Pill,
 } from '../components/UI';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
+import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function ApplianceManagementScreen({ navigation, route }) {
-  const { dataUpdatedAt } = route.params || {};
-  const [appliances, setAppliances] = useState([]);
-  const [status, setStatus] = useState('loading');
+export default function ApplianceManagementScreen({ navigation }) {
+  const AxiosAuth = useAxiosAuth();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
-  const AxiosAuth = useAxiosAuth();
-
-  async function fetchAppliances() {
-    try {
-      setStatus('loading');
-      const data = await ApplianceService.getAppliances(AxiosAuth);
-      setAppliances(data);
-      setStatus('success');
-    } catch (error) {
-      console.error('Error loading appliances:', error);
-      setStatus('error');
-    }
-  }
-
-  useEffect(() => {
-    fetchAppliances();
-  }, [dataUpdatedAt]);
-
-  const handleAddButtonPress = () => {
-    navigation.navigate('ApplianceEdit', { appliance: {} });
-  };
-
-  const handleEdit = (appliance) => {
-    navigation.navigate('ApplianceEdit', { appliance });
-  };
 
   const showAlert = (
     title,
@@ -68,40 +50,65 @@ export default function ApplianceManagementScreen({ navigation, route }) {
     setAlertVisible(true);
   };
 
-  const handleDelete = async (id) => {
+  const {
+    data: appliances,
+    error,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ['appliances'],
+    queryFn: async () => ApplianceService.getAppliances(AxiosAuth),
+  });
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  useRefreshOnFocus(refetch);
+
+  const mutation = useMutation({
+    mutationFn: async (id) => ApplianceService.deleteAppliance(AxiosAuth, id),
+    onSuccess: () => refetch(),
+    onError: (mutationError) => {
+      console.error('Error deleting appliance:', mutationError);
+      showAlert(
+        'Eroare',
+        'A apărut o eroare la ștergerea aparatului',
+        'OK',
+        () => setAlertVisible(false)
+      );
+    },
+  });
+
+  const handleAddButtonPress = () => {
+    navigation.navigate('ApplianceEdit', { appliance: {} });
+  };
+
+  const handleEdit = (appliance) => {
+    navigation.navigate('ApplianceEdit', { appliance });
+  };
+
+  const handleDelete = (id) => {
     showAlert(
       'Confirmă ștergerea',
       'Ești sigur că vrei să ștergi acest aparat?',
       'Șterge',
       async () => {
-        try {
-          setAlertVisible(false);
-          setStatus('loading');
-          await ApplianceService.deleteAppliance(AxiosAuth, id);
-          await fetchAppliances();
-          setStatus('success');
-        } catch (error) {
-          console.error('Error deleting appliance:', error);
-          setStatus('error');
-        }
+        await mutation.mutateAsync(id);
+        setAlertVisible(false);
       },
       'Anulează',
       () => setAlertVisible(false)
     );
   };
 
-  const handleStatistics = async () => {
+  const handleStatistics = () => {
     navigation.navigate('ApplianceStatistics');
   };
 
-  if (status === 'loading') {
+  if (isPending || mutation.isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
-    return (
-      <Error message="A apărut o eroare la încărcarea informațiilor despre aparate" />
-    );
+  if (error) {
+    return <Error message={error.message} />;
   }
 
   return (
@@ -141,6 +148,12 @@ export default function ApplianceManagementScreen({ navigation, route }) {
         data={appliances}
         keyExtractor={(item) => item._id.toString()}
         ListEmptyComponent={ListEmptyComponent}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetchingByUser}
+            onRefresh={refetchByUser}
+          />
+        }
         renderItem={({ item }) => (
           <Pressable onPress={() => handleEdit(item)}>
             <View style={styles.item}>
@@ -156,17 +169,17 @@ export default function ApplianceManagementScreen({ navigation, route }) {
               </Text>
               <View style={styles.actionButtons}>
                 <View style={styles.buttonContainer}>
-                  <Button
-                    title="Editează"
-                    color="secondary"
-                    onPress={() => handleEdit(item)}
-                  />
-                </View>
-                <View style={styles.buttonContainer}>
                   <FlatButton
                     extraStyles={{ buttonText: styles.buttonTextDelete }}
                     onPress={() => handleDelete(item._id)}
                     title="Șterge"
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <FlatButton
+                    extraStyles={{ buttonText: styles.buttonTextEdit }}
+                    onPress={() => handleEdit(item)}
+                    title="Editează"
                   />
                 </View>
               </View>
@@ -258,5 +271,8 @@ const styles = StyleSheet.create({
   },
   buttonTextDelete: {
     color: theme.colors.error,
+  },
+  buttonTextEdit: {
+    color: theme.colors.primary,
   },
 });

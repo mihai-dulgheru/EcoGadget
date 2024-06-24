@@ -31,12 +31,6 @@ export default function RecyclingLocationListScreen({ navigation }) {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
 
-  const fetchLocations = useCallback(async () => {
-    const locations =
-      await RecyclingManagerService.getRecyclingLocations(AxiosAuth);
-    return locations;
-  }, [AxiosAuth]);
-
   const {
     data: locations,
     error,
@@ -44,23 +38,18 @@ export default function RecyclingLocationListScreen({ navigation }) {
     refetch,
   } = useQuery({
     queryKey: ['locations'],
-    queryFn: fetchLocations,
+    queryFn: async () =>
+      RecyclingManagerService.getRecyclingLocations(AxiosAuth),
   });
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
   useRefreshOnFocus(refetch);
 
-  const deleteLocation = useCallback(
-    async (id) => {
-      await RecyclingManagerService.deleteRecyclingLocation(AxiosAuth, id);
-    },
-    [AxiosAuth]
-  );
-
   const mutation = useMutation({
-    mutationFn: deleteLocation,
-    onSuccess: () => {
-      queryClient.invalidateQueries(['locations']);
+    mutationFn: async (id) =>
+      RecyclingManagerService.deleteRecyclingLocation(AxiosAuth, id),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['locations']);
     },
   });
 

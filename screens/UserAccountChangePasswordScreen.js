@@ -57,9 +57,9 @@ const handleMutationSuccess = (
     'Succes',
     'Parola a fost actualizată cu succes',
     'OK',
-    () => {
+    async () => {
       setAlertVisible(false);
-      queryClient.invalidateQueries(['accountInfo']);
+      await queryClient.invalidateQueries(['accountInfo']);
       navigation.goBack();
     }
   );
@@ -89,18 +89,12 @@ export default function UserAccountChangePasswordScreen({ navigation }) {
     confirmPassword: useRef(null),
   };
 
-  const sendMessageResponse = useCallback(
-    async ({ password, confirmPassword }) => {
-      await UserService.updatePassword(AxiosAuth, {
+  const mutation = useMutation({
+    mutationFn: async ({ password, confirmPassword }) =>
+      UserService.updatePassword(AxiosAuth, {
         password,
         confirmPassword,
-      });
-    },
-    [AxiosAuth]
-  );
-
-  const mutation = useMutation({
-    mutationFn: sendMessageResponse,
+      }),
     onSuccess: () =>
       handleMutationSuccess(
         queryClient,

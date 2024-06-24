@@ -112,8 +112,8 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
     setAlertVisible(true);
   };
 
-  const saveLocation = useCallback(
-    async (values) => {
+  const mutation = useMutation({
+    mutationFn: async (values) => {
       if (values._id) {
         await RecyclingService.updateRecyclingLocation(
           AxiosAuth,
@@ -124,17 +124,17 @@ export default function RecyclingLocationEditScreen({ navigation, route }) {
         await RecyclingService.addRecyclingLocation(AxiosAuth, values);
       }
     },
-    [AxiosAuth]
-  );
-
-  const mutation = useMutation({
-    mutationFn: saveLocation,
     onSuccess: () => {
-      showAlert('Succes', 'Locația a fost salvată cu succes', 'OK', () => {
-        setAlertVisible(false);
-        queryClient.invalidateQueries({ queryKey: ['locations'] });
-        navigation.goBack();
-      });
+      showAlert(
+        'Succes',
+        'Locația a fost salvată cu succes',
+        'OK',
+        async () => {
+          setAlertVisible(false);
+          await queryClient.invalidateQueries(['locations']);
+          navigation.goBack();
+        }
+      );
     },
     onError: () => {
       showAlert(

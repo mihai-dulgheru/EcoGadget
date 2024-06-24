@@ -63,10 +63,10 @@ const handleMutationSuccess = (
     'Succes',
     'Numărul de telefon a fost actualizat cu succes',
     'OK',
-    () => {
-      queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
-      navigation.goBack();
+    async () => {
       setAlertVisible(false);
+      await queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
+      navigation.goBack();
     }
   );
 };
@@ -94,15 +94,9 @@ export default function UserAccountChangePhoneNumberScreen({
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
 
-  const sendMessageResponse = useCallback(
-    async ({ phone }) => {
-      await UserService.updatePhoneNumber(AxiosAuth, { phone });
-    },
-    [AxiosAuth]
-  );
-
   const mutation = useMutation({
-    mutationFn: sendMessageResponse,
+    mutationFn: async ({ phone }) =>
+      UserService.updatePhoneNumber(AxiosAuth, { phone }),
     onSuccess: (_, variables) =>
       handleMutationSuccess(
         queryClient,

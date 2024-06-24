@@ -25,11 +25,6 @@ export default function MessageListScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
 
-  const fetchMessages = useCallback(async () => {
-    const messages = await RecyclingManagerService.getMessages(AxiosAuth);
-    return messages;
-  }, [AxiosAuth]);
-
   const {
     data: messages,
     error,
@@ -37,7 +32,7 @@ export default function MessageListScreen({ navigation }) {
     refetch,
   } = useQuery({
     queryKey: ['messages'],
-    queryFn: fetchMessages,
+    queryFn: async () => RecyclingManagerService.getMessages(AxiosAuth),
     staleTime: 1000 * 60 * 5,
   });
 
@@ -47,8 +42,8 @@ export default function MessageListScreen({ navigation }) {
   const markAsReadMutation = useMutation({
     mutationFn: (id) =>
       RecyclingManagerService.markMessageAsRead(AxiosAuth, id),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['messages']);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['messages']);
     },
   });
 

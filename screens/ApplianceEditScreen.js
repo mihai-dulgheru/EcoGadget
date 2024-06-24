@@ -1,6 +1,7 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import * as Yup from 'yup';
 import {
@@ -8,7 +9,7 @@ import {
   Field,
   MaterialCompositionField,
 } from '../components/Formik';
-import { Button, CustomAlert, Error, Loading, Select } from '../components/UI';
+import { Button, CustomAlert, LoadingOverlay, Select } from '../components/UI';
 import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
 import theme from '../styles/theme';
@@ -76,10 +77,10 @@ const defaultAppliance = {
 };
 
 export default function ApplianceEditScreen({ navigation, route }) {
-  const [status, setStatus] = useState('idle');
+  const AxiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
-  const AxiosAuth = useAxiosAuth();
 
   const inputRefs = {
     description: useRef(null),
@@ -109,16 +110,19 @@ export default function ApplianceEditScreen({ navigation, route }) {
     setAlertVisible(true);
   };
 
-  const handleSave = async (values) => {
-    try {
-      setStatus('loading');
+  const mutation = useMutation({
+    mutationFn: async (values) => {
       if (values._id) {
         await ApplianceService.updateAppliance(AxiosAuth, values._id, values);
       } else {
         await ApplianceService.addAppliance(AxiosAuth, values);
       }
-      navigation.navigate('ApplianceManagement', { dataUpdatedAt: Date.now() });
-    } catch (error) {
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['appliances']);
+      navigation.navigate('ApplianceManagement');
+    },
+    onError: (error) => {
       console.error('Error saving appliance:', error);
       showAlert(
         'Eroare',
@@ -126,16 +130,18 @@ export default function ApplianceEditScreen({ navigation, route }) {
         'OK',
         () => setAlertVisible(false)
       );
-      setStatus('error');
-    }
-  };
+    },
+  });
 
-  if (status === 'loading') {
-    return <Loading />;
-  }
+  const handleSave = useCallback(
+    async (values) => {
+      await mutation.mutateAsync(values);
+    },
+    [mutation]
+  );
 
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la salvarea electrocasnicului" />;
+  if (mutation.isPending) {
+    return <LoadingOverlay message="Salvare electrocasnic..." />;
   }
 
   return (
