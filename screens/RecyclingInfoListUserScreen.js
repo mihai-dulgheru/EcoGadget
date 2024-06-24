@@ -17,7 +17,7 @@ import global from '../styles/global';
 import theme from '../styles/theme';
 import { formatDate } from '../utils/DateUtils';
 
-export default function RecyclingInfoScreen({ navigation }) {
+export default function RecyclingInfoListUserScreen({ navigation }) {
   const {
     data: recyclingInfo,
     error,
@@ -34,7 +34,7 @@ export default function RecyclingInfoScreen({ navigation }) {
   const renderRecyclingInfo = ({ item }) => (
     <Pressable
       onPress={() => {
-        navigation.navigate('RecyclingInfoDetails', {
+        navigation.navigate('RecyclingInfoDetailUser', {
           recyclingInfo: item,
         });
       }}

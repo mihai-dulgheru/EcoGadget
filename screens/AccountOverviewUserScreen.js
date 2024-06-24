@@ -60,7 +60,7 @@ const renderInfoItem = (iconName, text, onPress, isError) => (
   </Pressable>
 );
 
-export default function UserAccountScreen({ navigation }) {
+export default function AccountOverviewUserScreen({ navigation }) {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
   const auth = useContext(AuthContext);
@@ -164,15 +164,15 @@ export default function UserAccountScreen({ navigation }) {
           </Text>
         </View>
         {renderInfoItem('person-outline', 'Informații personale', () =>
-          navigation.navigate('UserAccountPersonalInfo')
+          navigation.navigate('AccountPersonalInfoUser')
         )}
         <Divider />
         {renderInfoItem('key-outline', 'Schimbare parolă', () =>
-          navigation.navigate('UserAccountChangePassword')
+          navigation.navigate('AccountChangePasswordUser')
         )}
         <Divider />
         {renderInfoItem('settings-outline', 'Setări cont', () =>
-          navigation.navigate('UserAccountSettings')
+          navigation.navigate('AccountSettingsUser')
         )}
       </View>
       <View style={styles.additionalOptionsContainer}>

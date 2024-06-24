@@ -15,7 +15,7 @@ export default function HomeScreen() {
       <Text style={styles.text}>Bine ai venit!</Text>
       <Button
         title="Vezi Locațiile de Reciclare"
-        onPress={() => navigation.navigate('RecyclingLocations')}
+        onPress={() => navigation.navigate('RecyclingLocationListUser')}
       />
       <Button title="Deconectare" onPress={auth.signOut} />
     </View>

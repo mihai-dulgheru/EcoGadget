@@ -13,7 +13,7 @@ import { WEEKDAY_TRANSLATIONS } from '../constants';
 import global from '../styles/global';
 import theme from '../styles/theme';
 
-export default function RecyclingCenterDetailsScreen({ route }) {
+export default function RecyclingCenterDetailUserScreen({ route }) {
   const { center } = route.params;
 
   const openInMaps = () => {

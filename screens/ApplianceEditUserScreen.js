@@ -76,7 +76,7 @@ const defaultAppliance = {
   },
 };
 
-export default function ApplianceEditScreen({ navigation, route }) {
+export default function ApplianceEditUserScreen({ navigation, route }) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
   const [alertVisible, setAlertVisible] = useState(false);
@@ -120,7 +120,7 @@ export default function ApplianceEditScreen({ navigation, route }) {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries(['appliances']);
-      navigation.navigate('ApplianceManagement');
+      navigation.navigate('ApplianceListUser');
     },
     onError: (error) => {
       console.error('Error saving appliance:', error);

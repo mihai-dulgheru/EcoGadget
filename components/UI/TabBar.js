@@ -39,13 +39,13 @@ export default function TabBar({ state, descriptors, navigation }) {
 
   const getTabIconName = (route, isFocused) => {
     switch (route.name) {
-      case 'RecyclingInfoTab':
+      case 'RecyclingInfo':
         return isFocused ? 'information-circle' : 'information-circle-outline';
-      case 'RecyclingLocationsTab':
+      case 'RecyclingLocations':
         return isFocused ? 'map' : 'map-outline';
-      case 'ApplianceManagementTab':
+      case 'ApplianceManagement':
         return isFocused ? 'power' : 'power-outline';
-      case 'UserAccountTab':
+      case 'UserAccount':
         return isFocused ? 'person' : 'person-outline';
       default:
         return '';

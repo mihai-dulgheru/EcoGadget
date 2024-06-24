@@ -43,7 +43,7 @@ const handleMutationError = (
   );
 };
 
-export default function UserAccountSettingsScreen() {
+export default function AccountSettingsUserScreen() {
   const AxiosAuth = useAxiosAuth();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});

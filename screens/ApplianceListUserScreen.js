@@ -26,7 +26,7 @@ import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function ApplianceManagementScreen({ navigation }) {
+export default function ApplianceListUserScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
@@ -78,11 +78,11 @@ export default function ApplianceManagementScreen({ navigation }) {
   });
 
   const handleAddButtonPress = () => {
-    navigation.navigate('ApplianceEdit', { appliance: {} });
+    navigation.navigate('ApplianceEditUser', { appliance: {} });
   };
 
   const handleEdit = (appliance) => {
-    navigation.navigate('ApplianceEdit', { appliance });
+    navigation.navigate('ApplianceEditUser', { appliance });
   };
 
   const handleDelete = (id) => {
@@ -100,7 +100,7 @@ export default function ApplianceManagementScreen({ navigation }) {
   };
 
   const handleStatistics = () => {
-    navigation.navigate('ApplianceStatistics');
+    navigation.navigate('ApplianceStatisticsUser');
   };
 
   if (isPending || mutation.isPending) {

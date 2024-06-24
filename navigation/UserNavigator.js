@@ -4,29 +4,29 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isEmpty } from 'lodash';
 import { Header, TabBar } from '../components/UI';
 import {
-  ApplianceEditScreen,
-  ApplianceManagementScreen,
-  ApplianceStatisticsScreen,
-  RecyclingCenterDetailsScreen,
-  RecyclingInfoDetailsScreen,
-  RecyclingInfoScreen,
-  RecyclingLocationsScreen,
-  UserAccountChangePasswordScreen,
-  UserAccountChangePhoneNumberScreen,
-  UserAccountPersonalInfoScreen,
-  UserAccountScreen,
-  UserAccountSettingsScreen,
-  UserAccountUpdateNameScreen,
+  AccountChangePasswordUserScreen,
+  AccountChangePhoneNumberUserScreen,
+  AccountOverviewUserScreen,
+  AccountPersonalInfoUserScreen,
+  AccountSettingsUserScreen,
+  AccountUpdateNameUserScreen,
+  ApplianceEditUserScreen,
+  ApplianceListUserScreen,
+  ApplianceStatisticsUserScreen,
+  RecyclingCenterDetailUserScreen,
+  RecyclingInfoDetailUserScreen,
+  RecyclingInfoListUserScreen,
+  RecyclingLocationListUserScreen,
 } from '../screens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const noBackScreens = new Set([
-  'RecyclingInfo',
-  'RecyclingLocations',
-  'ApplianceManagement',
-  'UserAccount',
+  'RecyclingInfoListUser',
+  'RecyclingLocationListUser',
+  'ApplianceListUser',
+  'AccountOverviewUser',
 ]);
 
 const renderHeader = ({ route, options, navigation }) => {
@@ -41,13 +41,13 @@ function RecyclingInfoStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
-        name="RecyclingInfo"
-        component={RecyclingInfoScreen}
+        name="RecyclingInfoListUser"
+        component={RecyclingInfoListUserScreen}
         options={{ title: 'Informații reciclare' }}
       />
       <Stack.Screen
-        name="RecyclingInfoDetails"
-        component={RecyclingInfoDetailsScreen}
+        name="RecyclingInfoDetailUser"
+        component={RecyclingInfoDetailUserScreen}
         options={{ title: 'Detalii reciclare' }}
       />
     </Stack.Navigator>
@@ -58,13 +58,13 @@ function RecyclingLocationsStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
-        name="RecyclingLocations"
-        component={RecyclingLocationsScreen}
+        name="RecyclingLocationListUser"
+        component={RecyclingLocationListUserScreen}
         options={{ title: 'Locații reciclare' }}
       />
       <Stack.Screen
-        name="RecyclingCenterDetails"
-        component={RecyclingCenterDetailsScreen}
+        name="RecyclingCenterDetailUser"
+        component={RecyclingCenterDetailUserScreen}
         options={{ title: 'Detalii centru de reciclare' }}
       />
     </Stack.Navigator>
@@ -75,13 +75,13 @@ function ApplianceManagementStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
-        name="ApplianceManagement"
-        component={ApplianceManagementScreen}
+        name="ApplianceListUser"
+        component={ApplianceListUserScreen}
         options={{ title: 'Gestionare electrocasnice' }}
       />
       <Stack.Screen
-        name="ApplianceEdit"
-        component={ApplianceEditScreen}
+        name="ApplianceEditUser"
+        component={ApplianceEditUserScreen}
         options={({ route }) => ({
           title:
             route.params.appliance && !isEmpty(route.params.appliance)
@@ -90,8 +90,8 @@ function ApplianceManagementStackNavigator() {
         })}
       />
       <Stack.Screen
-        name="ApplianceStatistics"
-        component={ApplianceStatisticsScreen}
+        name="ApplianceStatisticsUser"
+        component={ApplianceStatisticsUserScreen}
         options={{ title: 'Statistici și recomandări' }}
       />
     </Stack.Navigator>
@@ -102,33 +102,33 @@ function UserAccountStackNavigator() {
   return (
     <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Tab.Screen
-        name="UserAccount"
-        component={UserAccountScreen}
+        name="AccountOverviewUser"
+        component={AccountOverviewUserScreen}
         options={{ title: 'Cont' }}
       />
       <Tab.Screen
-        name="UserAccountPersonalInfo"
-        component={UserAccountPersonalInfoScreen}
+        name="AccountPersonalInfoUser"
+        component={AccountPersonalInfoUserScreen}
         options={{ title: '' }}
       />
       <Tab.Screen
-        name="UserAccountUpdateName"
-        component={UserAccountUpdateNameScreen}
+        name="AccountUpdateNameUser"
+        component={AccountUpdateNameUserScreen}
         options={{ title: '' }}
       />
       <Tab.Screen
-        name="UserAccountChangePhoneNumber"
-        component={UserAccountChangePhoneNumberScreen}
+        name="AccountChangePhoneNumberUser"
+        component={AccountChangePhoneNumberUserScreen}
         options={{ title: '' }}
       />
       <Tab.Screen
-        name="UserAccountChangePassword"
-        component={UserAccountChangePasswordScreen}
+        name="AccountChangePasswordUser"
+        component={AccountChangePasswordUserScreen}
         options={{ title: '' }}
       />
       <Tab.Screen
-        name="UserAccountSettings"
-        component={UserAccountSettingsScreen}
+        name="AccountSettingsUser"
+        component={AccountSettingsUserScreen}
         options={{ title: 'Setări cont' }}
       />
     </Stack.Navigator>
@@ -142,22 +142,22 @@ export default function UserNavigator() {
       tabBar={renderTabBar}
     >
       <Tab.Screen
-        name="RecyclingInfoTab"
+        name="RecyclingInfo"
         component={RecyclingInfoStackNavigator}
         options={{ headerShown: false, title: 'Informații' }}
       />
       <Tab.Screen
-        name="RecyclingLocationsTab"
+        name="RecyclingLocations"
         component={RecyclingLocationsStackNavigator}
         options={{ headerShown: false, title: 'Locații' }}
       />
       <Tab.Screen
-        name="ApplianceManagementTab"
+        name="ApplianceManagement"
         component={ApplianceManagementStackNavigator}
         options={{ headerShown: false, title: 'Electrocasnice' }}
       />
       <Tab.Screen
-        name="UserAccountTab"
+        name="UserAccount"
         component={UserAccountStackNavigator}
         options={{ headerShown: false, title: 'Cont' }}
       />

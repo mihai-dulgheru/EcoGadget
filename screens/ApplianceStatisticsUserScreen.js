@@ -15,7 +15,7 @@ import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function ApplianceStatisticsScreen() {
+export default function ApplianceStatisticsUserScreen() {
   const AxiosAuth = useAxiosAuth();
 
   const { data, error, isPending, refetch } = useQuery({

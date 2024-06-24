@@ -3,11 +3,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isEmpty } from 'lodash';
 import { Header } from '../components/UI';
 import {
-  MessageDetailScreen,
-  MessageListScreen,
-  RecyclingLocationEditScreen,
-  RecyclingLocationListScreen,
-  RecyclingManagerDashboardScreen,
+  MessageDetailManagerScreen,
+  MessageListManagerScreen,
+  RecyclingLocationEditManagerScreen,
+  RecyclingLocationListManagerScreen,
+  RecyclingOverviewManagerScreen,
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -22,18 +22,18 @@ export default function RecyclingManagerNavigator() {
   return (
     <Stack.Navigator screenOptions={{ header: renderHeader }}>
       <Stack.Screen
-        name="RecyclingManagerDashboard"
-        component={RecyclingManagerDashboardScreen}
+        name="RecyclingOverviewManager"
+        component={RecyclingOverviewManagerScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="RecyclingLocationList"
-        component={RecyclingLocationListScreen}
+        name="RecyclingLocationListManager"
+        component={RecyclingLocationListManagerScreen}
         options={{ title: 'Locații de reciclare' }}
       />
       <Stack.Screen
-        name="RecyclingLocationEdit"
-        component={RecyclingLocationEditScreen}
+        name="RecyclingLocationEditManager"
+        component={RecyclingLocationEditManagerScreen}
         options={({ route }) => ({
           title:
             route.params.location && !isEmpty(route.params.location)
@@ -42,13 +42,13 @@ export default function RecyclingManagerNavigator() {
         })}
       />
       <Stack.Screen
-        name="MessageList"
-        component={MessageListScreen}
+        name="MessageListManager"
+        component={MessageListManagerScreen}
         options={{ title: 'Mesaje utilizatori' }}
       />
       <Stack.Screen
-        name="MessageDetail"
-        component={MessageDetailScreen}
+        name="MessageDetailManager"
+        component={MessageDetailManagerScreen}
         options={{ title: 'Detalii mesaj' }}
       />
     </Stack.Navigator>

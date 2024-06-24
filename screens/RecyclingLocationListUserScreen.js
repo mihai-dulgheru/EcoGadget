@@ -18,7 +18,7 @@ import {
   View,
 } from 'react-native';
 import { MapScreen } from '../components';
-import { RecyclingScheduleView } from '../components/RecyclingLocationList';
+import { RecyclingScheduleView } from '../components/RecyclingLocationListManager';
 import {
   Button,
   Error,
@@ -31,7 +31,7 @@ import RecyclingService from '../services/RecyclingService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 
-export default function RecyclingLocationsScreen({ navigation }) {
+export default function RecyclingLocationListUserScreen({ navigation }) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -110,7 +110,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
     ({ item }) => (
       <Pressable
         onPress={() => {
-          navigation.navigate('RecyclingCenterDetails', { center: item });
+          navigation.navigate('RecyclingCenterDetailUser', { center: item });
         }}
       >
         <View style={styles.locationContainer}>
@@ -176,7 +176,7 @@ export default function RecyclingLocationsScreen({ navigation }) {
           <Button
             title="Detalii"
             onPress={() => {
-              navigation.navigate('RecyclingCenterDetails', {
+              navigation.navigate('RecyclingCenterDetailUser', {
                 center: location,
               });
             }}

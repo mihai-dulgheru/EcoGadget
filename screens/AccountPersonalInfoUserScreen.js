@@ -36,7 +36,7 @@ const renderInfoItem = (iconName, text, onPress, isMasked) => (
   </Pressable>
 );
 
-export default function UserAccountPersonalInfoScreen({ navigation }) {
+export default function AccountPersonalInfoUserScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
 
   const {
@@ -63,11 +63,11 @@ export default function UserAccountPersonalInfoScreen({ navigation }) {
         {renderInfoItem(
           'person-outline',
           `${personalInfo.firstName} ${personalInfo.lastName}`,
-          () => navigation.navigate('UserAccountUpdateName', { personalInfo })
+          () => navigation.navigate('AccountUpdateNameUser', { personalInfo })
         )}
         <Divider />
         {renderInfoItem('call-outline', personalInfo.phone, () =>
-          navigation.navigate('UserAccountChangePhoneNumber', { personalInfo })
+          navigation.navigate('AccountChangePhoneNumberUser', { personalInfo })
         )}
         <Divider />
         {renderInfoItem('mail-outline', personalInfo.email, null, true)}

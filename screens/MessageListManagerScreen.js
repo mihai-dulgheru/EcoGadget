@@ -21,7 +21,7 @@ import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function MessageListScreen({ navigation }) {
+export default function MessageListManagerScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
 
@@ -52,7 +52,7 @@ export default function MessageListScreen({ navigation }) {
       if (!message.read) {
         markAsReadMutation.mutate(message._id);
       }
-      navigation.navigate('MessageDetail', { message });
+      navigation.navigate('MessageDetailManager', { message });
     },
     [markAsReadMutation, navigation]
   );

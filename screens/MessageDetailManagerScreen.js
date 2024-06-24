@@ -18,7 +18,7 @@ const initialValues = {
   response: '',
 };
 
-export default function MessageDetailScreen({ route, navigation }) {
+export default function MessageDetailManagerScreen({ route, navigation }) {
   const { message } = route.params || {};
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
@@ -50,7 +50,7 @@ export default function MessageDetailScreen({ route, navigation }) {
         async () => {
           setAlertVisible(false);
           await queryClient.invalidateQueries(['messages']);
-          navigation.navigate('MessageList');
+          navigation.navigate('MessageListManager');
         }
       );
     },

@@ -10,7 +10,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { RecyclingScheduleView } from '../components/RecyclingLocationList';
+import { RecyclingScheduleView } from '../components/RecyclingLocationListManager';
 import {
   CustomAlert,
   Error,
@@ -25,7 +25,7 @@ import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function RecyclingLocationListScreen({ navigation }) {
+export default function RecyclingLocationListManagerScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
   const [alertVisible, setAlertVisible] = useState(false);
@@ -73,12 +73,12 @@ export default function RecyclingLocationListScreen({ navigation }) {
   };
 
   const handleAddButtonPress = useCallback(() => {
-    navigation.navigate('RecyclingLocationEdit', { location: {} });
+    navigation.navigate('RecyclingLocationEditManager', { location: {} });
   }, [navigation]);
 
   const handleEdit = useCallback(
     (location) => {
-      navigation.navigate('RecyclingLocationEdit', { location });
+      navigation.navigate('RecyclingLocationEditManager', { location });
     },
     [navigation]
   );

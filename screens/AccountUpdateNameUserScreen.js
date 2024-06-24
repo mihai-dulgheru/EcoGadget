@@ -75,7 +75,7 @@ const handleMutationError = (setAlertProps, setAlertVisible, error) => {
   );
 };
 
-export default function UserAccountUpdateNameScreen({ navigation, route }) {
+export default function AccountUpdateNameUserScreen({ navigation, route }) {
   const { personalInfo } = route.params;
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();

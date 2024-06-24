@@ -1,10 +1,10 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Section } from '../components/RecyclingInfoDetails';
+import { Section } from '../components/RecyclingInfoDetailUser';
 import global from '../styles/global';
 import theme from '../styles/theme';
 
-export default function RecyclingInfoDetailsScreen({ route }) {
+export default function RecyclingInfoDetailUserScreen({ route }) {
   const { recyclingInfo } = route.params;
 
   return (

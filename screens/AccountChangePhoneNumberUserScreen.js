@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
@@ -11,22 +11,23 @@ import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
 const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8, 'Parola trebuie să aibă cel puțin 8 caractere')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-      'Parola trebuie să conțină cel puțin o literă mare, o literă mică, un număr și un caracter special'
-    )
-    .required('Parola este obligatorie'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Parolele nu se potrivesc')
-    .required('Confirmarea parolei este obligatorie'),
+  phone: Yup.string()
+    .matches(/^[0-9]+$/, 'Telefonul trebuie să conțină doar cifre')
+    .min(10, 'Telefonul trebuie să aibă cel puțin 10 cifre')
+    .required('Telefonul este obligatoriu')
+    .test(
+      'is-different',
+      'Numărul de telefon trebuie să fie diferit',
+      function (value) {
+        return value !== this.parent.initialPhone;
+      }
+    ),
 });
 
-const initialValues = {
-  password: '',
-  confirmPassword: '',
-};
+const initialValues = (personalInfo) => ({
+  initialPhone: personalInfo.phone,
+  phone: personalInfo.phone,
+});
 
 const showAlert = (
   setAlertProps,
@@ -49,17 +50,22 @@ const handleMutationSuccess = (
   queryClient,
   navigation,
   setAlertProps,
-  setAlertVisible
+  setAlertVisible,
+  variables,
+  personalInfo
 ) => {
+  navigation.setParams({
+    personalInfo: { ...personalInfo, ...variables },
+  });
   showAlert(
     setAlertProps,
     setAlertVisible,
     'Succes',
-    'Parola a fost actualizată cu succes',
+    'Numărul de telefon a fost actualizat cu succes',
     'OK',
     async () => {
       setAlertVisible(false);
-      await queryClient.invalidateQueries(['accountInfo']);
+      await queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
       navigation.goBack();
     }
   );
@@ -78,29 +84,27 @@ const handleMutationError = (setAlertProps, setAlertVisible, error) => {
   );
 };
 
-export default function UserAccountChangePasswordScreen({ navigation }) {
+export default function AccountChangePhoneNumberUserScreen({
+  navigation,
+  route,
+}) {
+  const { personalInfo } = route.params;
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
 
-  const inputRefs = {
-    password: useRef(null),
-    confirmPassword: useRef(null),
-  };
-
   const mutation = useMutation({
-    mutationFn: async ({ password, confirmPassword }) =>
-      UserService.updatePassword(AxiosAuth, {
-        password,
-        confirmPassword,
-      }),
-    onSuccess: () =>
+    mutationFn: async ({ phone }) =>
+      UserService.updatePhoneNumber(AxiosAuth, { phone }),
+    onSuccess: (_, variables) =>
       handleMutationSuccess(
         queryClient,
         navigation,
         setAlertProps,
-        setAlertVisible
+        setAlertVisible,
+        variables,
+        personalInfo
       ),
     onError: (error) =>
       handleMutationError(setAlertProps, setAlertVisible, error),
@@ -119,11 +123,13 @@ export default function UserAccountChangePasswordScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Schimbare parolă</Text>
+      <Text style={styles.heading}>Schimbare număr de telefon</Text>
       <View style={global.spacingMedium}>
-        <Text style={styles.formDescription}>Formular de schimbare parolă</Text>
+        <Text style={styles.formDescription}>
+          Formular de schimbare număr de telefon
+        </Text>
         <Formik
-          initialValues={initialValues}
+          initialValues={initialValues(personalInfo)}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
@@ -131,42 +137,19 @@ export default function UserAccountChangePasswordScreen({ navigation }) {
             <View style={global.spacingMedium}>
               <View>
                 <Field
-                  autoComplete="new-password"
-                  autoCorrect={false}
-                  blurOnSubmit={false}
                   formikProps={props}
-                  label="Parolă"
-                  name="password"
-                  onSubmitEditing={() =>
-                    inputRefs.confirmPassword.current.focus()
-                  }
-                  placeholder="Parolă"
-                  ref={inputRefs.password}
-                  returnKeyType="next"
-                  secure
-                  textContentType="newPassword"
+                  keyboardType="phone-pad"
+                  label="Număr de telefon"
+                  name="phone"
+                  placeholder="Număr de telefon"
                 />
-                <ErrorMessage name="password" />
-              </View>
-              <View>
-                <Field
-                  autoComplete="new-password"
-                  autoCorrect={false}
-                  formikProps={props}
-                  label="Confirmare parolă"
-                  name="confirmPassword"
-                  placeholder="Confirmare parolă"
-                  ref={inputRefs.confirmPassword}
-                  secure
-                  textContentType="newPassword"
-                />
-                <ErrorMessage name="confirmPassword" />
+                <ErrorMessage name="phone" />
               </View>
               <View style={styles.buttonContainer}>
                 <Button
                   disabled={mutation.isPending}
                   onPress={props.handleSubmit}
-                  title="Schimbă parola"
+                  title="Actualizare"
                 />
               </View>
               <Debug formikProps={props} />

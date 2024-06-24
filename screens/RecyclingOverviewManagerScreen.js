@@ -17,7 +17,7 @@ import { AuthContext } from '../store/AuthContext';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
 
-export default function RecyclingManagerDashboardScreen({ navigation }) {
+export default function RecyclingOverviewManagerScreen({ navigation }) {
   const auth = useContext(AuthContext);
   const AxiosAuth = useAxiosAuth();
   const fadeAnim = useMemo(() => new Animated.Value(0), []);
@@ -78,14 +78,14 @@ export default function RecyclingManagerDashboardScreen({ navigation }) {
         icon="trash-bin"
         title="Locații de reciclare"
         count={stats?.recyclingLocationCount}
-        onPress={() => navigation.navigate('RecyclingLocationList')}
+        onPress={() => navigation.navigate('RecyclingLocationListManager')}
         fadeAnim={fadeAnim}
       />
       <DashboardCard
         icon="chatbox-ellipses"
         title="Mesaje utilizatori"
         count={stats?.messageCount}
-        onPress={() => navigation.navigate('MessageList')}
+        onPress={() => navigation.navigate('MessageListManager')}
         fadeAnim={fadeAnim}
       />
       <MessageDistributionChart

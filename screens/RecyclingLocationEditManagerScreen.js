@@ -69,7 +69,10 @@ const defaultLocation = {
   longitude: 26.0512812,
 };
 
-export default function RecyclingLocationEditScreen({ navigation, route }) {
+export default function RecyclingLocationEditManagerScreen({
+  navigation,
+  route,
+}) {
   const AxiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
   const [alertVisible, setAlertVisible] = useState(false);
