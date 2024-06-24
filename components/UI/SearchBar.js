@@ -1,36 +1,72 @@
 import { Ionicons } from '@expo/vector-icons';
 import { debounce } from 'lodash';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import global from '../../styles/global';
 import theme from '../../styles/theme';
 
 export default function SearchBar({
+  onBack,
   onChangeText,
   onClear,
+  onFocus,
   placeholder = 'Caută...',
 }) {
+  const [isFocused, setIsFocused] = useState(false);
   const [text, setText] = useState('');
+  const textInputRef = useRef(null);
+
+  const debouncedOnChangeText = useCallback(debounce(onChangeText, 300), []);
+
+  const handleBack = () => {
+    setIsFocused(false);
+    setText('');
+    textInputRef.current.blur();
+    if (typeof onBack === 'function') {
+      onBack();
+    }
+  };
 
   const handleTextChange = (inputText) => {
     setText(inputText);
     debouncedOnChangeText(inputText);
   };
 
-  const debouncedOnChangeText = useCallback(debounce(onChangeText, 300), []);
+  const handleFocus = () => {
+    setIsFocused(true);
+    if (typeof onFocus === 'function') {
+      onFocus();
+    }
+  };
 
   const handleClear = () => {
     setText('');
-    onClear();
+    if (typeof onClear === 'function') {
+      onClear();
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Ionicons name="search" size={24} color="gray" style={styles.icon} />
+      {!isFocused && (
+        <Ionicons name="search" size={24} color="gray" style={styles.icon} />
+      )}
+      {isFocused && (
+        <Pressable onPress={handleBack}>
+          <Ionicons
+            name="arrow-back"
+            size={24}
+            color="gray"
+            style={styles.icon}
+          />
+        </Pressable>
+      )}
       <TextInput
         onChangeText={handleTextChange}
+        onFocus={handleFocus}
         placeholder={placeholder}
         placeholderTextColor={theme.colors.textSecondary}
+        ref={textInputRef}
         style={styles.input}
         value={text}
       />
@@ -60,7 +96,8 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing[1],
   },
   icon: {
-    marginRight: theme.spacing[2],
+    paddingRight: theme.spacing[2],
+    paddingVertical: theme.spacing[1],
   },
   input: {
     ...theme.fontSize.base,

@@ -65,6 +65,37 @@ async function getRecyclingLocations(coords) {
   }
 }
 
+async function searchRecyclingLocations(coords, query) {
+  try {
+    const response = await Axios.get('/recycling-locations/search', {
+      params: { query },
+    });
+    return response.data
+      .map((location) => ({
+        ...location,
+        distance: calculateDistance(
+          coords.latitude,
+          coords.longitude,
+          location.latitude,
+          location.longitude
+        ),
+      }))
+      .sort((a, b) => a.distance - b.distance)
+      .map((location) => ({
+        ...location,
+        distance: `${location.distance.toFixed(2)} km`,
+      }));
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    } else if (error.request) {
+      throw new Error('No response from the server');
+    } else {
+      throw new Error('An error occurred');
+    }
+  }
+}
+
 async function updateRecyclingLocation(axiosInstance, id, values) {
   try {
     const { image, ...rest } = values;
@@ -118,5 +149,6 @@ async function updateRecyclingLocation(axiosInstance, id, values) {
 export default {
   addRecyclingLocation,
   getRecyclingLocations,
+  searchRecyclingLocations,
   updateRecyclingLocation,
 };

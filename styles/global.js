@@ -24,6 +24,10 @@ const global = StyleSheet.create({
   spacingMedium: { gap: theme.spacing[4] },
   spacingLarge: { gap: theme.spacing[6] },
   spacingXLarge: { gap: theme.spacing[8] },
+  // Flex
+  flex1: { flex: 1 },
+  // Flex Grow
+  grow: { flexGrow: 1 },
   // Font Weight
   fontThin: { fontWeight: '100' },
   fontExtraLight: { fontWeight: '200' },

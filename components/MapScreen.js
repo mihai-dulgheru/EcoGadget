@@ -22,11 +22,11 @@ function CustomMarker({ isSelected }) {
 const MapScreen = forwardRef(
   (
     {
-      currentPosition,
-      filteredLocations,
-      setSelectedLocation,
       bottomSheetRef,
+      currentPosition,
+      locations,
       selectedLocation,
+      setSelectedLocation,
     },
     ref
   ) => (
@@ -44,7 +44,7 @@ const MapScreen = forwardRef(
       ref={ref}
       style={styles.map}
     >
-      {filteredLocations.map((location) => (
+      {locations.map((location) => (
         <Marker
           key={location._id}
           coordinate={{
