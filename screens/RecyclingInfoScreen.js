@@ -1,37 +1,35 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   FlatList,
   Image,
   Pressable,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import { Error, Loading } from '../components/UI';
+import { Error, ListEmptyComponent, Loading } from '../components/UI';
+import { useRefreshByUser } from '../hooks/useRefreshByUser';
+import { useRefreshOnFocus } from '../hooks/useRefreshOnFocus';
 import RecyclingInfoService from '../services/RecyclingInfoService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 import { formatDate } from '../utils/DateUtils';
 
 export default function RecyclingInfoScreen({ navigation }) {
-  const [recyclingInfo, setRecyclingInfo] = useState([]);
-  const [status, setStatus] = useState('loading');
+  const {
+    data: recyclingInfo,
+    error,
+    isPending,
+    refetch,
+  } = useQuery({
+    queryKey: ['recyclingInfo'],
+    queryFn: async () => RecyclingInfoService.getRecyclingInfo(),
+  });
 
-  useEffect(() => {
-    const fetchRecyclingInfo = async () => {
-      try {
-        const data = await RecyclingInfoService.getRecyclingInfo();
-        setRecyclingInfo(data);
-        setStatus('success');
-      } catch (error) {
-        console.error('Error loading recycling info:', error);
-        setStatus('error');
-      }
-    };
-
-    fetchRecyclingInfo();
-  }, []);
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
+  useRefreshOnFocus(refetch);
 
   const renderRecyclingInfo = ({ item }) => (
     <Pressable
@@ -65,14 +63,12 @@ export default function RecyclingInfoScreen({ navigation }) {
     </Pressable>
   );
 
-  if (status === 'loading') {
+  if (isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
-    return (
-      <Error message="A apărut o eroare la încărcarea informațiilor de reciclare" />
-    );
+  if (error) {
+    return <Error message={error.message} />;
   }
 
   return (
@@ -80,6 +76,13 @@ export default function RecyclingInfoScreen({ navigation }) {
       contentContainerStyle={styles.listContainer}
       data={recyclingInfo}
       keyExtractor={(item) => item._id.toString()}
+      ListEmptyComponent={ListEmptyComponent}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefetchingByUser}
+          onRefresh={refetchByUser}
+        />
+      }
       renderItem={renderRecyclingInfo}
     />
   );

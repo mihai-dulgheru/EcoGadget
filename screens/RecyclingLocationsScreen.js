@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location';
 import React, {
   useCallback,
@@ -33,46 +34,30 @@ import theme from '../styles/theme';
 export default function RecyclingLocationsScreen({ navigation }) {
   const [currentPosition, setCurrentPosition] = useState(null);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
-  const [locations, setLocations] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [status, setStatus] = useState('loading');
 
   const bottomSheetRef = useRef(null);
   const mapRef = useRef(null);
   const snapPoints = useMemo(() => ['25%', '50%', '100%'], []);
 
-  const handleSearchChange = useCallback((text) => {
-    setSearchText(text);
-  }, []);
-
-  const handleSearchClear = useCallback(() => {
-    setSearchText('');
-  }, []);
-
-  useEffect(() => {
-    const fetchLocations = async () => {
-      try {
-        const permissionResponse =
-          await Location.requestForegroundPermissionsAsync();
-        if (permissionResponse?.status !== 'granted') {
-          throw new Error('Permission to access location was denied');
-        }
-        const location = await Location.getCurrentPositionAsync({});
-        setCurrentPosition(location);
-        const data = await RecyclingService.getRecyclingLocations(
-          location.coords
-        );
-        setLocations(data);
-        setStatus('success');
-      } catch (error) {
-        console.error('Error fetching locations', error);
-        setStatus('error');
+  const {
+    data: locations,
+    error,
+    isPending,
+  } = useQuery({
+    queryKey: ['recyclingLocations'],
+    queryFn: async () => {
+      const permissionResponse =
+        await Location.requestForegroundPermissionsAsync();
+      if (permissionResponse?.status !== 'granted') {
+        throw new Error('Permission to access location was denied');
       }
-    };
-
-    fetchLocations();
-  }, []);
+      const location = await Location.getCurrentPositionAsync({});
+      setCurrentPosition(location);
+      return RecyclingService.getRecyclingLocations(location.coords);
+    },
+  });
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -105,11 +90,19 @@ export default function RecyclingLocationsScreen({ navigation }) {
     }
   };
 
+  const handleSearchChange = useCallback((text) => {
+    setSearchText(text);
+  }, []);
+
+  const handleSearchClear = useCallback(() => {
+    setSearchText('');
+  }, []);
+
   const filteredLocations = useMemo(
     () =>
-      locations.filter((location) =>
+      locations?.filter((location) =>
         location.name.toLowerCase().includes(searchText.toLowerCase())
-      ),
+      ) || [],
     [locations, searchText]
   );
 
@@ -194,12 +187,12 @@ export default function RecyclingLocationsScreen({ navigation }) {
     [navigation]
   );
 
-  if (status === 'loading') {
+  if (isPending) {
     return <Loading />;
   }
 
-  if (status === 'error') {
-    return <Error message="A apărut o eroare la încărcarea locațiilor" />;
+  if (error) {
+    return <Error message={error.message} />;
   }
 
   return (
@@ -351,20 +344,6 @@ const styles = StyleSheet.create({
   selectedLocationPhone: {
     ...theme.fontSize.md,
     color: theme.colors.textSecondary,
-    fontFamily: theme.fontFamily.body,
-  },
-  switchContainer: {
-    alignItems: 'center',
-    backgroundColor: theme.colors.backgroundPrimary,
-    borderRadius: theme.borderRadius.lg,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: theme.spacing[2],
-    paddingVertical: theme.spacing[1],
-  },
-  switchLabel: {
-    ...theme.fontSize.md,
-    color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
   },
 });

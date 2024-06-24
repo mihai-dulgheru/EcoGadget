@@ -100,7 +100,7 @@ export default function ApplianceStatisticsScreen() {
   if (error) {
     return (
       <View style={styles.container}>
-        <Error message={error.message || 'A apărut o eroare'} />
+        <Error message={error.message} />
         <Button title="Reîncearcă" onPress={refetch} />
       </View>
     );
