@@ -16,7 +16,7 @@ export default function SearchBar({
   const [text, setText] = useState('');
   const textInputRef = useRef(null);
 
-  const debouncedOnChangeText = useCallback(debounce(onChangeText, 300), []);
+  const debouncedOnChangeText = useCallback(debounce(onChangeText, 500), []);
 
   const handleBack = () => {
     setIsFocused(false);
