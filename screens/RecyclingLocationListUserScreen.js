@@ -145,6 +145,7 @@ export default function RecyclingLocationListUserScreen({ navigation }) {
           onBack={() => {
             setIsSearching(false);
             setSearchText('');
+            setSelectedLocation(null);
           }}
           onChangeText={setSearchText}
           onClear={() => setSearchText('')}
