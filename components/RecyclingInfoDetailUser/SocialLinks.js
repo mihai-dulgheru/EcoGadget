@@ -15,10 +15,7 @@ export default function SocialLinks({ links }) {
           <Pressable
             key={key}
             onPress={() => Linking.openURL(url)}
-            style={({ pressed }) => [
-              styles.linkContainer,
-              pressed && global.pressed,
-            ]}
+            style={({ pressed }) => [pressed && global.pressed]}
           >
             <Text style={styles.link}>{key.toUpperCase()}</Text>
           </Pressable>
@@ -37,9 +34,8 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
   },
-  linkContainer: {},
   link: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.primary,
     fontFamily: theme.fontFamily.body,
   },

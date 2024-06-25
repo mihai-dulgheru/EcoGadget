@@ -11,7 +11,7 @@ export default function SearchResultItem({ item, onPress }) {
           <View style={styles.locationIconContainer}>
             <Ionicons
               name="location-outline"
-              size={22}
+              size={24}
               color={theme.colors.textPrimary}
             />
           </View>

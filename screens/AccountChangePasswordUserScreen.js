@@ -107,9 +107,7 @@ export default function AccountChangePasswordUserScreen({ navigation }) {
   });
 
   const handleSubmit = useCallback(
-    async (values) => {
-      await mutation.mutateAsync(values);
-    },
+    async (values) => mutation.mutateAsync(values),
     [mutation]
   );
 

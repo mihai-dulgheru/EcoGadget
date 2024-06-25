@@ -1,10 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useMutation } from '@tanstack/react-query';
 import { Formik } from 'formik';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
-import { ErrorMessage, Field } from '../components/Formik';
-import { Button, CustomAlert } from '../components/UI';
+import { Debug, ErrorMessage, Field } from '../components/Formik';
+import { Button, CustomAlert, Loading } from '../components/UI';
+import AccountService from '../services/AccountService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 
@@ -14,32 +16,63 @@ const validationSchema = Yup.object().shape({
     .required('Adresa de email este obligatorie'),
 });
 
+const initialValues = {
+  email: '',
+};
+
+const showAlert = (
+  setAlertProps,
+  setAlertVisible,
+  title,
+  message,
+  confirmText,
+  onConfirm
+) => {
+  setAlertProps({
+    title,
+    message,
+    confirmText,
+    onConfirm,
+  });
+  setAlertVisible(true);
+};
+
+const handleMutationError = (setAlertProps, setAlertVisible, error) => {
+  showAlert(
+    setAlertProps,
+    setAlertVisible,
+    'Eroare',
+    error.message || 'A apărut o eroare',
+    'OK',
+    () => {
+      setAlertVisible(false);
+    }
+  );
+};
+
 export default function ForgotPasswordScreen({ navigation }) {
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
 
-  const showAlert = (title, message, confirmText, onConfirm) => {
-    setAlertProps({
-      title,
-      message,
-      confirmText,
-      onConfirm,
-    });
-    setAlertVisible(true);
-  };
+  const mutation = useMutation({
+    mutationFn: async (values) => AccountService.forgotPassword(values),
+    onSuccess: (data) => navigation.navigate('ConfirmCode', data),
+    onError: (error) =>
+      handleMutationError(setAlertProps, setAlertVisible, error),
+  });
 
-  const handleFormSubmit = async (values) => {
-    try {
-      // Logică pentru trimiterea email-ului
-      navigation.navigate('ConfirmCode');
-    } catch (error) {
-      showAlert('Eroare', error.message, 'OK', () => setAlertVisible(false));
-    }
-  };
+  const handleFormSubmit = useCallback(
+    async (values) => mutation.mutateAsync(values),
+    [mutation]
+  );
+
+  if (mutation.isPending) {
+    return <Loading />;
+  }
 
   return (
     <Formik
-      initialValues={{ email: '' }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleFormSubmit}
     >
@@ -80,6 +113,7 @@ export default function ForgotPasswordScreen({ navigation }) {
           <View style={styles.buttonContainer}>
             <Button title="Continuare" onPress={props.handleSubmit} />
           </View>
+          <Debug formikProps={props} />
           <CustomAlert visible={alertVisible} {...alertProps} />
         </ScrollView>
       )}

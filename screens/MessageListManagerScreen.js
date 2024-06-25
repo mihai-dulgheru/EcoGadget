@@ -131,17 +131,17 @@ const styles = StyleSheet.create({
     opacity: theme.opacity.default,
   },
   messageName: {
-    ...theme.fontSize.lg,
+    ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
   },
   messageEmail: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
   },
   messageText: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
   },

@@ -48,25 +48,25 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultLocation = {
-  name: 'Milatex Trade',
-  address: 'Bulevardul Iuliu Maniu 7b, București 061072, Romania',
+  name: '',
+  address: '',
   image: '',
-  phone: '0213191632',
-  description: 'Deseuri electrice, electronice si electrocasnice mici',
+  phone: '',
+  description: '',
   schedule: {
-    monday: '8:00 AM - 4:00 PM',
-    tuesday: '8:00 AM - 4:00 PM',
-    wednesday: '8:00 AM - 4:00 PM',
-    thursday: '8:00 AM - 4:00 PM',
-    friday: '8:00 AM - 4:00 PM',
-    saturday: 'Closed',
-    sunday: 'Closed',
+    monday: '',
+    tuesday: '',
+    wednesday: '',
+    thursday: '',
+    friday: '',
+    saturday: '',
+    sunday: '',
   },
-  company: 'MILATEX TRADE S.R.L.',
-  cui: '18537237',
-  regCom: 'J40/5321/2006',
-  latitude: 44.4335339,
-  longitude: 26.0512812,
+  company: '',
+  cui: '',
+  regCom: '',
+  latitude: '',
+  longitude: '',
 };
 
 export default function RecyclingLocationEditManagerScreen({
@@ -150,9 +150,7 @@ export default function RecyclingLocationEditManagerScreen({
   });
 
   const handleSave = useCallback(
-    async (values) => {
-      await mutation.mutateAsync(values);
-    },
+    async (values) => mutation.mutateAsync(values),
     [mutation]
   );
 

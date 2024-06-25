@@ -61,18 +61,18 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultAppliance = {
-  name: 'Frigider',
-  description: 'Frigider cu congelator, capacitate 200 litri',
-  productionYear: 2019,
-  energyUsage: 200,
-  CO2Emissions: 100,
-  expectedLifespan: 10,
+  name: '',
+  description: '',
+  productionYear: '',
+  energyUsage: '',
+  CO2Emissions: '',
+  expectedLifespan: '',
   disposalOptions: DisposalOptions.RECYCLABLE,
   efficiencyRating: EfficiencyRatings.A_PLUS_PLUS_PLUS,
   materialComposition: {
-    metal: 20,
-    plastic: 60,
-    other: 20,
+    metal: '',
+    plastic: '',
+    other: '',
   },
 };
 
@@ -134,9 +134,7 @@ export default function ApplianceEditUserScreen({ navigation, route }) {
   });
 
   const handleSave = useCallback(
-    async (values) => {
-      await mutation.mutateAsync(values);
-    },
+    async (values) => mutation.mutateAsync(values),
     [mutation]
   );
 

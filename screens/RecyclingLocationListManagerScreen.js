@@ -207,8 +207,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   addressText: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
+    flex: 1,
     fontFamily: theme.fontFamily.body,
   },
   locationDeleteButton: {

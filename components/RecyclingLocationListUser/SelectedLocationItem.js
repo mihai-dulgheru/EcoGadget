@@ -17,7 +17,7 @@ export default function SelectedLocationItem({ item, onPress }) {
         <View style={styles.locationInfoRow}>
           <Ionicons
             name="location-outline"
-            size={22}
+            size={24}
             color={theme.colors.textSecondary}
           />
           <Text style={styles.selectedLocationAddress}>{item.address}</Text>
@@ -25,7 +25,7 @@ export default function SelectedLocationItem({ item, onPress }) {
         <View style={styles.locationInfoRow}>
           <Ionicons
             name="navigate-outline"
-            size={22}
+            size={24}
             color={theme.colors.textSecondary}
           />
           <Text style={styles.selectedLocationDistance}>{item.distance}</Text>
@@ -33,7 +33,7 @@ export default function SelectedLocationItem({ item, onPress }) {
         <View style={styles.locationInfoRow}>
           <Ionicons
             name="time-outline"
-            size={22}
+            size={24}
             color={theme.colors.textSecondary}
           />
           <RecyclingScheduleView schedule={item.schedule} />
@@ -41,7 +41,7 @@ export default function SelectedLocationItem({ item, onPress }) {
         <View style={[styles.locationInfoRow, { borderBottomWidth: 0 }]}>
           <Ionicons
             name="call-outline"
-            size={22}
+            size={24}
             color={theme.colors.textSecondary}
           />
           <Text style={styles.selectedLocationPhone}>{item.phone}</Text>
@@ -78,17 +78,18 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing[2],
   },
   selectedLocationAddress: {
-    ...theme.fontSize.md,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
+    flex: 1,
     fontFamily: theme.fontFamily.body,
   },
   selectedLocationDistance: {
-    ...theme.fontSize.md,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
   },
   selectedLocationPhone: {
-    ...theme.fontSize.md,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
   },

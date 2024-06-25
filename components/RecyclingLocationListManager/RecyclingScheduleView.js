@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     minWidth: theme.spacing[16],
   },
   text: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
   },

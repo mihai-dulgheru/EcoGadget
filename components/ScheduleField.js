@@ -17,7 +17,7 @@ const formatTime = (date) =>
   });
 
 const getDateTime = (time) => {
-  const [hours, minutes] = time.split(':').map(Number);
+  const [hours, minutes] = time?.split(':').map(Number) ?? [0, 0];
   return set(new Date(), { hours, minutes });
 };
 
@@ -26,7 +26,7 @@ export default function ScheduleField({ label, name }) {
 
   const initialValue =
     field.value === 'Closed' ? DEFAULT_TIME_RANGE : field.value;
-  const initialTimes = initialValue.split(' - ').map(convertTo24HourFormat);
+  const initialTimes = initialValue?.split(' - ').map(convertTo24HourFormat);
 
   const [startTime, setStartTime] = useState(getDateTime(initialTimes[0]));
   const [endTime, setEndTime] = useState(getDateTime(initialTimes[1]));
@@ -54,7 +54,7 @@ export default function ScheduleField({ label, name }) {
       helpers.setValue('Closed');
     } else {
       helpers.setValue(DEFAULT_TIME_RANGE);
-      const defaultTimes = DEFAULT_TIME_RANGE.split(' - ').map(
+      const defaultTimes = DEFAULT_TIME_RANGE?.split(' - ').map(
         convertTo24HourFormat
       );
       setStartTime(getDateTime(defaultTimes[0]));
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     ...global.spacingSmall,
   },
   label: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
   },

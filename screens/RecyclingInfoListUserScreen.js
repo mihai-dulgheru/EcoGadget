@@ -42,14 +42,14 @@ export default function RecyclingInfoListUserScreen({ navigation }) {
       <View key={`recycling-info-${item._id}`} style={styles.infoBlock}>
         <Image source={{ uri: item.picture.url }} style={styles.image} />
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.subtitle}>{item.subtitle}</Text>
+        <Text style={styles.secondaryText}>{item.subtitle}</Text>
         <View style={styles.row}>
           <Ionicons
             name="calendar-outline"
             size={24}
             color={theme.colors.textSecondary}
           />
-          <Text style={styles.text}>{formatDate(item.date)}</Text>
+          <Text style={styles.secondaryText}>{formatDate(item.date)}</Text>
         </View>
         <View style={styles.row}>
           <Ionicons
@@ -57,7 +57,7 @@ export default function RecyclingInfoListUserScreen({ navigation }) {
             size={24}
             color={theme.colors.textSecondary}
           />
-          <Text style={styles.text}>{item.location.name}</Text>
+          <Text style={styles.secondaryText}>{item.location.name}</Text>
         </View>
       </View>
     </Pressable>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.heading,
   },
-  subtitle: {
+  secondaryText: {
     ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
@@ -120,10 +120,5 @@ const styles = StyleSheet.create({
     ...global.spacingSmall,
     alignItems: 'center',
     flexDirection: 'row',
-  },
-  text: {
-    ...theme.fontSize.sm,
-    color: theme.colors.textSecondary,
-    fontFamily: theme.fontFamily.body,
   },
 });

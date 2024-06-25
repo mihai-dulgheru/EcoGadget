@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.fontFamily.heading,
   },
   text: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
   },

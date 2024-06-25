@@ -142,7 +142,10 @@ export default function RecyclingLocationListUserScreen({ navigation }) {
       )}
       <View style={styles.searchContainer}>
         <SearchBar
-          onBack={() => setIsSearching(false)}
+          onBack={() => {
+            setIsSearching(false);
+            setSearchText('');
+          }}
           onChangeText={setSearchText}
           onClear={() => setSearchText('')}
           onFocus={() => setIsSearching(true)}

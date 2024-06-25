@@ -1,10 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useMutation } from '@tanstack/react-query';
 import { Formik } from 'formik';
-import { useContext, useRef, useState } from 'react';
+import { useCallback, useContext, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
-import { ErrorMessage, Field } from '../components/Formik';
-import { Button, CustomAlert } from '../components/UI';
+import { Debug, ErrorMessage, Field } from '../components/Formik';
+import { Button, CustomAlert, Loading } from '../components/UI';
+import AccountService from '../services/AccountService';
 import { AuthContext } from '../store/AuthContext';
 import global from '../styles/global';
 import theme from '../styles/theme';
@@ -22,7 +24,37 @@ const validationSchema = Yup.object().shape({
     .required('Confirmarea parolei este obligatorie'),
 });
 
-export default function ResetPasswordScreen({ navigation }) {
+const showAlert = (
+  setAlertProps,
+  setAlertVisible,
+  title,
+  message,
+  confirmText,
+  onConfirm
+) => {
+  setAlertProps({
+    title,
+    message,
+    confirmText,
+    onConfirm,
+  });
+  setAlertVisible(true);
+};
+
+const handleMutationError = (setAlertProps, setAlertVisible, error) => {
+  showAlert(
+    setAlertProps,
+    setAlertVisible,
+    'Eroare',
+    error.message || 'A apărut o eroare',
+    'OK',
+    () => {
+      setAlertVisible(false);
+    }
+  );
+};
+
+export default function ResetPasswordScreen({ navigation, route }) {
   const auth = useContext(AuthContext);
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
@@ -33,29 +65,26 @@ export default function ResetPasswordScreen({ navigation }) {
   };
 
   const initialValues = {
+    ...route.params,
     password: '',
     confirmPassword: '',
   };
 
-  const showAlert = (title, message, confirmText, onConfirm) => {
-    setAlertProps({
-      title,
-      message,
-      confirmText,
-      onConfirm,
-    });
-    setAlertVisible(true);
-  };
+  const mutation = useMutation({
+    mutationFn: async (values) => AccountService.resetPassword(values),
+    onSuccess: (data) => auth.authenticate(data),
+    onError: (error) =>
+      handleMutationError(setAlertProps, setAlertVisible, error),
+  });
 
-  const handleFormSubmit = async (values) => {
-    try {
-      // Logică pentru resetarea parolei
-      await auth.authenticate(); // Autentifică utilizatorul după resetare
-      navigation.navigate('Home'); // Redirecționează la ecranul principal sau la ecranul de autentificare
-    } catch (error) {
-      showAlert('Eroare', error.message, 'OK', () => setAlertVisible(false));
-    }
-  };
+  const handleFormSubmit = useCallback(
+    async (values) => mutation.mutateAsync(values),
+    [auth, mutation]
+  );
+
+  if (mutation.isPending) {
+    return <Loading />;
+  }
 
   return (
     <Formik
@@ -115,6 +144,7 @@ export default function ResetPasswordScreen({ navigation }) {
           <View style={styles.buttonContainer}>
             <Button title="Resetare" onPress={props.handleSubmit} />
           </View>
+          <Debug formikProps={props} />
           <CustomAlert visible={alertVisible} {...alertProps} />
         </ScrollView>
       )}

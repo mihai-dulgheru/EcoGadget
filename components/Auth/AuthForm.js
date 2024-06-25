@@ -52,11 +52,11 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
 
   const initialValues = {
     isSigningIn,
-    lastName: 'Dulgheru',
-    firstName: 'Mihai-Nicolae',
-    email: 'dulgherumihai19@stud.ase.ro',
-    phone: '0757949057',
-    password: 'Parola123!',
+    lastName: '',
+    firstName: '',
+    email: '',
+    phone: '',
+    password: '',
   };
 
   const showAlert = (
@@ -135,7 +135,7 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
               blurOnSubmit={false}
               formikProps={props}
               keyboardType="email-address"
-              label="Adresă email"
+              label="Adresă de email"
               name="email"
               onSubmitEditing={() => {
                 if (!isSigningIn) {
@@ -144,7 +144,7 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
                   inputRefs.password.current.focus();
                 }
               }}
-              placeholder="Adresă email"
+              placeholder="Adresă de email"
               ref={inputRefs.email}
               returnKeyType="next"
             />
@@ -182,7 +182,7 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
           </View>
           <View style={styles.buttonContainer}>
             <Button
-              title={isSigningIn ? 'Autentificare' : 'Înregistrare'}
+              title={isSigningIn ? 'Autentifică-te' : 'Înregistrează-te'}
               onPress={props.handleSubmit}
             />
           </View>

@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing[2],
   },
   label: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
     marginBottom: theme.spacing[1],
