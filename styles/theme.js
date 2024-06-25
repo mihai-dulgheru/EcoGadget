@@ -90,7 +90,7 @@ const theme = {
     95: 0.95,
     100: 1,
     default: 1,
-    pressed: 0.2,
+    pressed: 0.8,
   },
   shadow: {
     sm: {

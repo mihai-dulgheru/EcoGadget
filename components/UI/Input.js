@@ -62,7 +62,7 @@ export default Input;
 
 const styles = StyleSheet.create({
   label: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
     marginBottom: theme.spacing[1],

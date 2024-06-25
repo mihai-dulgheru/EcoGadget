@@ -282,7 +282,6 @@ export default function ApplianceEditUserScreen({ navigation, route }) {
           <MaterialCompositionField
             formikProps={props}
             inputRefs={inputRefs.materialComposition}
-            styles={styles}
           />
           <View style={styles.buttonContainer}>
             <Button

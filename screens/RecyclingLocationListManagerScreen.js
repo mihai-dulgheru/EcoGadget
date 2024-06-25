@@ -138,7 +138,7 @@ export default function RecyclingLocationListManagerScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={global.flex1}>
       <View style={styles.addButton}>
         <IconButton
           color="white"
@@ -166,9 +166,6 @@ export default function RecyclingLocationListManagerScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   addButton: {
     alignItems: 'center',
     backgroundColor: theme.colors.primary,

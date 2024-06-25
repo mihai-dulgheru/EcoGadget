@@ -38,6 +38,15 @@ const global = StyleSheet.create({
   fontBold: { fontWeight: '700' },
   fontExtraBold: { fontWeight: '800' },
   fontBlack: { fontWeight: '900' },
+  // Justify Content
+  justifyNormal: { justifyContent: 'normal' },
+  justifyStart: { justifyContent: 'flex-start' },
+  justifyEnd: { justifyContent: 'flex-end' },
+  justifyCenter: { justifyContent: 'center' },
+  justifyBetween: { justifyContent: 'space-between' },
+  justifyAround: { justifyContent: 'space-around' },
+  justifyEvenly: { justifyContent: 'space-evenly' },
+  justifyStretch: { justifyContent: 'stretch' },
   // Text Transform
   uppercase: { textTransform: 'uppercase' },
   lowercase: { textTransform: 'lowercase' },

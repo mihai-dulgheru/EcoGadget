@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
 import { useCallback, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
 import { Button, CustomAlert, Loading } from '../components/UI';
@@ -115,10 +115,16 @@ export default function AccountUpdateNameUserScreen({ navigation, route }) {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.heading}>Actualizare nume</Text>
       <View style={global.spacingMedium}>
-        <Text style={styles.formDescription}>Formular de actualizare nume</Text>
+        <Text style={styles.formDescription}>
+          Folosește formularul de mai jos pentru a-ți actualiza numele.
+        </Text>
         <Formik
           initialValues={initialValues(personalInfo)}
           onSubmit={handleSubmit}
@@ -153,7 +159,7 @@ export default function AccountUpdateNameUserScreen({ navigation, route }) {
                 <Button
                   disabled={mutation.isPending}
                   onPress={props.handleSubmit}
-                  title="Actualizare"
+                  title="Actualizează"
                 />
               </View>
               <Debug formikProps={props} />
@@ -162,15 +168,16 @@ export default function AccountUpdateNameUserScreen({ navigation, route }) {
         </Formik>
       </View>
       <CustomAlert visible={alertVisible} {...alertProps} />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    ...global.spacingLarge,
     backgroundColor: theme.colors.backgroundPrimary,
-    flex: 1,
+  },
+  contentContainer: {
+    ...global.spacingSmall,
     padding: theme.spacing[4],
   },
   heading: {
@@ -182,6 +189,7 @@ const styles = StyleSheet.create({
     ...theme.fontSize.lg,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
+    marginBottom: theme.spacing[2],
   },
   buttonContainer: {
     marginTop: theme.spacing[4],

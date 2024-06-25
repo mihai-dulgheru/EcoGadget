@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik } from 'formik';
 import { useCallback, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as Yup from 'yup';
 import { Debug, ErrorMessage, Field } from '../components/Formik';
 import { Button, CustomAlert, Loading } from '../components/UI';
@@ -118,10 +118,16 @@ export default function AccountChangePasswordUserScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      keyboardShouldPersistTaps="handled"
+    >
       <Text style={styles.heading}>Schimbare parolă</Text>
       <View style={global.spacingMedium}>
-        <Text style={styles.formDescription}>Formular de schimbare parolă</Text>
+        <Text style={styles.formDescription}>
+          Introdu o nouă parolă pentru contul tău.
+        </Text>
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
@@ -140,7 +146,7 @@ export default function AccountChangePasswordUserScreen({ navigation }) {
                   onSubmitEditing={() =>
                     inputRefs.confirmPassword.current.focus()
                   }
-                  placeholder="Parolă"
+                  placeholder="Introdu parola"
                   ref={inputRefs.password}
                   returnKeyType="next"
                   secure
@@ -155,7 +161,7 @@ export default function AccountChangePasswordUserScreen({ navigation }) {
                   formikProps={props}
                   label="Confirmare parolă"
                   name="confirmPassword"
-                  placeholder="Confirmare parolă"
+                  placeholder="Introdu parola din nou"
                   ref={inputRefs.confirmPassword}
                   secure
                   textContentType="newPassword"
@@ -175,15 +181,16 @@ export default function AccountChangePasswordUserScreen({ navigation }) {
         </Formik>
       </View>
       <CustomAlert visible={alertVisible} {...alertProps} />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    ...global.spacingLarge,
     backgroundColor: theme.colors.backgroundPrimary,
-    flex: 1,
+  },
+  contentContainer: {
+    ...global.spacingSmall,
     padding: theme.spacing[4],
   },
   heading: {
@@ -195,6 +202,7 @@ const styles = StyleSheet.create({
     ...theme.fontSize.lg,
     color: theme.colors.textSecondary,
     fontFamily: theme.fontFamily.body,
+    marginBottom: theme.spacing[2],
   },
   buttonContainer: {
     marginTop: theme.spacing[4],

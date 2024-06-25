@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
 import markerIcon from '../assets/location-dot.png';
 import { DEFAULT_LATITUDE, DEFAULT_LONGITUDE } from '../constants';
+import global from '../styles/global';
 import theme from '../styles/theme';
 
 function CustomMarker({ isSelected }) {
@@ -42,7 +43,7 @@ const MapScreen = forwardRef(
         bottomSheetRef.current?.snapToIndex(0);
       }}
       ref={ref}
-      style={styles.map}
+      style={global.flex1}
     >
       {locations.map((location) => (
         <Marker
@@ -70,9 +71,6 @@ const MapScreen = forwardRef(
 );
 
 const styles = StyleSheet.create({
-  map: {
-    flex: 1,
-  },
   callout: {
     padding: theme.spacing[2],
     width: theme.spacing[48],

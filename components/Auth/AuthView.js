@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
-import { Image, ScrollView, StyleSheet } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import global from '../../styles/global';
 import theme from '../../styles/theme';
 import { FlatButton } from '../UI';
@@ -21,22 +21,37 @@ function AuthView({ authType = 'signIn', onAuthenticate }) {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={styles.contentContainer}
+      contentContainerStyle={[
+        styles.contentContainer,
+        isSigningIn
+          ? { ...global.justifyBetween, ...global.spacingXLarge }
+          : global.justifyCenter,
+      ]}
       keyboardShouldPersistTaps="handled"
     >
-      <Image
-        style={styles.image}
-        source={require('../../assets/images/logo-primary.png')}
-      />
-      <AuthForm
-        isSigningIn={isSigningIn}
-        onSubmit={(credentials) => onAuthenticate(credentials)}
-      />
-      <FlatButton
-        extraStyles={{ buttonText: styles.buttonText }}
-        onPress={() => switchAuthModeHandler()}
-        title={isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
-      />
+      <View style={[global.flex1, global.justifyCenter]}>
+        <Image
+          style={styles.image}
+          source={require('../../assets/images/logo-primary.png')}
+        />
+        <View style={global.spacingSmall}>
+          <AuthForm
+            isSigningIn={isSigningIn}
+            onSubmit={(credentials) => onAuthenticate(credentials)}
+          />
+          <FlatButton
+            extraStyles={{ buttonText: styles.buttonText }}
+            onPress={() => switchAuthModeHandler()}
+            title={isSigningIn ? 'Creează un cont nou' : 'Autentifică-te'}
+          />
+        </View>
+      </View>
+      {isSigningIn && (
+        <FlatButton
+          onPress={() => navigation.navigate('ForgotPassword')}
+          title="Ai uitat parola?"
+        />
+      )}
     </ScrollView>
   );
 }
@@ -51,7 +66,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     ...global.spacingSmall,
     flexGrow: 1,
-    justifyContent: 'center',
     padding: theme.spacing[4],
   },
   image: {
@@ -60,7 +74,7 @@ const styles = StyleSheet.create({
     width: theme.spacing[32],
   },
   buttonText: {
-    ...theme.fontSize.sm,
+    ...theme.fontSize.base,
     color: theme.colors.textSecondary,
   },
 });

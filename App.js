@@ -8,13 +8,14 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppState } from './hooks/useAppState';
 import { useOnlineManager } from './hooks/useOnlineManager';
 import { RoleBasedNavigation } from './navigation';
 import AuthContextProvider, { AuthContext } from './store/AuthContext';
+import global from './styles/global';
 import AsyncStorage from './utils/AsyncStorage';
 
 SplashScreen.preventAutoHideAsync();
@@ -55,7 +56,7 @@ function Root() {
   }
 
   return (
-    <View style={styles.flexContainer} onLayout={onLayoutRootView}>
+    <View style={global.flex1} onLayout={onLayoutRootView}>
       <RoleBasedNavigation />
     </View>
   );
@@ -77,9 +78,9 @@ export default function App() {
   useReactQueryDevTools(queryClient);
 
   return (
-    <GestureHandlerRootView style={styles.flexContainer}>
+    <GestureHandlerRootView style={global.flex1}>
       <QueryClientProvider client={queryClient}>
-        <SafeAreaView style={styles.flexContainer}>
+        <SafeAreaView style={global.flex1}>
           <StatusBar style="auto" />
           <AuthContextProvider>
             <Root />
@@ -89,9 +90,3 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  flexContainer: {
-    flex: 1,
-  },
-});

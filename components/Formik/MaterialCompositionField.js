@@ -1,13 +1,10 @@
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import global from '../../styles/global';
+import theme from '../../styles/theme';
 import ErrorMessage from './ErrorMessage';
 import Field from './Field';
 
-export default function MaterialCompositionField({
-  formikProps,
-  inputRefs,
-  styles,
-}) {
+export default function MaterialCompositionField({ formikProps, inputRefs }) {
   const handleBlur = (field) => {
     const { setFieldTouched, setFieldValue, values } = formikProps;
     const metal = parseFloat(values.materialComposition.metal || 0);
@@ -47,7 +44,7 @@ export default function MaterialCompositionField({
 
   return (
     <View style={global.spacingSmall}>
-      <Text style={styles.header}>Compoziția materialului (%)</Text>
+      <Text style={styles.heading}>Compoziția materialului (%)</Text>
       <View>
         <Field
           blurOnSubmit={false}
@@ -94,3 +91,11 @@ export default function MaterialCompositionField({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  heading: {
+    ...theme.fontSize.lg,
+    color: theme.colors.textPrimary,
+    fontFamily: theme.fontFamily.heading,
+  },
+});

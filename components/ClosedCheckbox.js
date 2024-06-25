@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
+    // TODO: Înlocuiește `...theme.fontSize.sm,` cu `...theme.fontSize.base,` în toate fișierele
     ...theme.fontSize.sm,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,

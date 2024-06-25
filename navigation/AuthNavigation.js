@@ -1,6 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext } from 'react';
-import { SignInScreen, SignUpScreen } from '../screens';
+import {
+  ConfirmCodeScreen,
+  ForgotPasswordScreen,
+  ResetPasswordScreen,
+  SignInScreen,
+  SignUpScreen,
+} from '../screens';
 import { AuthContext } from '../store/AuthContext';
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +31,21 @@ export default function AuthNavigation() {
           animationTypeForReplace: !auth.isSignedIn ? 'pop' : 'push',
           headerShown: false,
         }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ConfirmCode"
+        component={ConfirmCodeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPasswordScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

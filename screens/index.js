@@ -7,6 +7,8 @@ export { default as AccountUpdateNameUserScreen } from './AccountUpdateNameUserS
 export { default as ApplianceEditUserScreen } from './ApplianceEditUserScreen';
 export { default as ApplianceListUserScreen } from './ApplianceListUserScreen';
 export { default as ApplianceStatisticsUserScreen } from './ApplianceStatisticsUserScreen';
+export { default as ConfirmCodeScreen } from './ConfirmCodeScreen';
+export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as HomeScreen } from './HomeScreen';
 export { default as InfoScreen } from './InfoScreen';
 export { default as MessageDetailManagerScreen } from './MessageDetailManagerScreen';
@@ -18,5 +20,6 @@ export { default as RecyclingLocationEditManagerScreen } from './RecyclingLocati
 export { default as RecyclingLocationListManagerScreen } from './RecyclingLocationListManagerScreen';
 export { default as RecyclingLocationListUserScreen } from './RecyclingLocationListUserScreen';
 export { default as RecyclingOverviewManagerScreen } from './RecyclingOverviewManagerScreen';
+export { default as ResetPasswordScreen } from './ResetPasswordScreen';
 export { default as SignInScreen } from './SignInScreen';
 export { default as SignUpScreen } from './SignUpScreen';

@@ -1,7 +1,9 @@
 import { useContext, useState } from 'react';
+import { View } from 'react-native';
 import { AuthView } from '../components/Auth';
 import { CustomAlert, LoadingOverlay } from '../components/UI';
 import { AuthContext } from '../store/AuthContext';
+import global from '../styles/global';
 import { signUp } from '../utils/Auth';
 
 export default function SignUpScreen() {
@@ -38,12 +40,12 @@ export default function SignUpScreen() {
   }
 
   return (
-    <>
+    <View style={global.flex1}>
       <AuthView
         authType="signUp"
         onAuthenticate={(credentials) => handleSignUp(credentials)}
       />
       <CustomAlert visible={alertVisible} {...alertProps} />
-    </>
+    </View>
   );
 }
