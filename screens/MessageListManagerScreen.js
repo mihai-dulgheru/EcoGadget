@@ -61,7 +61,11 @@ export default function MessageListManagerScreen({ navigation }) {
     ({ item }) => (
       <Pressable onPress={() => handleViewDetails(item)}>
         <View style={[styles.messageItem, !item.read && styles.unreadMessage]}>
-          <Text style={styles.messageName}>{item.name}</Text>
+          <Text
+            style={[styles.messageName, !item.read && styles.unreadMessageName]}
+          >
+            {item.name}
+          </Text>
           <Text style={styles.messageEmail}>{item.email}</Text>
           <Text style={styles.messageText} numberOfLines={3}>
             {item.message}
@@ -134,6 +138,9 @@ const styles = StyleSheet.create({
     ...theme.fontSize.xl,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
+  },
+  unreadMessageName: {
+    fontFamily: theme.fontFamily.heading,
   },
   messageEmail: {
     ...theme.fontSize.base,

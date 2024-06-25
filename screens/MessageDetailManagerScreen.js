@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    ...global.spacingMedium,
+    ...global.spacingSmall,
     padding: theme.spacing[4],
   },
   detailContainer: {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   label: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
-    fontFamily: theme.fontFamily.body,
+    fontFamily: theme.fontFamily.heading,
     marginBottom: theme.spacing[1],
   },
   text: {
