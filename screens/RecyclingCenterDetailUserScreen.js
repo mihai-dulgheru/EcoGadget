@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { ContactForm } from '../components/Forms';
 import { Button } from '../components/UI';
 import { WEEKDAY_TRANSLATIONS } from '../constants';
@@ -41,17 +41,18 @@ export default function RecyclingCenterDetailUserScreen({ route }) {
     >
       <View style={styles.mapContainer}>
         <MapView
-          style={styles.map}
           initialRegion={{
             latitude: center.latitude,
             longitude: center.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-          scrollEnabled={false}
-          zoomEnabled={false}
-          rotateEnabled={false}
-          pitchEnabled={false}
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          // pitchEnabled={false}
+          // rotateEnabled={false}
+          // scrollEnabled={false}
+          // zoomEnabled={false}
         >
           <Marker
             coordinate={{
