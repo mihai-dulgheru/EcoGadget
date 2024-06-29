@@ -65,8 +65,8 @@ const handleMutationSuccess = (
     'OK',
     async () => {
       setAlertVisible(false);
-      await queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
       navigation.goBack();
+      await queryClient.invalidateQueries(['accountInfo', 'personalInfo']);
     }
   );
 };

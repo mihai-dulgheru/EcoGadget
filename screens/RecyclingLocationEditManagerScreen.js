@@ -54,13 +54,13 @@ const defaultLocation = {
   phone: '',
   description: '',
   schedule: {
-    monday: '',
-    tuesday: '',
-    wednesday: '',
-    thursday: '',
-    friday: '',
-    saturday: '',
-    sunday: '',
+    monday: '8:00 AM - 4:00 PM',
+    tuesday: '8:00 AM - 4:00 PM',
+    wednesday: '8:00 AM - 4:00 PM',
+    thursday: '8:00 AM - 4:00 PM',
+    friday: '8:00 AM - 4:00 PM',
+    saturday: 'Closed',
+    sunday: 'Closed',
   },
   company: '',
   cui: '',
@@ -134,8 +134,8 @@ export default function RecyclingLocationEditManagerScreen({
         'OK',
         async () => {
           setAlertVisible(false);
-          await queryClient.invalidateQueries(['locations']);
           navigation.goBack();
+          await queryClient.invalidateQueries(['locations']);
         }
       );
     },
@@ -192,11 +192,21 @@ export default function RecyclingLocationEditManagerScreen({
               <ErrorMessage name="name" />
             </View>
             <View>
-              <Field
+              <LocationPicker
                 blurOnSubmit={false}
                 formikProps={props}
+                initialAddress={props.values.address}
+                initialLatitude={props.values.latitude}
+                initialLongitude={props.values.longitude}
                 label="Adresă"
                 name="address"
+                onAddressChange={(address) => {
+                  props.setFieldValue('address', address);
+                }}
+                onLocationPicked={(lat, lng) => {
+                  props.setFieldValue('latitude', lat);
+                  props.setFieldValue('longitude', lng);
+                }}
                 onSubmitEditing={() => inputRefs.phone.current.focus()}
                 placeholder="Introduceți adresa locației"
                 ref={inputRefs.address}
@@ -204,16 +214,6 @@ export default function RecyclingLocationEditManagerScreen({
               />
               <ErrorMessage name="address" />
             </View>
-            <LocationPicker
-              initialLatitude={props.values.latitude}
-              initialLongitude={props.values.longitude}
-              address={props.values.address}
-              onLocationPicked={(lat, lng) => {
-                props.setFieldValue('latitude', lat);
-                props.setFieldValue('longitude', lng);
-              }}
-              style={styles.map}
-            />
             <View>
               <Field
                 blurOnSubmit={false}
@@ -320,10 +320,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: theme.spacing[4],
-  },
-  map: {
-    height: theme.spacing[80],
-    width: '100%',
   },
   scheduleContainer: {
     ...global.spacingMedium,
