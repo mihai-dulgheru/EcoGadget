@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { Input } from '../UI';
 
 const Field = forwardRef(({ formikProps, name, ...props }, ref) => {
-  const value = get(formikProps.values, name).toString();
+  const value = get(formikProps.values, name)?.toString() || '';
   const error = get(formikProps.errors, name);
   const touched = get(formikProps.touched, name);
 

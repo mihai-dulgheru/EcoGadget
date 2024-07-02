@@ -50,7 +50,7 @@ export default function MessageListManagerScreen({ navigation }) {
   const handleViewDetails = useCallback(
     async (message) => {
       if (!message.read) {
-        markAsReadMutation.mutate(message._id);
+        markAsReadMutation.mutateAsync(message._id);
       }
       navigation.navigate('MessageDetailManager', { message });
     },

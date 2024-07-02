@@ -1,5 +1,5 @@
 import { ResizeMode, Video } from 'expo-av';
-import * as React from 'react';
+import { useRef } from 'react';
 import { Image, Linking, StyleSheet, Text, View } from 'react-native';
 import global from '../../styles/global';
 import theme from '../../styles/theme';
@@ -7,7 +7,7 @@ import FAQList from './FAQList';
 import SocialLinks from './SocialLinks';
 
 export default function Section({ section }) {
-  const video = React.useRef(null);
+  const video = useRef(null);
 
   return (
     <View style={styles.container}>

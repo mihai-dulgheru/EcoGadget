@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { useState } from 'react';
 
 export function useRefreshByUser(refetch) {
-  const [isRefetchingByUser, setIsRefetchingByUser] = React.useState(false);
+  const [isRefetchingByUser, setIsRefetchingByUser] = useState(false);
 
   async function refetchByUser() {
     setIsRefetchingByUser(true);

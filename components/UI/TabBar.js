@@ -47,6 +47,14 @@ export default function TabBar({ state, descriptors, navigation }) {
         return isFocused ? 'power' : 'power-outline';
       case 'UserAccount':
         return isFocused ? 'person' : 'person-outline';
+      case 'RecyclingInfoListAdmin':
+        return isFocused ? 'information-circle' : 'information-circle-outline';
+      case 'UsersAdmin':
+        return isFocused ? 'people' : 'people-outline';
+      case 'RecyclingManagersAdmin':
+        return isFocused ? 'briefcase' : 'briefcase-outline';
+      case 'AddUserAdmin':
+        return isFocused ? 'person-add' : 'person-add-outline';
       default:
         return '';
     }

@@ -31,37 +31,43 @@ export default function RecyclingInfoListUserScreen({ navigation }) {
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
   useRefreshOnFocus(refetch);
 
-  const renderRecyclingInfo = ({ item }) => (
-    <Pressable
-      onPress={() => {
-        navigation.navigate('RecyclingInfoDetailUser', {
-          recyclingInfo: item,
-        });
-      }}
-    >
-      <View key={`recycling-info-${item._id}`} style={styles.infoBlock}>
-        <Image source={{ uri: item.picture.url }} style={styles.image} />
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.secondaryText}>{item.subtitle}</Text>
-        <View style={styles.row}>
-          <Ionicons
-            name="calendar-outline"
-            size={24}
-            color={theme.colors.textSecondary}
-          />
-          <Text style={styles.secondaryText}>{formatDate(item.date)}</Text>
+  const renderRecyclingInfo = ({ item }) => {
+    const source = item.picture?.url
+      ? { uri: item.picture?.url }
+      : require('../assets/images/placeholder.jpg');
+
+    return (
+      <Pressable
+        onPress={() => {
+          navigation.navigate('RecyclingInfoDetailUser', {
+            recyclingInfo: item,
+          });
+        }}
+      >
+        <View key={`recycling-info-${item._id}`} style={styles.infoBlock}>
+          <Image source={source} style={styles.image} />
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.secondaryText}>{item.subtitle}</Text>
+          <View style={styles.row}>
+            <Ionicons
+              name="calendar-outline"
+              size={24}
+              color={theme.colors.textSecondary}
+            />
+            <Text style={styles.secondaryText}>{formatDate(item.date)}</Text>
+          </View>
+          <View style={styles.row}>
+            <Ionicons
+              name="location-outline"
+              size={24}
+              color={theme.colors.textSecondary}
+            />
+            <Text style={styles.secondaryText}>{item.location.name}</Text>
+          </View>
         </View>
-        <View style={styles.row}>
-          <Ionicons
-            name="location-outline"
-            size={24}
-            color={theme.colors.textSecondary}
-          />
-          <Text style={styles.secondaryText}>{item.location.name}</Text>
-        </View>
-      </View>
-    </Pressable>
-  );
+      </Pressable>
+    );
+  };
 
   if (isPending) {
     return <Loading />;
