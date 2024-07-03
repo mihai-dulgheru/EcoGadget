@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { isEmpty } from 'lodash';
 import { Header, TabBar } from '../components/UI';
 import {
   AddUserAdminScreen,
   EditUserAdminScreen,
+  RecyclingInfoEditAdminScreen,
   RecyclingInfoListAdminScreen,
   RecyclingManagersAdminScreen,
   UsersAdminScreen,
@@ -80,6 +82,16 @@ export default function AdminNavigator() {
             route.params?.user?.role === 'recycling_manager'
               ? 'Editare manager'
               : 'Editare utilizator',
+        })}
+      />
+      <Stack.Screen
+        name="RecyclingInfoEditAdmin"
+        component={RecyclingInfoEditAdminScreen}
+        options={({ route }) => ({
+          title:
+            route.params?.info && !isEmpty(route.params.info)
+              ? 'Editare'
+              : 'Adăugare',
         })}
       />
     </Stack.Navigator>

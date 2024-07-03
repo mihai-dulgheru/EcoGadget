@@ -17,6 +17,7 @@ export { default as MessageDetailManagerScreen } from './MessageDetailManagerScr
 export { default as MessageListManagerScreen } from './MessageListManagerScreen';
 export { default as RecyclingCenterDetailUserScreen } from './RecyclingCenterDetailUserScreen';
 export { default as RecyclingInfoDetailUserScreen } from './RecyclingInfoDetailUserScreen';
+export { default as RecyclingInfoEditAdminScreen } from './RecyclingInfoEditAdminScreen';
 export { default as RecyclingInfoListAdminScreen } from './RecyclingInfoListAdminScreen';
 export { default as RecyclingInfoListUserScreen } from './RecyclingInfoListUserScreen';
 export { default as RecyclingLocationEditManagerScreen } from './RecyclingLocationEditManagerScreen';

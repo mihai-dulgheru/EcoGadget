@@ -18,14 +18,14 @@ export default function Select({
           selectedValue={selectedValue}
           onValueChange={onValueChange}
           style={styles.picker}
-          itemStyle={styles.pickerItem}
+          itemStyle={styles.itemStyle}
         >
           {items.map((item) => (
             <Picker.Item
               key={item.value}
               label={item.label}
               value={item.value}
-              style={styles.pickerItem}
+              style={styles.itemStyle}
             />
           ))}
         </Picker>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   picker: {
     color: theme.colors.textPrimary,
   },
-  pickerItem: {
+  itemStyle: {
     ...theme.fontSize.base,
     color: theme.colors.textPrimary,
     fontFamily: theme.fontFamily.body,
