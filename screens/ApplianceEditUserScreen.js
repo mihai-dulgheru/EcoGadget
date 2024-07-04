@@ -14,11 +14,7 @@ import ApplianceService from '../services/ApplianceService';
 import global from '../styles/global';
 import theme from '../styles/theme';
 import { useAxiosAuth } from '../utils/Axios';
-import {
-  DisposalOptions,
-  DisposalOptionsTranslations,
-  EfficiencyRatings,
-} from '../utils/Enums';
+import { DisposalOptions, EfficiencyRatings } from '../utils/Enums';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Numele este obligatoriu'),
@@ -239,7 +235,7 @@ export default function ApplianceEditUserScreen({ navigation, route }) {
               />
               <ErrorMessage name="expectedLifespan" />
             </View>
-            <View>
+            {/* <View>
               <Select
                 label="Opțiuni de eliminare"
                 selectedValue={props.values.disposalOptions}
@@ -256,7 +252,7 @@ export default function ApplianceEditUserScreen({ navigation, route }) {
                   !!props.errors.disposalOptions
                 }
               />
-            </View>
+            </View> */}
             <View>
               <Select
                 label="Rating de eficiență"
