@@ -52,11 +52,11 @@ export default function AuthForm({ debug = false, isSigningIn, onSubmit }) {
 
   const initialValues = {
     isSigningIn,
-    lastName: '',
-    firstName: '',
-    email: '',
-    phone: '',
-    password: '',
+    lastName: 'Dulgheru',
+    firstName: 'Mihai-Nicolae',
+    email: 'mihai.dulgheru18@gmail.com',
+    phone: '0757949057',
+    password: 'Parola123!',
   };
 
   const showAlert = (

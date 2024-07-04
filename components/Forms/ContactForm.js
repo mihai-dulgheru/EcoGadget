@@ -23,7 +23,7 @@ export default function ContactForm({ debug = false, locationId }) {
   const auth = useContext(AuthContext);
 
   const initialValues = {
-    name: '',
+    name: 'Mihai-Nicolae Dulgheru',
     email: auth.user?.email || '',
     message: '',
   };

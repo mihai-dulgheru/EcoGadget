@@ -15,11 +15,7 @@ import {
   ImagePicker,
   LoadingOverlay,
 } from '../components/UI';
-import {
-  DEFAULT_LATITUDE,
-  DEFAULT_LONGITUDE,
-  RIPPLE_CONFIG,
-} from '../constants';
+import { RIPPLE_CONFIG } from '../constants';
 import RecyclingInfoService from '../services/RecyclingInfoService';
 import global from '../styles/global';
 import theme from '../styles/theme';
@@ -39,82 +35,31 @@ const validationSchema = Yup.object().shape({
   sections: Yup.array().of(
     Yup.object().shape({
       type: Yup.string().required('Tipul secțiunii este obligatoriu'),
-      // heading: Yup.string().when('type', {
-      //   is: 'heading',
-      //   then: Yup.string().required('Titlul secțiunii este obligatoriu'),
-      // }),
-      // content: Yup.string().when('type', {
-      //   is: 'content',
-      //   then: Yup.string().required('Conținutul secțiunii este obligatoriu'),
-      // }),
-      // contact: Yup.object().shape({
-      //   address: Yup.string().when('type', {
-      //     is: 'contact',
-      //     then: Yup.string().required('Adresa este obligatorie'),
-      //   }),
-      //   email: Yup.string().when('type', {
-      //     is: 'contact',
-      //     then: Yup.string()
-      //       .email('Adresa de email nu este validă')
-      //       .required('Email-ul este obligatoriu'),
-      //   }),
-      //   phone: Yup.string().when('type', {
-      //     is: 'contact',
-      //     then: Yup.string()
-      //       .matches(/^[0-9]+$/, 'Telefonul trebuie să conțină doar cifre')
-      //       .min(10, 'Telefonul trebuie să aibă cel puțin 10 cifre')
-      //       .required('Telefonul este obligatoriu'),
-      //   }),
-      // }),
+      heading: Yup.string(),
+      content: Yup.string(),
+      contact: Yup.object().shape({
+        address: Yup.string(),
+        email: Yup.string().email('Adresa de email nu este validă'),
+        phone: Yup.string()
+          .matches(/^[0-9]+$/, 'Telefonul trebuie să conțină doar cifre')
+          .min(10, 'Telefonul trebuie să aibă cel puțin 10 cifre'),
+      }),
     })
   ),
 });
 
-// const defaultInfo = {
-//   title: '',
-//   subtitle: '',
-//   picture: '',
-//   tags: '',
-//   date: new Date(),
-//   location: {
-//     name: '',
-//     longitude: '',
-//     latitude: '',
-//   },
-//   sections: [],
-// };
 const defaultInfo = {
-  title: 'Titlu',
-  subtitle: 'Subtitlu',
+  title: '',
+  subtitle: '',
   picture: '',
-  tags: 'tag1, tag2, tag3',
+  tags: '',
   date: new Date(),
   location: {
-    name: 'Locație',
-    longitude: DEFAULT_LONGITUDE,
-    latitude: DEFAULT_LATITUDE,
+    name: '',
+    longitude: '',
+    latitude: '',
   },
-  sections: [
-    {
-      _id: uuidv4(),
-      type: 'heading',
-      heading: 'Secțiune 1',
-    },
-    {
-      _id: uuidv4(),
-      type: 'content',
-      content: 'Conținut secțiune 1',
-    },
-    {
-      _id: uuidv4(),
-      type: 'contact',
-      contact: {
-        address: 'Adresa',
-        email: 'test@example.com',
-        phone: '0123456789',
-      },
-    },
-  ],
+  sections: [],
 };
 
 const sectionTypes = [
@@ -448,7 +393,7 @@ export default function RecyclingInfoEditAdminScreen({ navigation, route }) {
             <Button title="Salvează informația" onPress={props.handleSubmit} />
           </View>
           <CustomAlert visible={alertVisible} {...alertProps} />
-          <Debug debug formikProps={props} />
+          <Debug formikProps={props} />
         </ScrollView>
       )}
     </Formik>

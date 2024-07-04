@@ -33,14 +33,13 @@ const validationSchema = Yup.object().shape({
     .required('Parola este obligatorie'),
 });
 
-// TODO: Add default values for the form
 const initialValues = {
   role: 'user',
-  lastName: '',
-  firstName: '',
-  email: '',
-  phone: '',
-  password: '',
+  lastName: 'Dulgheru',
+  firstName: 'Mihai-Nicolae',
+  email: 'dulgherumihai19@stud.ase.ro',
+  phone: '0757949057',
+  password: 'Parola123!',
 };
 
 export default function AddUserAdminScreen({ navigation }) {

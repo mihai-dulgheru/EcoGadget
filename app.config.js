@@ -29,10 +29,8 @@ export default {
   web: {
     favicon: './assets/favicon.png',
   },
-  extra: {
-    supportsRTL: true,
-  },
   plugins: [
+    'expo-font',
     'expo-localization',
     [
       'expo-image-picker',
@@ -46,4 +44,10 @@ export default {
       },
     ],
   ],
+  extra: {
+    supportsRTL: true,
+    eas: {
+      projectId: 'f0983e40-d80d-4904-b250-b10907799001',
+    },
+  },
 };

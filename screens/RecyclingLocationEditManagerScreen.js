@@ -48,25 +48,26 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultLocation = {
-  name: '',
-  address: '',
+  name: 'Feronat Reciclare',
+  address: 'Bulevardul Lacul Tei 69 a, București 020373',
   image: '',
-  phone: '',
-  description: '',
+  phone: '0371197032',
+  description:
+    'Un mod mai simplu să reciclezi materiale precum metal, sticlă, plastic și hârtie, totodată deșeurile tehnice și componentele.',
   schedule: {
-    monday: '8:00 AM - 4:00 PM',
-    tuesday: '8:00 AM - 4:00 PM',
-    wednesday: '8:00 AM - 4:00 PM',
-    thursday: '8:00 AM - 4:00 PM',
-    friday: '8:00 AM - 4:00 PM',
+    monday: '9:00 AM - 5:00 PM',
+    tuesday: '9:00 AM - 5:00 PM',
+    wednesday: '9:00 AM - 5:00 PM',
+    thursday: '9:00 AM - 5:00 PM',
+    friday: '9:00 AM - 5:00 PM',
     saturday: 'Closed',
     sunday: 'Closed',
   },
-  company: '',
-  cui: '',
-  regCom: '',
-  latitude: '',
-  longitude: '',
+  company: 'Feronat Reciclare SRL',
+  cui: 'RO12345678',
+  regCom: 'J40/1234/2021',
+  latitude: 44.4605525,
+  longitude: 26.077165,
 };
 
 export default function RecyclingLocationEditManagerScreen({
