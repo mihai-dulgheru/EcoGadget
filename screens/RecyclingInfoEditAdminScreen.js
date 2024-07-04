@@ -49,17 +49,39 @@ const validationSchema = Yup.object().shape({
 });
 
 const defaultInfo = {
-  title: '',
-  subtitle: '',
+  title: 'Reciclare corectă a echipamentelor electronice',
+  subtitle: 'Importanța reciclării responsabile a electronicelor uzate',
   picture: '',
-  tags: '',
+  tags: 'reciclare, electronică, mediu, sustenabilitate',
   date: new Date(),
   location: {
-    name: '',
-    longitude: '',
-    latitude: '',
+    name: 'MEGA IMAGE GEORGE ENESCU, Str. George Enescu, Nr. 36-42, București, Romania',
+    longitude: 26.099707,
+    latitude: 44.445079,
   },
-  sections: [],
+  sections: [
+    {
+      _id: uuidv4(),
+      type: 'heading',
+      heading: 'Ce trebuie să știi despre reciclare',
+    },
+    {
+      _id: uuidv4(),
+      type: 'content',
+      content:
+        'Reciclarea echipamentelor electronice este esențială pentru protejarea mediului. Prin reciclarea corectă, reducem poluarea și reutilizăm materiale valoroase.',
+    },
+    {
+      _id: uuidv4(),
+      type: 'contact',
+      contact: {
+        address:
+          'MEGA IMAGE GEORGE ENESCU, Str. George Enescu, Nr. 36-42, București, Romania',
+        email: 'info@megaimage.ro',
+        phone: '0123456791',
+      },
+    },
+  ],
 };
 
 const sectionTypes = [

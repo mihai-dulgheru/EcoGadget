@@ -23,8 +23,8 @@ function convertTo24HourFormat(timeString) {
   }
 
   // Ensure hours and minutes are zero-padded
-  hours = hours.toString().padStart(2, '0');
-  minutes = minutes.padStart(2, '0');
+  hours = hours.toString()?.padStart(2, '0') || '00';
+  minutes = minutes?.padStart(2, '0') || '00';
 
   return `${hours}:${minutes}`;
 }
