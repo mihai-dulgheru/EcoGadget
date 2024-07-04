@@ -120,6 +120,7 @@ export default function ApplianceEditUserScreen({ navigation, route }) {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries(['appliances']);
+      queryClient.removeQueries(['applianceRecommendations']);
       navigation.navigate('ApplianceListUser');
     },
     onError: (error) => {

@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEmpty } from 'lodash';
 import { useState } from 'react';
 import {
@@ -28,6 +28,7 @@ import { useAxiosAuth } from '../utils/Axios';
 
 export default function ApplianceListUserScreen({ navigation }) {
   const AxiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertProps, setAlertProps] = useState({});
 
@@ -65,7 +66,10 @@ export default function ApplianceListUserScreen({ navigation }) {
 
   const mutation = useMutation({
     mutationFn: async (id) => ApplianceService.deleteAppliance(AxiosAuth, id),
-    onSuccess: () => refetch(),
+    onSuccess: async () => {
+      await refetch();
+      queryClient.removeQueries(['applianceRecommendations']);
+    },
     onError: (mutationError) => {
       console.error('Error deleting appliance:', mutationError);
       showAlert(
